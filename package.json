@@ -1,0 +1,17 @@
+{
+  "name": "duohabit",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TwoGether — Unbreakable Accountability. Two people commit to habits together.",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "dev": "concurrently -n server,client -c cyan,magenta \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "start": "npm start --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
