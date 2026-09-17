@@ -180,16 +180,16 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-group" ref={wrapperRef} style={{ position: 'relative' }}>
-            <label htmlFor="identifier">Email or Username</label>
+            <label htmlFor="identifier">Username</label>
             <input
               id="identifier"
               type="text"
-              autoComplete="off"
+              autoComplete="username"
               value={identifier}
               onChange={handleIdentifierChange}
               onKeyDown={handleKeyDown}
               onFocus={() => predictions.length > 0 && setShowPredictions(true)}
-              placeholder="Enter your email or username..."
+              placeholder="Enter your username..."
               required
             />
 

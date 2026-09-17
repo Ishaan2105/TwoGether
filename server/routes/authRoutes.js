@@ -59,25 +59,6 @@ router.post(
   forgotPassword
 );
 
-router.post(
-  '/change-password',
-  protect,
-  [
-    body('currentPassword').notEmpty().withMessage('Current password is required'),
-    body('newPassword').isLength({ min: 8 }).withMessage('New password must be at least 8 characters'),
-  ],
-  changePassword
-);
-
-router.patch(
-  '/change-password',
-  protect,
-  [
-    body('currentPassword').notEmpty().withMessage('Current password is required'),
-    body('newPassword').isLength({ min: 8 }).withMessage('New password must be at least 8 characters'),
-  ],
-  changePassword
-);
 
 router.get('/me', protect, me);
 
@@ -165,6 +146,7 @@ router.patch(
       }
 
       user.password = newPassword;
+      user.mustChangePassword = false; // Clear temporary password flag
       await user.save();
 
       return res.json({ success: true, message: 'Password successfully updated!' });

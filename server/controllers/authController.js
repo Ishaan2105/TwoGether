@@ -133,7 +133,7 @@ async function predictUsername(req, res, next) {
 
 /**
  * POST /api/auth/login
- * Body: { identifier (email or username), password }
+ * Body: { identifier (username), password }
  */
 async function login(req, res, next) {
   try {
@@ -143,12 +143,10 @@ async function login(req, res, next) {
     }
 
     const identifier = String(req.body.identifier).trim().toLowerCase();
-    const user = await User.findOne({
-      $or: [{ email: identifier }, { username: identifier }],
-    }).select('+password');
+    const user = await User.findOne({ username: identifier }).select('+password');
 
     if (!user || !(await user.comparePassword(req.body.password))) {
-      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+      return res.status(401).json({ success: false, message: 'Invalid username or password.' });
     }
 
     const token = signToken(user._id);
