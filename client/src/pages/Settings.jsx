@@ -96,6 +96,7 @@ export default function Settings() {
     typeof Notification !== 'undefined' ? Notification.permission : 'default'
   );
   const [notifEnabling, setNotifEnabling] = useState(false);
+  const [notifError, setNotifError] = useState('');
   const [testNotifStatus, setTestNotifStatus] = useState('idle'); // idle | loading | done | error
 
   /* ── Username edit state ────────────────────────────────────────── */
@@ -126,27 +127,32 @@ export default function Settings() {
 
   // Keep notification permission state updated
   useEffect(() => {
-    const interval = setInterval(() => {
+    const updatePerm = () => {
       if (typeof Notification !== 'undefined') {
         setNotifPermission(Notification.permission);
       }
-    }, 1500);
-    return () => clearInterval(interval);
+    };
+    updatePerm();
   }, []);
 
   /* ── Handle Enable Notifications ───────────────────────────────── */
   const handleEnableNotifications = useCallback(async () => {
     if (notifEnabling) return;
     setNotifEnabling(true);
+    setNotifError('');
     try {
       const perm = await requestNotificationPermission();
       setNotifPermission(perm);
       if (perm === 'granted') {
         const already = await checkSubscriptionStatus();
         if (!already) await subscribeToWebPush();
+      } else if (perm === 'denied') {
+        setNotifError(
+          'Notifications are currently blocked by Android or your browser. To fix: Open Android Settings > Apps > TwoGether (or Chrome) > Notifications and turn them ON.'
+        );
       }
-    } catch {
-      // silent
+    } catch (err) {
+      setNotifError(err.message || 'Failed to enable notifications. Please try again.');
     } finally {
       setNotifEnabling(false);
     }
@@ -554,6 +560,16 @@ export default function Settings() {
                 >
                   {notifEnabling ? 'Enabling…' : '🔔 Enable Notifications'}
                 </button>
+              </div>
+            )}
+
+            {notifError && (
+              <div className="settings-alert settings-alert--warning" style={{ marginTop: '0.85rem' }}>
+                <span className="settings-alert__icon">ℹ️</span>
+                <div>
+                  <strong>Notification Setup Notice</strong>
+                  <p style={{ margin: 0, marginTop: '0.2rem', fontSize: '0.88rem' }}>{notifError}</p>
+                </div>
               </div>
             )}
 

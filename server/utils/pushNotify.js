@@ -2,11 +2,14 @@ const webpush = require('web-push');
 const User = require('../models/User');
 
 // Initialise VAPID credentials once on module load
-webpush.setVapidDetails(
-  process.env.VAPID_EMAIL || 'mailto:admin@twogether.app',
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+const VAPID_EMAIL = process.env.VAPID_EMAIL || 'mailto:admin@duohabit.app';
+const VAPID_PUBLIC_KEY =
+  process.env.VAPID_PUBLIC_KEY ||
+  'BFE70FU2LmEl4Zxktzr67Jf11qUYf4EFUgarMlutG5BsTkXC9T4o48rXCj7sLCLDdD65wHv-4C7G9H7x1DPIaVY';
+const VAPID_PRIVATE_KEY =
+  process.env.VAPID_PRIVATE_KEY || 'rcX3aiDNEAbD8DnH5GUu84y-Lf8hqWKjKnep3ZHXCWQ';
+
+webpush.setVapidDetails(VAPID_EMAIL, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
 
 /**
  * Send a push notification to a specific user.

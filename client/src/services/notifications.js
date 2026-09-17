@@ -18,12 +18,15 @@ export async function subscribeToWebPush() {
   // Register SW if not already registered
   let reg = await navigator.serviceWorker.getRegistration('/');
   if (!reg) {
-    reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
-    // Wait until the SW is active
-    await navigator.serviceWorker.ready;
+    await navigator.serviceWorker.register('/sw.js', { scope: '/' });
   }
+  // Wait until the SW is active and ready
+  reg = await navigator.serviceWorker.ready;
 
   const publicKey = await getVapidKey();
+  if (!publicKey) {
+    throw new Error('VAPID public key not found on server.');
+  }
 
   // Convert base64 VAPID key → Uint8Array
   const applicationServerKey = urlBase64ToUint8Array(publicKey);

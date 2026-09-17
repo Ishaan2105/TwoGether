@@ -14,7 +14,10 @@ router.use(protect);
  * Returns the public VAPID key so the client can subscribe.
  */
 router.get('/vapid-key', (_req, res) => {
-  res.json({ success: true, data: { publicKey: process.env.VAPID_PUBLIC_KEY } });
+  const publicKey =
+    process.env.VAPID_PUBLIC_KEY ||
+    'BFE70FU2LmEl4Zxktzr67Jf11qUYf4EFUgarMlutG5BsTkXC9T4o48rXCj7sLCLDdD65wHv-4C7G9H7x1DPIaVY';
+  res.json({ success: true, data: { publicKey } });
 });
 
 /**
