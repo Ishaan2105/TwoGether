@@ -46,7 +46,7 @@ export default function PWAInstallModal() {
         {/* Scrollable Modal Body */}
         <div className="pwa-modal__body">
           {/* Status Badge */}
-          {isInstalled ? (
+          {isInstalled && (
             <div className="pwa-status-banner pwa-status-banner--installed">
               <span className="pwa-status-icon">✓</span>
               <div>
@@ -54,22 +54,7 @@ export default function PWAInstallModal() {
                 <p>You can launch it directly from your Home Screen or Applications list.</p>
               </div>
             </div>
-          ) : isInstallable ? (
-            <div className="pwa-status-banner pwa-status-banner--ready">
-              <span className="pwa-status-icon">⚡</span>
-              <div>
-                <strong>1-Click Install Ready!</strong>
-                <p>Your browser supports direct installation. Click below to add TwoGether to your device.</p>
-              </div>
-              <button
-                type="button"
-                className="btn btn--primary btn--sm"
-                onClick={triggerNativePWAInstall}
-              >
-                Install Now
-              </button>
-            </div>
-          ) : null}
+          )}
 
           {/* Benefits Grid */}
           <div className="pwa-benefits-grid">
