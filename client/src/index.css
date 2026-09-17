@@ -2427,7 +2427,6 @@ html.desktop-site-view,
 html.desktop-site-view body {
   min-width: 1200px !important;
   width: 100% !important;
-  overflow-x: auto !important;
   -webkit-text-size-adjust: 100% !important;
   text-size-adjust: 100% !important;
 }
@@ -6477,6 +6476,53 @@ html.desktop-site-view .auth-card {
   border: 1px solid rgba(var(--cyan-rgb), 0.25);
   border-radius: 999px;
   backdrop-filter: blur(8px);
+}
+
+@keyframes sceneQuoteFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.scene-quote-animated {
+  animation: sceneQuoteFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.scene-quote-scroll-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.scene-quote-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  transition: all 0.25s ease;
+}
+
+.scene-quote-dot--active {
+  width: 28px;
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(var(--cyan-rgb), 0.6);
+}
+
+.scene-quote-counter {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-top: 0.6rem;
+  opacity: 0.9;
 }
 
 /* ============================================================

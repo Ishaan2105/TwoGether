@@ -4,6 +4,39 @@ import './ScrollExpand.css';
 
 const TOTAL_FRAMES = 63;
 
+const SCROLL_DUO_QUOTES = [
+  {
+    tag: '🔥 DUO PHILOSOPHY',
+    quote: 'If you want to go fast, go alone. If you want to go far, go together.',
+    author: 'African Proverb · The Duo Principle',
+    sub: 'A solo promise is easy to break in silence. But when someone you respect is relying on your consistency, showing up becomes second nature.',
+  },
+  {
+    tag: '🤝 MUTUAL STAKES',
+    quote: 'Two are better than one, because they have a good reward for their labor.',
+    author: 'Ecclesiastes 4:9 · Unbreakable Bond',
+    sub: 'When you share accountability, victory is twice as sweet and giving up is never an option.',
+  },
+  {
+    tag: '⚡ UNBREAKABLE MOMENTUM',
+    quote: 'We don’t rise to the level of our goals, we fall to the level of our systems.',
+    author: 'James Clear · Powered by Duo Synergy',
+    sub: 'When two partners build a shared system of daily execution, consistency stops being a struggle and becomes your default identity.',
+  },
+  {
+    tag: '🎯 UNCOMPROMISING STANDARDS',
+    quote: 'When two people commit to the same standard, slacking is no longer an option.',
+    author: 'TwoGether Philosophy · Shared Accountability',
+    sub: 'Every check-in powers your joint streak. Your partner is depending on your standard today.',
+  },
+  {
+    tag: '✨ EXPONENTIAL SYNERGY',
+    quote: 'Alone we can do so little; together we can do so much.',
+    author: 'Helen Keller · TwoGether Synergy',
+    sub: 'One partner pushes the other. Two disciplined minds create an unstoppable flywheel of daily progress.',
+  },
+];
+
 function getFrameUrl(index) {
   const padded = String(index + 1).padStart(3, '0');
   return `/frames/ezgif-frame-${padded}.jpg`;
@@ -236,10 +269,10 @@ export default function ScrollCanvasAnimation() {
         <div className="scroll-sequence-sticky">
           {/* Narrative Scenes Overlay */}
           <div className="scroll-expand-scenes-container">
-            {/* Scene 1: Unified Hero Header & CTAs (0% - 24% Scroll) */}
+            {/* Scene 1: Unified Hero Header & CTAs (0% - 22% Scroll) */}
             <div
               className={`scroll-scene scroll-scene--hero ${
-                scrollProgress <= 0.24
+                scrollProgress <= 0.22
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
@@ -266,10 +299,10 @@ export default function ScrollCanvasAnimation() {
               </div>
             </div>
 
-            {/* Scene 2: 1-on-1 Accountability (24% - 40% Scroll) */}
+            {/* Scene 2: 1-on-1 Accountability (22% - 36% Scroll) */}
             <div
               className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.24 && scrollProgress <= 0.40
+                scrollProgress > 0.22 && scrollProgress <= 0.36
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
@@ -284,10 +317,10 @@ export default function ScrollCanvasAnimation() {
               </div>
             </div>
 
-            {/* Scene 3: Semantic Synergy Shells (40% - 56% Scroll) */}
+            {/* Scene 3: Semantic Synergy Shells (36% - 50% Scroll) */}
             <div
               className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.40 && scrollProgress <= 0.56
+                scrollProgress > 0.36 && scrollProgress <= 0.50
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
@@ -314,52 +347,52 @@ export default function ScrollCanvasAnimation() {
               </div>
             </div>
 
-            {/* Scene 4: Duo Philosophy Quote 1 (56% - 70% Scroll) */}
-            <div
-              className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.56 && scrollProgress <= 0.70
-                  ? 'scroll-scene--active'
-                  : 'scroll-scene--hidden'
-              }`}
-            >
-              <div className="scene-card scene-card--quote">
-                <span className="badge badge--pill">🔥 DUO PHILOSOPHY</span>
-                <h2 className="scene-quote-title">
-                  &ldquo;If you want to go fast, go alone. If you want to go far, go together.&rdquo;
-                </h2>
-                <p className="muted scene-quote-sub">
-                  A solo promise is easy to break in silence. But when someone you respect is relying
-                  on your consistency, showing up becomes second nature.
-                </p>
-                <cite className="scene-quote-cite">— African Proverb · The Duo Principle</cite>
-              </div>
-            </div>
+            {/* Scene 4: Interactive Scrolling Duo Quotes (50% - 84% Scroll) */}
+            {(() => {
+              const isQuotesPhase = scrollProgress > 0.50 && scrollProgress <= 0.84;
+              const quotePhaseProgress = clamp((scrollProgress - 0.50) / (0.84 - 0.50), 0, 0.999);
+              const activeQuoteIdx = Math.min(
+                SCROLL_DUO_QUOTES.length - 1,
+                Math.max(0, Math.floor(quotePhaseProgress * SCROLL_DUO_QUOTES.length))
+              );
+              const activeQuote = SCROLL_DUO_QUOTES[activeQuoteIdx];
 
-            {/* Scene 5: Duo Inspiration Quote 2 (70% - 83% Scroll) */}
-            <div
-              className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.70 && scrollProgress <= 0.83
-                  ? 'scroll-scene--active'
-                  : 'scroll-scene--hidden'
-              }`}
-            >
-              <div className="scene-card scene-card--quote">
-                <span className="badge badge--pill">⚡ UNBREAKABLE MOMENTUM</span>
-                <h2 className="scene-quote-title">
-                  &ldquo;We don&rsquo;t rise to the level of our goals, we fall to the level of our systems.&rdquo;
-                </h2>
-                <p className="muted scene-quote-sub">
-                  When two partners build a shared system of daily execution, consistency stops being a struggle
-                  and becomes your default identity.
-                </p>
-                <cite className="scene-quote-cite">— James Clear · Powered by Duo Synergy</cite>
-              </div>
-            </div>
+              return (
+                <div
+                  className={`scroll-scene scroll-scene--callout ${
+                    isQuotesPhase ? 'scroll-scene--active' : 'scroll-scene--hidden'
+                  }`}
+                >
+                  <div key={activeQuoteIdx} className="scene-card scene-card--quote scene-quote-animated">
+                    <span className="badge badge--pill">{activeQuote.tag}</span>
+                    <h2 className="scene-quote-title">
+                      &ldquo;{activeQuote.quote}&rdquo;
+                    </h2>
+                    <p className="muted scene-quote-sub">
+                      {activeQuote.sub}
+                    </p>
+                    <cite className="scene-quote-cite">— {activeQuote.author}</cite>
 
-            {/* Scene 6: Unbreakable Streaks & Shields (83% - 94% Scroll with clean exit fade) */}
+                    <div className="scene-quote-scroll-dots">
+                      {SCROLL_DUO_QUOTES.map((_, i) => (
+                        <div
+                          key={i}
+                          className={`scene-quote-dot ${i === activeQuoteIdx ? 'scene-quote-dot--active' : ''}`}
+                        />
+                      ))}
+                    </div>
+                    <div className="scene-quote-counter">
+                      Duo Quote {activeQuoteIdx + 1} of {SCROLL_DUO_QUOTES.length} · Scroll to cycle quotes ↓
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Scene 5: Unbreakable Streaks & Shields (84% - 96% Scroll with clean exit fade) */}
             <div
               className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.83 && scrollProgress <= 0.94
+                scrollProgress > 0.84 && scrollProgress <= 0.96
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
