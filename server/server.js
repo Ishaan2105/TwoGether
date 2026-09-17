@@ -16,6 +16,9 @@ const { apiLimiter } = require('./middleware/rateLimiter');
 
 const app = express();
 
+// Required on Render / reverse proxies so express-rate-limit tracks individual client IPs, not the shared proxy IP
+app.set('trust proxy', 1);
+
 // Middleware order: helmet → cors → json → rate limiter → routes → 404 → error handler
 app.use(helmet());
 
@@ -30,7 +33,9 @@ app.use(
 );
 
 app.use(express.json({ limit: '100kb' }));
-app.use(apiLimiter);
+
+// Apply rate limiter ONLY to /api calls (never to static files, images, or index.html)
+app.use('/api', apiLimiter);
 
 // Routes
 app.get('/api/health', (_req, res) => {
