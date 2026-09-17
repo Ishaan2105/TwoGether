@@ -41,8 +41,19 @@ app.use('/api/duo', duoRoutes);
 app.use('/api/habits', habitRoutes);
 app.use('/api/notifications', notificationRoutes);
 
-// 404 + error handling
-app.use(notFound);
+// Serve React frontend in production
+if (process.env.NODE_ENV === 'production') {
+  const clientBuild = path.join(__dirname, '..', 'client', 'dist');
+  app.use(express.static(clientBuild));
+  // Catch-all: send index.html for any non-API route (React Router)
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientBuild, 'index.html'));
+  });
+} else {
+  // 404 handler for API-only dev mode
+  app.use(notFound);
+}
+
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
