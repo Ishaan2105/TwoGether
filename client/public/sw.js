@@ -60,8 +60,8 @@ self.addEventListener('push', (event) => {
   const title = data.title || 'TwoGether';
   const options = {
     body: data.body || '',
-    icon: data.icon || '/favicon.svg',
-    badge: '/favicon.svg',
+    icon: data.icon || '/pwa-192.png',
+    badge: data.badge || '/favicon.png',
     image: data.image || undefined,
     vibrate: [100, 50, 100],
     tag: data.data?.type || 'twogether-notification',

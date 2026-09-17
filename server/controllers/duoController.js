@@ -300,7 +300,7 @@ async function sendNudge(req, res, next) {
         await sendPushToUser(partner._id, {
           title: pushTitle,
           body: pushBody,
-          icon: '/favicon.svg',
+          icon: '/pwa-192.png',
           data: {
             type,
             senderUsername: req.user.username,

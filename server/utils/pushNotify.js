@@ -25,8 +25,8 @@ async function sendPushToUser(userId, payload) {
   const notification = JSON.stringify({
     title: payload.title || 'TwoGether',
     body: payload.body || '',
-    icon: payload.icon || '/favicon.svg',
-    badge: '/favicon.svg',
+    icon: payload.icon || '/pwa-192.png',
+    badge: '/favicon.png',
     image: payload.image || null,
     data: payload.data || {},
     timestamp: Date.now(),
