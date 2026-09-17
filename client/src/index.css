@@ -2422,6 +2422,78 @@ button {
   }
 }
 
+/* ---------- Forced Desktop Site View for Landing & Login Pages on Mobile ---------- */
+html.desktop-site-view,
+html.desktop-site-view body {
+  min-width: 1200px !important;
+  width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+
+html.desktop-site-view .landing,
+html.desktop-site-view .auth-page {
+  min-width: 1200px !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  box-sizing: border-box !important;
+}
+
+html.desktop-site-view .landing .container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 2.5rem 2rem !important;
+  width: 100% !important;
+}
+
+html.desktop-site-view .steps {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+}
+
+html.desktop-site-view .xp-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.25rem !important;
+}
+
+html.desktop-site-view .xp-formula-card {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 2rem !important;
+}
+
+html.desktop-site-view .features {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+}
+
+html.desktop-site-view .scroll-sequence-container,
+html.desktop-site-view .scroll-sequence-sticky,
+html.desktop-site-view .scroll-canvas-fixed-wrap,
+html.desktop-site-view .scroll-canvas-inner-wrap {
+  min-width: 1200px !important;
+}
+
+html.desktop-site-view .auth-page {
+  display: grid !important;
+  place-items: center !important;
+  min-height: 100vh !important;
+  padding: 3rem 2rem !important;
+  box-sizing: border-box !important;
+}
+
+html.desktop-site-view .auth-card {
+  width: 100% !important;
+  max-width: 440px !important;
+  margin: 0 auto !important;
+  border-radius: 18px !important;
+  padding: 2.5rem !important;
+}
+
 /* ---------- Universal Modals ---------- */
 
 .modal-backdrop {

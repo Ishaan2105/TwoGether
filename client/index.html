@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta id="app-viewport" name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -21,6 +21,17 @@
         try {
           var saved = localStorage.getItem('twogether_theme') || localStorage.getItem('duohabit_theme') || 'dark';
           document.documentElement.setAttribute('data-theme', saved);
+
+          // Force Desktop Site View for Landing ('/') and Login ('/login') on mobile devices
+          var path = window.location.pathname;
+          var isDesktopPage = path === '/' || path === '/login' || path === '/register';
+          if (isDesktopPage) {
+            var vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
+            if (vp) {
+              vp.setAttribute('content', 'width=1200, user-scalable=yes');
+            }
+            document.documentElement.classList.add('desktop-site-view');
+          }
         } catch (e) {}
       })();
     </script>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 /**
  * LandscapeOrientationPrompt
@@ -7,8 +8,15 @@ import { useState, useEffect } from 'react';
  * and provides guidance and screen-orientation lock to view TwoGether horizontally.
  */
 export default function LandscapeOrientationPrompt() {
+  const location = useLocation();
   const [isPortrait, setIsPortrait] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+
+  // Do not show on landing or login/auth pages
+  const isPublicPage =
+    location.pathname === '/' ||
+    location.pathname === '/login' ||
+    location.pathname === '/register';
 
   useEffect(() => {
     // Attempt native Screen Orientation API lock
@@ -72,7 +80,7 @@ export default function LandscapeOrientationPrompt() {
     }
   };
 
-  if (!isPortrait || dismissed) return null;
+  if (isPublicPage || !isPortrait || dismissed) return null;
 
   return (
     <div className="landscape-prompt-overlay" role="dialog" aria-modal="true">

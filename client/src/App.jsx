@@ -52,6 +52,25 @@ export default function App() {
   const isPublicPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register';
   const showNavigation = !!user && !isPublicPage;
 
+  // Dynamically switch viewport between Desktop Site View (Landing & Login) and Responsive View (App)
+  useEffect(() => {
+    let vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
+    if (!vp) {
+      vp = document.createElement('meta');
+      vp.name = 'viewport';
+      vp.id = 'app-viewport';
+      document.head.appendChild(vp);
+    }
+
+    if (isPublicPage) {
+      vp.setAttribute('content', 'width=1200, user-scalable=yes');
+      document.documentElement.classList.add('desktop-site-view');
+    } else {
+      vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
+      document.documentElement.classList.remove('desktop-site-view');
+    }
+  }, [isPublicPage, location.pathname]);
+
   return (
     <>
       {/* Global Navigation Sidebar & Mobile Bar (visible only after login on app pages) */}
