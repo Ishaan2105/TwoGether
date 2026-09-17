@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useDuo } from '../context/DuoContext.jsx';
 import { useSidebar } from '../context/SidebarContext.jsx';
 import * as duoService from '../services/duo.js';
+import WhatsAppShareModal from '../components/common/WhatsAppShareModal.jsx';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [copied, setCopied] = useState(false);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [sendingNudge, setSendingNudge] = useState(false);
   const [unpairing, setUnpairing] = useState(false);
 
@@ -506,6 +508,17 @@ export default function Dashboard() {
               >
                 {copied ? 'COPIED TO CLIPBOARD' : 'COPY INVITE CODE'}
               </button>
+              <button
+                type="button"
+                className="btn btn--whatsapp btn--block"
+                style={{ marginTop: '0.65rem' }}
+                onClick={() => setShowWhatsAppModal(true)}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                  <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zM8.53 7.33c-.14 0-.36.05-.55.26-.19.2-.72.7-.72 1.72 0 1.01.74 1.99.84 2.13.1.14 1.44 2.21 3.5 3.1 1.71.74 2.06.6 2.43.56.37-.03 1.2-.49 1.37-.96.17-.48.17-.89.12-.97-.05-.08-.19-.13-.4-.24-.21-.1-1.24-.61-1.43-.68-.19-.07-.33-.1-.47.11-.14.21-.55.68-.67.82-.12.14-.24.16-.45.05-.21-.1-.89-.33-1.69-1.05-.62-.56-1.04-1.25-1.16-1.46-.12-.21-.01-.32.09-.43.09-.1.21-.26.31-.39.11-.13.14-.22.21-.37.07-.15.04-.28-.02-.39-.06-.11-.53-1.28-.73-1.75-.19-.46-.39-.4-.53-.41-.14-.01-.3-.01-.46-.01z"/>
+                </svg>
+                <span>SHARE ON WHATSAPP</span>
+              </button>
               <p className="duo-code-card__tip muted">
                 Once paired, your streaks and synergy will be linked.
               </p>
@@ -572,6 +585,14 @@ export default function Dashboard() {
           </div>
         )}
       </main>
+
+      {/* WhatsApp Share Modal (Text or Image Card) */}
+      <WhatsAppShareModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        inviteCode={user?.duoInviteCode}
+        username={user?.username}
+      />
     </div>
   );
 }
