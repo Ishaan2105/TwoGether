@@ -34,13 +34,15 @@ app.use(
 
 app.use(express.json({ limit: '100kb' }));
 
+// Health check (always exempt from rate limiting)
+app.get('/api/health', (_req, res) => {
+  res.json({ success: true, data: { status: 'ok', uptime: process.uptime() } });
+});
+
 // Apply rate limiter ONLY to /api calls (never to static files, images, or index.html)
 app.use('/api', apiLimiter);
 
 // Routes
-app.get('/api/health', (_req, res) => {
-  res.json({ success: true, data: { status: 'ok', uptime: process.uptime() } });
-});
 app.use('/api/auth', authRoutes);
 app.use('/api/duo', duoRoutes);
 app.use('/api/habits', habitRoutes);
