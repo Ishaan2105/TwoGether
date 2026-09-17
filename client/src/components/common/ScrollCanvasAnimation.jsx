@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './ScrollExpand.css';
 
-const TOTAL_FRAMES = 63;
+const TOTAL_FRAMES = 136;
 
 const SCROLL_DUO_QUOTES = [
   {
