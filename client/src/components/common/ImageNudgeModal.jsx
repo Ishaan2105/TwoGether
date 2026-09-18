@@ -26,37 +26,117 @@ const STICKERS = [
   { emoji: '🫡', label: 'Salute' },
 ];
 
-const MAX_IMAGE_SIZE = 120 * 1024; // 120 KB base64
+const MAX_IMAGE_SIZE = 180 * 1024; // 180 KB base64
 
-/** Compress image File to base64 data URL under maxSize */
-function compressImage(file, maxSize = MAX_IMAGE_SIZE) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      const canvas = document.createElement('canvas');
-      let { width, height } = img;
-      const MAX_DIM = 480;
+/**
+ * Robust Mobile Image Compressor
+ * - Supports camera captures, gallery picks, HEIC/HEIF (Samsung & iPhone), large 50MP photos
+ * - Uses createImageBitmap for native Android hardware decoding
+ * - Falls back to FileReader + Canvas to avoid mobile blob: URL revocation issues
+ */
+async function compressImage(file, maxSize = MAX_IMAGE_SIZE) {
+  let targetFile = file;
+
+  // 1. Handle HEIC / HEIF (Samsung Galaxy Gallery & iOS default)
+  const isHeic =
+    targetFile.type === 'image/heic' ||
+    targetFile.type === 'image/heif' ||
+    /\.(heic|heif)$/i.test(targetFile.name || '');
+
+  if (isHeic) {
+    try {
+      const heicModule = await import('heic2any');
+      const heic2any = heicModule.default || heicModule;
+      const converted = await heic2any({
+        blob: targetFile,
+        toType: 'image/jpeg',
+        quality: 0.85,
+      });
+      targetFile = Array.isArray(converted) ? converted[0] : converted;
+    } catch (heicErr) {
+      console.warn('HEIC conversion skipped or failed, trying native decode:', heicErr);
+    }
+  }
+
+  // 2. Primary: createImageBitmap (Hardware accelerated in Android Chrome, avoids memory limits)
+  if (typeof createImageBitmap === 'function') {
+    try {
+      const bitmap = await createImageBitmap(targetFile);
+      let { width, height } = bitmap;
+      const MAX_DIM = 640;
       if (width > MAX_DIM || height > MAX_DIM) {
         const ratio = Math.min(MAX_DIM / width, MAX_DIM / height);
         width = Math.round(width * ratio);
         height = Math.round(height * ratio);
       }
+      const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
+      ctx.drawImage(bitmap, 0, 0, width, height);
+      bitmap.close();
+
       let quality = 0.82;
       let dataUrl = canvas.toDataURL('image/jpeg', quality);
-      while (dataUrl.length > maxSize && quality > 0.15) {
-        quality -= 0.08;
+      while (dataUrl.length > maxSize && quality > 0.25) {
+        quality -= 0.1;
         dataUrl = canvas.toDataURL('image/jpeg', quality);
       }
-      resolve(dataUrl);
+      return dataUrl;
+    } catch (bitmapErr) {
+      console.warn('createImageBitmap failed, trying FileReader fallback:', bitmapErr);
+    }
+  }
+
+  // 3. Fallback: FileReader to base64 DataURL (Bypasses blob: URL revocation on Android)
+  const rawDataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target.result);
+    reader.onerror = () => reject(new Error('Unable to read image file from storage.'));
+    reader.readAsDataURL(targetFile);
+  });
+
+  // 4. Decode via Image() and resize on canvas
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+        const MAX_DIM = 640;
+        if (width > MAX_DIM || height > MAX_DIM) {
+          const ratio = Math.min(MAX_DIM / width, MAX_DIM / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        let quality = 0.82;
+        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+        while (dataUrl.length > maxSize && quality > 0.25) {
+          quality -= 0.1;
+          dataUrl = canvas.toDataURL('image/jpeg', quality);
+        }
+        resolve(dataUrl);
+      } catch (canvasErr) {
+        if (rawDataUrl.length <= maxSize) {
+          resolve(rawDataUrl);
+        } else {
+          reject(canvasErr);
+        }
+      }
     };
-    img.onerror = reject;
-    img.src = url;
+    img.onerror = () => {
+      if (typeof rawDataUrl === 'string' && rawDataUrl.startsWith('data:image/') && rawDataUrl.length <= maxSize) {
+        resolve(rawDataUrl);
+      } else {
+        reject(new Error('Image format could not be decoded. Please try another photo.'));
+      }
+    };
+    img.src = rawDataUrl;
   });
 }
 
@@ -71,7 +151,7 @@ export default function ImageNudgeModal() {
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [imageSource, setImageSource] = useState('gallery'); // 'camera' | 'gallery'
   const [imageFileName, setImageFileName] = useState('');
-  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [status, setStatus] = useState('idle'); // idle | compressing | loading | success | error
   const [feedback, setFeedback] = useState('');
 
   const galleryInputRef = useRef(null);
@@ -92,19 +172,32 @@ export default function ImageNudgeModal() {
   const handleImageFile = async (e, source = 'gallery') => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      setFeedback('Please select an image file.');
+
+    // Support all common image formats and camera returns
+    const isLikelyImage =
+      !file.type ||
+      file.type.startsWith('image/') ||
+      /\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i.test(file.name || '');
+
+    if (!isLikelyImage) {
+      setFeedback('Please select a valid image file (JPEG, PNG, HEIC, WebP).');
       return;
     }
+
     setFeedback('');
+    setStatus('compressing');
+
     try {
       const compressed = await compressImage(file);
       setImagePreview(compressed);
       setImageDataUrl(compressed);
       setImageSource(source);
       setImageFileName(file.name || (source === 'camera' ? 'Camera photo' : 'Gallery photo'));
-    } catch {
-      setFeedback('Could not load image. Try a different file.');
+      setStatus('idle');
+    } catch (err) {
+      console.error('Image attachment failed:', err);
+      setFeedback(err?.message || 'Could not load image. Please try a different photo.');
+      setStatus('error');
     }
     e.target.value = '';
   };
@@ -117,7 +210,7 @@ export default function ImageNudgeModal() {
   };
 
   const handleSend = async () => {
-    if (status === 'loading') return;
+    if (status === 'loading' || status === 'compressing') return;
     setStatus('loading');
     setFeedback('');
     try {
@@ -228,6 +321,12 @@ export default function ImageNudgeModal() {
                 <span className="nudge-section-label">Attach a Photo</span>
               </div>
 
+              {status === 'compressing' && (
+                <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--cyan, #06b6d4)', fontSize: '0.88rem' }}>
+                  <span>⏳ Processing and attaching photo...</span>
+                </div>
+              )}
+
               {imagePreview ? (
                 <div className="nudge-image-preview-container">
                   <div className="nudge-image-preview">
@@ -288,11 +387,11 @@ export default function ImageNudgeModal() {
                 style={{ display: 'none' }}
                 aria-hidden="true"
               />
-              {/* Gallery input — normal file picker */}
+              {/* Gallery input — accepts all image types including HEIC */}
               <input
                 ref={galleryInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/*,.heic,.heif,.jpg,.jpeg,.png,.webp"
                 onChange={(e) => handleImageFile(e, 'gallery')}
                 style={{ display: 'none' }}
                 aria-hidden="true"
@@ -371,10 +470,12 @@ export default function ImageNudgeModal() {
               type="button"
               className="btn btn--primary nudge-send-btn"
               onClick={handleSend}
-              disabled={status === 'loading' || status === 'success'}
+              disabled={status === 'loading' || status === 'compressing' || status === 'success'}
             >
               {status === 'loading' ? (
                 <><span className="nudge-spinner" />Sending…</>
+              ) : status === 'compressing' ? (
+                <><span className="nudge-spinner" />Processing Image…</>
               ) : status === 'success' ? (
                 '✅ Sent!'
               ) : (
