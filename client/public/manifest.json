@@ -1,24 +1,40 @@
 {
+  "id": "/",
   "name": "TwoGether",
   "short_name": "TwoGether",
   "description": "TwoGether — Two people commit to habits together. Daily check-ins, shared streaks, and unbreakable duo accountability.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "orientation": "landscape",
+  "display_override": ["standalone", "minimal-ui", "window-controls-overlay"],
+  "orientation": "any",
   "theme_color": "#0a0e17",
   "background_color": "#0a0e17",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/pwa-192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
     },
     {
       "src": "/pwa-512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     },
     {
       "src": "/tg-logo.png",
