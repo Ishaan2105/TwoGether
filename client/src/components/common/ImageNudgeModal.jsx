@@ -69,6 +69,8 @@ export default function ImageNudgeModal() {
   const [message, setMessage] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
+  const [imageSource, setImageSource] = useState('gallery'); // 'camera' | 'gallery'
+  const [imageFileName, setImageFileName] = useState('');
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
   const [feedback, setFeedback] = useState('');
 
@@ -80,12 +82,14 @@ export default function ImageNudgeModal() {
     setMessage('');
     setImagePreview(null);
     setImageDataUrl(null);
+    setImageSource('gallery');
+    setImageFileName('');
     setStatus('idle');
     setFeedback('');
     closeImageNudge();
   }, [closeImageNudge]);
 
-  const handleImageFile = async (e) => {
+  const handleImageFile = async (e, source = 'gallery') => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) {
@@ -97,6 +101,8 @@ export default function ImageNudgeModal() {
       const compressed = await compressImage(file);
       setImagePreview(compressed);
       setImageDataUrl(compressed);
+      setImageSource(source);
+      setImageFileName(file.name || (source === 'camera' ? 'Camera photo' : 'Gallery photo'));
     } catch {
       setFeedback('Could not load image. Try a different file.');
     }
@@ -106,6 +112,8 @@ export default function ImageNudgeModal() {
   const handleRemoveImage = () => {
     setImagePreview(null);
     setImageDataUrl(null);
+    setImageSource('gallery');
+    setImageFileName('');
   };
 
   const handleSend = async () => {
@@ -117,10 +125,23 @@ export default function ImageNudgeModal() {
         imageDataUrl: imageDataUrl || null,
         message: message.trim(),
         emoji: selectedEmoji,
+        imageSource: imageDataUrl ? imageSource : 'gallery',
       });
       if (result.success) {
         setStatus('success');
-        setFeedback(`Nudge fired to ${partner?.username || 'your partner'}! 🚀`);
+        setFeedback(`Nudge with picture attached fired to ${partner?.username || 'your partner'}! 🚀`);
+
+        // Dispatch event for Dashboard live status
+        window.dispatchEvent(
+          new CustomEvent('twogether:image-nudge-sent', {
+            detail: {
+              source: imageSource,
+              partnerName: partner?.username || 'partner',
+              hasImage: !!imageDataUrl,
+            },
+          })
+        );
+
         setTimeout(() => handleClose(), 2500);
       } else {
         setStatus('error');
@@ -151,7 +172,7 @@ export default function ImageNudgeModal() {
           <div className="image-nudge-modal__title-area">
             <div className="image-nudge-modal__icon" aria-hidden="true">📸</div>
             <div>
-              <h2 id="nudge-title" className="image-nudge-modal__title">Send a Secret Nudge</h2>
+              <h2 id="nudge-title" className="image-nudge-modal__title">Send a Photo Nudge</h2>
               <p className="image-nudge-modal__subtitle">
                 {hasDuo
                   ? `Your image is hidden until ${partnerName} opens the app 🔒`
@@ -204,16 +225,32 @@ export default function ImageNudgeModal() {
             <div className="nudge-section">
               <div className="nudge-section-header">
                 <span className="nudge-section-step">2</span>
-                <span className="nudge-section-label">Attach a Photo (optional)</span>
+                <span className="nudge-section-label">Attach a Photo</span>
               </div>
 
               {imagePreview ? (
-                <div className="nudge-image-preview">
-                  <img src={imagePreview} alt="Nudge preview" className="nudge-image-preview__img" />
-                  <button type="button" className="nudge-image-preview__remove" onClick={handleRemoveImage}>
-                    ✕ Remove
-                  </button>
-                  <div className="nudge-image-preview__badge">🔒 Hidden until opened</div>
+                <div className="nudge-image-preview-container">
+                  <div className="nudge-image-preview">
+                    <img src={imagePreview} alt="Nudge preview" className="nudge-image-preview__img" />
+                    <button type="button" className="nudge-image-preview__remove" onClick={handleRemoveImage}>
+                      ✕ Remove
+                    </button>
+                    <div className="nudge-image-preview__badge">🔒 Hidden until opened</div>
+                  </div>
+
+                  {/* Picture Attached Confirmation Banner */}
+                  <div className="nudge-attached-banner">
+                    <span className="nudge-attached-icon">✅</span>
+                    <div className="nudge-attached-text">
+                      <strong>Picture Attached Successfully!</strong>
+                      <p className="nudge-attached-desc">
+                        {imageSource === 'camera'
+                          ? '📸 Picture clicked from Camera is attached & ready to send.'
+                          : '🖼️ Picture chosen from Gallery is attached & ready to send.'}
+                        {imageFileName ? ` (${imageFileName})` : ''}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className="nudge-upload-options">
@@ -224,8 +261,8 @@ export default function ImageNudgeModal() {
                     onClick={() => cameraInputRef.current?.click()}
                   >
                     <span className="nudge-upload-btn__icon">📷</span>
-                    <span className="nudge-upload-btn__label">Take Photo</span>
-                    <span className="nudge-upload-btn__hint">Instant camera</span>
+                    <span className="nudge-upload-btn__label">Click Picture</span>
+                    <span className="nudge-upload-btn__hint">Open camera</span>
                   </button>
 
                   {/* Gallery */}
@@ -235,8 +272,8 @@ export default function ImageNudgeModal() {
                     onClick={() => galleryInputRef.current?.click()}
                   >
                     <span className="nudge-upload-btn__icon">🖼️</span>
-                    <span className="nudge-upload-btn__label">Gallery</span>
-                    <span className="nudge-upload-btn__hint">Choose photo</span>
+                    <span className="nudge-upload-btn__label">Choose Picture</span>
+                    <span className="nudge-upload-btn__hint">From gallery</span>
                   </button>
                 </div>
               )}
@@ -247,7 +284,7 @@ export default function ImageNudgeModal() {
                 type="file"
                 accept="image/*"
                 capture="environment"
-                onChange={handleImageFile}
+                onChange={(e) => handleImageFile(e, 'camera')}
                 style={{ display: 'none' }}
                 aria-hidden="true"
               />
@@ -256,7 +293,7 @@ export default function ImageNudgeModal() {
                 ref={galleryInputRef}
                 type="file"
                 accept="image/*"
-                onChange={handleImageFile}
+                onChange={(e) => handleImageFile(e, 'gallery')}
                 style={{ display: 'none' }}
                 aria-hidden="true"
               />
@@ -287,26 +324,29 @@ export default function ImageNudgeModal() {
               <span className="nudge-preview-card__label">📱 NOTIFICATION PREVIEW</span>
               <div className="nudge-preview-card__notification">
                 <div className="nudge-preview-card__notif-icon">
-                  <img src="/favicon.svg" alt="" width="20" height="20" />
+                  <img src="/pwa-192.png" alt="" width="20" height="20" style={{ borderRadius: '4px' }} />
                 </div>
                 <div className="nudge-preview-card__notif-content">
-                  <strong>{user?.username} nudged you! 🚀</strong>
-                  <span>
-                    {selectedEmoji}{' '}
+                  <strong>
                     {imageDataUrl
-                      ? `${user?.username} sent you a secret image nudge — tap to reveal! 🔒`
-                      : message.trim() || `${user?.username} sent you a nudge!`}
+                      ? `📸 Photo Attached from ${user?.username || 'partner'}!`
+                      : `${user?.username || 'partner'} nudged you! 🚀`}
+                  </strong>
+                  <span>
+                    {imageDataUrl
+                      ? `✅ Picture ${imageSource === 'camera' ? 'clicked from camera' : 'chosen from gallery'} attached successfully! ${message.trim() ? `"${message.trim()}" • ` : ''}Tap to view 🔒`
+                      : `${selectedEmoji} ${message.trim() || `${user?.username || 'partner'} sent you a nudge!`}`}
                   </span>
                 </div>
                 {imageDataUrl && (
                   <div className="nudge-preview-card__secret-badge">🔒</div>
                 )}
               </div>
-              {imageDataUrl && (
-                <p className="nudge-preview-card__note">
-                  Image is hidden in the notification. Your partner must open the app to see it.
-                </p>
-              )}
+              <p className="nudge-preview-card__note">
+                {imageDataUrl
+                  ? `Your partner will see this notification explicitly confirming: "✅ Picture ${imageSource === 'camera' ? 'clicked from camera' : 'chosen from gallery'} attached successfully!"`
+                  : 'Your partner will receive this notification immediately.'}
+              </p>
             </div>
 
             {/* Feedback */}

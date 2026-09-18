@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [successMsg, setSuccessMsg] = useState('');
   const [copied, setCopied] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const [imageNudgeNotice, setImageNudgeNotice] = useState(null);
   const [sendingNudge, setSendingNudge] = useState(false);
   const [unpairing, setUnpairing] = useState(false);
 
@@ -44,6 +45,20 @@ export default function Dashboard() {
   useEffect(() => {
     loadShells();
   }, [loadShells]);
+
+  // Listen for image nudge attachment & delivery confirmation
+  useEffect(() => {
+    const onImageNudgeSent = (e) => {
+      const detail = e.detail;
+      if (detail?.hasImage) {
+        const srcText = detail.source === 'camera' ? 'clicked from Camera' : 'chosen from Gallery';
+        setImageNudgeNotice(`Picture ${srcText} attached successfully and delivered to @${detail.partnerName || 'partner'}! 📸`);
+        setTimeout(() => setImageNudgeNotice(null), 8000);
+      }
+    };
+    window.addEventListener('twogether:image-nudge-sent', onImageNudgeSent);
+    return () => window.removeEventListener('twogether:image-nudge-sent', onImageNudgeSent);
+  }, []);
 
   if (!user) return null;
 
@@ -450,6 +465,17 @@ export default function Dashboard() {
                 </button>
               </div>
 
+              {/* Picture Attached Live Confirmation Alert */}
+              {imageNudgeNotice && (
+                <div className="duo-image-attached-alert" role="status">
+                  <span className="duo-image-attached-alert__icon">✅</span>
+                  <div className="duo-image-attached-alert__content">
+                    <strong>Picture Attached Successfully!</strong>
+                    <span>{imageNudgeNotice}</span>
+                  </div>
+                </div>
+              )}
+
               {/* Nudge Activity Feed */}
               {duo.nudges && duo.nudges.length > 0 && (
                 <div className="duo-nudge-feed">
@@ -460,12 +486,12 @@ export default function Dashboard() {
                       .reverse()
                       .map((n, i) => (
                         <div key={n._id || i} className="nudge-item">
-                          <span className="nudge-item__badge">
-                            {n.type === 'hype' ? 'HYPE' : n.type === 'sos' ? 'SOS' : 'NUDGE'}
+                          <span className={`nudge-item__badge ${n.type === 'image' ? 'nudge-item__badge--photo' : ''}`}>
+                            {n.type === 'image' ? 'PHOTO' : n.type === 'hype' ? 'HYPE' : n.type === 'sos' ? 'SOS' : 'NUDGE'}
                           </span>
                           <span className="nudge-item__text">
-                            {n.sender === user._id ? 'You' : `@${partner.username}`} sent a{' '}
-                            {n.type}
+                            {n.sender === user._id ? 'You' : `@${partner.username}`}{' '}
+                            {n.type === 'image' ? 'attached a picture & sent a photo nudge' : `sent a ${n.type}`}
                           </span>
                           <span className="nudge-item__time">
                             {new Date(n.createdAt).toLocaleTimeString([], {

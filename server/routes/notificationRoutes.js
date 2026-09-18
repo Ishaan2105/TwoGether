@@ -113,37 +113,71 @@ router.post('/send-image-nudge', async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Could not determine your partner.' });
     }
 
-    const { message = '', emoji = '👋', imageDataUrl } = req.body;
+    const { message = '', emoji = '👋', imageDataUrl, imageSource = 'gallery' } = req.body;
 
     if (imageDataUrl && imageDataUrl.length > 200000) {
       return res.status(400).json({ success: false, message: 'Image is too large. Please use a smaller image.' });
     }
 
-    // 1. Store the nudge in DB (image stays on server, never in push payload)
+    const hasImage = !!imageDataUrl;
+    const sourceText = imageSource === 'camera' ? 'clicked from camera' : 'chosen from gallery';
+
+    // 1. Store the nudge in DB
     const nudge = await NudgeMessage.create({
       fromUserId: req.user._id,
       toUserId: partnerId,
       fromUsername: sender.username,
       imageDataUrl: imageDataUrl || null,
+      imageSource: hasImage ? imageSource : null,
       message: message.trim(),
       emoji,
     });
 
-    // 2. Send TEXT-ONLY push with the nudgeId — no image in the notification
-    const notifBody = imageDataUrl
-      ? `${emoji} ${sender.username} sent you a secret image nudge — tap to reveal! 🔒`
-      : `${emoji} ${message.trim() || `${sender.username} sent you a nudge!`}`;
+    // 2. Also log to duo activity feed
+    try {
+      await Duo.findByIdAndUpdate(sender.duoId, {
+        $push: {
+          nudges: {
+            sender: req.user._id,
+            type: 'image',
+            message: hasImage ? `Attached picture (${sourceText})` : (message.trim() || 'Nudge'),
+            createdAt: new Date(),
+          },
+        },
+      });
+    } catch (duoErr) {
+      console.warn('Could not record nudge in duo feed:', duoErr);
+    }
+
+    // 3. Send push notification with explicit picture attachment status
+    let notifTitle = `${sender.username} nudged you! 🚀`;
+    let notifBody = '';
+
+    if (hasImage) {
+      notifTitle = `📸 Photo Attached from ${sender.username}!`;
+      notifBody = `✅ Picture ${sourceText} attached successfully! ${message.trim() ? `"${message.trim()}" • ` : ''}Tap to view 🔒`;
+    } else {
+      notifBody = `${emoji} ${message.trim() || `${sender.username} sent you a nudge!`}`;
+    }
 
     const result = await sendPushToUser(partnerId, {
-      title: `${sender.username} nudged you! 🚀`,
+      title: notifTitle,
       body: notifBody,
-      icon: '/favicon.svg',
+      icon: '/pwa-192.png',
+      badge: '/favicon.png',
       data: {
         type: 'image-nudge',
         nudgeId: nudge._id.toString(),
         fromUsername: sender.username,
+        hasImage,
+        imageSource,
+        sourceText,
         url: `/?nudge=${nudge._id.toString()}`,
       },
+      actions: [
+        { action: 'open', title: hasImage ? '📸 View Attached Photo' : '👀 Open App' },
+        { action: 'dismiss', title: '✕ Dismiss' },
+      ],
     });
 
     if (result.sent === 0) {

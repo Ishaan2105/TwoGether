@@ -80,11 +80,12 @@ export async function sendTestNotification() {
 }
 
 /** Send an image nudge to the current user's duo partner */
-export async function sendImageNudge({ imageDataUrl = null, message = '', emoji = '👋' }) {
+export async function sendImageNudge({ imageDataUrl = null, message = '', emoji = '👋', imageSource = 'gallery' }) {
   const { data } = await api.post('/notifications/send-image-nudge', {
     imageDataUrl,
     message,
     emoji,
+    imageSource,
   });
   return data;
 }
