@@ -418,15 +418,11 @@ export default function Dashboard() {
               <div className="duo-nudge-buttons">
                 <button
                   type="button"
-                  className="btn btn--secondary duo-nudge-btn--photo"
+                  className="btn btn--secondary"
                   onClick={openImageNudge}
                   title="Capture camera photo or select gallery image"
                 >
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                    <circle cx="12" cy="13" r="4" />
-                  </svg>
-                  <span>Send Image Nudge</span>
+                  📸 Send Image Nudge
                 </button>
                 <button
                   type="button"
