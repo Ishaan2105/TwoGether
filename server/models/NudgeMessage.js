@@ -10,6 +10,7 @@ const nudgeMessageSchema = new mongoose.Schema({
   fromUsername: { type: String, required: true },
   imageDataUrl: { type: String, default: null }, // base64 JPEG, stored server-side
   imageSource:  { type: String, default: 'gallery' }, // 'camera' | 'gallery'
+  duration:     { type: Number, default: 15 }, // self-destruct timer in seconds (set by sender)
   message:      { type: String, default: '' },
   emoji:        { type: String, default: '👋' },
   viewed:       { type: Boolean, default: false },

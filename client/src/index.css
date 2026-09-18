@@ -1895,6 +1895,86 @@ button {
   border-radius: 0 2px 2px 0;
 }
 
+/* Nudge viewer meta row & timer chip */
+.nudge-viewer__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.nudge-viewer__timer-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(var(--cyan-rgb), 0.12);
+  border: 1px solid rgba(var(--cyan-rgb), 0.3);
+  color: var(--cyan);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ── Screenshot Shield Screen ──
+   Completely replaces/covers image on screenshot attempt, window blur, or capture tools */
+.nudge-viewer__shield-screen {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  background: #09090b !important;
+  border: 2px solid rgba(239, 68, 68, 0.4);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  gap: 0.85rem;
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.2);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.nudge-viewer__shield-icon {
+  font-size: 2.75rem;
+  line-height: 1;
+  animation: shieldPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes shieldPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(239,68,68,0)); }
+  50% { transform: scale(1.1); filter: drop-shadow(0 0 16px rgba(239,68,68,0.8)); }
+}
+
+.nudge-viewer__shield-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ef4444;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.nudge-viewer__shield-desc {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 280px;
+  margin: 0;
+}
+
+.nudge-viewer__resume-btn {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.5rem 1.2rem;
+  background: var(--gradient-primary);
+  box-shadow: 0 0 16px rgba(var(--cyan-rgb), 0.35);
+}
+
 /* Sidebar Custom Scrollbar */
 .sidebar-content::-webkit-scrollbar {
   width: 4px;
@@ -10613,6 +10693,200 @@ html.desktop-site-view .auth-card {
     rgba(var(--cyan-rgb), 0.15),
     rgba(168, 85, 247, 0.15)
   );
+}
+
+/* ── Disappearing Timer: Scroll Dial & Scrubber ── */
+.nudge-timer-badge {
+  margin-left: auto;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(var(--cyan-rgb), 0.12);
+  border: 1px solid rgba(var(--cyan-rgb), 0.35);
+  color: var(--cyan);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.nudge-section-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Horizontal Scroll Dial Track */
+.nudge-timer-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  padding: 0.75rem 0.5rem 0.5rem;
+}
+
+.nudge-timer-scroll-track {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0.25rem 0.5rem 0.6rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--cyan-rgb), 0.4) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nudge-timer-scroll-track::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nudge-timer-scroll-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nudge-timer-scroll-track::-webkit-scrollbar-thumb {
+  background: rgba(var(--cyan-rgb), 0.3);
+  border-radius: 999px;
+}
+
+/* Timer Card (snap item) */
+.nudge-timer-card {
+  position: relative;
+  flex: 0 0 86px;
+  height: 98px;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0.5rem 0.35rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+.nudge-timer-card:hover {
+  border-color: rgba(var(--cyan-rgb), 0.4);
+  transform: translateY(-2px);
+  background: rgba(var(--cyan-rgb), 0.05);
+}
+
+.nudge-timer-card--active {
+  background: linear-gradient(145deg, rgba(var(--cyan-rgb), 0.22), rgba(168, 85, 247, 0.18)) !important;
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.4), inset 0 0 12px rgba(var(--cyan-rgb), 0.15);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.nudge-timer-card__emoji {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.nudge-timer-card__sec {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.nudge-timer-card--active .nudge-timer-card__sec {
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.6);
+}
+
+.nudge-timer-card__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nudge-timer-card--active .nudge-timer-card__label {
+  color: #f1f5f9;
+}
+
+.nudge-timer-card__desc {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+}
+
+.nudge-timer-card__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 1px solid var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+  opacity: 0.5;
+}
+
+.nudge-timer-scroll-hint {
+  display: flex;
+  justify-content: center;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  padding-top: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+/* Precision Scrubber Area */
+.nudge-timer-scrubber-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+}
+
+.nudge-timer-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.76rem;
+}
+
+.nudge-timer-slider-label {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.nudge-timer-slider-value {
+  font-weight: 800;
+  color: var(--cyan);
+  background: rgba(var(--cyan-rgb), 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--cyan-rgb), 0.25);
+}
+
+.nudge-timer-slider {
+  width: 100%;
+  accent-color: var(--cyan);
+  cursor: pointer;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(var(--cyan-rgb), 0.2);
+  outline: none;
+}
+
+.nudge-timer-slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-weight: 600;
 }
 
 @media (max-width: 520px) {

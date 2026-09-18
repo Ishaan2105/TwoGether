@@ -113,7 +113,8 @@ router.post('/send-image-nudge', async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Could not determine your partner.' });
     }
 
-    const { message = '', emoji = '👋', imageDataUrl, imageSource = 'gallery' } = req.body;
+    const { message = '', emoji = '👋', imageDataUrl, imageSource = 'gallery', duration = 15 } = req.body;
+    const viewDuration = Math.max(3, Math.min(120, parseInt(duration, 10) || 15));
 
     if (imageDataUrl && imageDataUrl.length > 200000) {
       return res.status(400).json({ success: false, message: 'Image is too large. Please use a smaller image.' });
@@ -129,6 +130,7 @@ router.post('/send-image-nudge', async (req, res, next) => {
       fromUsername: sender.username,
       imageDataUrl: imageDataUrl || null,
       imageSource: hasImage ? imageSource : null,
+      duration: viewDuration,
       message: message.trim(),
       emoji,
     });
@@ -149,13 +151,13 @@ router.post('/send-image-nudge', async (req, res, next) => {
       console.warn('Could not record nudge in duo feed:', duoErr);
     }
 
-    // 3. Send push notification with explicit picture attachment status
+    // 3. Send push notification with explicit picture attachment status and self-destruct timer
     let notifTitle = `${sender.username} nudged you! 🚀`;
     let notifBody = '';
 
     if (hasImage) {
       notifTitle = `📸 Photo Attached from ${sender.username}!`;
-      notifBody = `✅ Picture ${sourceText} attached successfully! ${message.trim() ? `"${message.trim()}" • ` : ''}Tap to view 🔒`;
+      notifBody = `✅ Picture ${sourceText} attached successfully! Self-destructs in ${viewDuration}s ⏱️. ${message.trim() ? `"${message.trim()}" • ` : ''}Tap to view 🔒`;
     } else {
       notifBody = `${emoji} ${message.trim() || `${sender.username} sent you a nudge!`}`;
     }
@@ -172,6 +174,7 @@ router.post('/send-image-nudge', async (req, res, next) => {
         hasImage,
         imageSource,
         sourceText,
+        duration: viewDuration,
         url: `/?nudge=${nudge._id.toString()}`,
       },
       actions: [
@@ -187,7 +190,7 @@ router.post('/send-image-nudge', async (req, res, next) => {
       });
     }
 
-    res.json({ success: true, data: { message: 'Nudge sent!', nudgeId: nudge._id, ...result } });
+    res.json({ success: true, data: { message: 'Nudge sent!', nudgeId: nudge._id, duration: viewDuration, ...result } });
   } catch (err) {
     next(err);
   }
@@ -222,6 +225,8 @@ router.get('/nudge/:id', async (req, res, next) => {
       data: {
         fromUsername: nudge.fromUsername,
         imageDataUrl: nudge.imageDataUrl,
+        imageSource: nudge.imageSource,
+        duration: nudge.duration || 15,
         message: nudge.message,
         emoji: nudge.emoji,
         createdAt: nudge.createdAt,

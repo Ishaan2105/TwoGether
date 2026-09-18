@@ -26,6 +26,17 @@ const STICKERS = [
   { emoji: '🫡', label: 'Salute' },
 ];
 
+// Preset self-destruct timers for photo nudges
+const TIMER_OPTIONS = [
+  { seconds: 5, label: 'Flash', emoji: '⚡', desc: '5s peek' },
+  { seconds: 10, label: 'Quick', emoji: '⏱️', desc: '10s look' },
+  { seconds: 15, label: 'Standard', emoji: '🔥', desc: '15s glance' },
+  { seconds: 20, label: 'Relaxed', emoji: '👀', desc: '20s view' },
+  { seconds: 30, label: 'Extended', emoji: '⏳', desc: '30s chill' },
+  { seconds: 45, label: 'Story', emoji: '📖', desc: '45s study' },
+  { seconds: 60, label: 'Maximum', emoji: '⌛', desc: '60s max' },
+];
+
 const MAX_IMAGE_SIZE = 180 * 1024; // 180 KB base64
 
 /**
@@ -151,11 +162,13 @@ export default function ImageNudgeModal() {
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [imageSource, setImageSource] = useState('gallery'); // 'camera' | 'gallery'
   const [imageFileName, setImageFileName] = useState('');
+  const [duration, setDuration] = useState(15); // Self-destruct timer in seconds (sender picks)
   const [status, setStatus] = useState('idle'); // idle | compressing | loading | success | error
   const [feedback, setFeedback] = useState('');
 
   const galleryInputRef = useRef(null);
   const cameraInputRef = useRef(null);
+  const timerScrollRef = useRef(null);
 
   const handleClose = useCallback(() => {
     setSelectedEmoji('🔥');
@@ -164,6 +177,7 @@ export default function ImageNudgeModal() {
     setImageDataUrl(null);
     setImageSource('gallery');
     setImageFileName('');
+    setDuration(15);
     setStatus('idle');
     setFeedback('');
     closeImageNudge();
@@ -219,10 +233,11 @@ export default function ImageNudgeModal() {
         message: message.trim(),
         emoji: selectedEmoji,
         imageSource: imageDataUrl ? imageSource : 'gallery',
+        duration,
       });
       if (result.success) {
         setStatus('success');
-        setFeedback(`Nudge with picture attached fired to ${partner?.username || 'your partner'}! 🚀`);
+        setFeedback(`Nudge with picture attached fired to ${partner?.username || 'your partner'} (${duration}s view)! 🚀`);
 
         // Dispatch event for Dashboard live status
         window.dispatchEvent(
@@ -231,6 +246,7 @@ export default function ImageNudgeModal() {
               source: imageSource,
               partnerName: partner?.username || 'partner',
               hasImage: !!imageDataUrl,
+              duration,
             },
           })
         );
@@ -398,10 +414,74 @@ export default function ImageNudgeModal() {
               />
             </div>
 
-            {/* ── Section 3: Message ── */}
+            {/* ── Section 3: Self-Destruct Timer (Scroll Type UI) ── */}
             <div className="nudge-section">
               <div className="nudge-section-header">
                 <span className="nudge-section-step">3</span>
+                <span className="nudge-section-label">Disappearing Timer</span>
+                <span className="nudge-timer-badge">⏱️ {duration}s Viewing Time</span>
+              </div>
+              <p className="nudge-section-desc">
+                Choose how many seconds {partnerName} has to view this photo before it vanishes forever.
+              </p>
+
+              {/* Scrollable Timer Dial / Cards */}
+              <div className="nudge-timer-scroll-wrapper">
+                <div className="nudge-timer-scroll-track" ref={timerScrollRef}>
+                  {TIMER_OPTIONS.map((opt) => {
+                    const isSelected = duration === opt.seconds;
+                    return (
+                      <button
+                        key={opt.seconds}
+                        type="button"
+                        className={`nudge-timer-card ${isSelected ? 'nudge-timer-card--active' : ''}`}
+                        onClick={() => setDuration(opt.seconds)}
+                        title={`${opt.label} (${opt.seconds}s)`}
+                      >
+                        <span className="nudge-timer-card__emoji">{opt.emoji}</span>
+                        <span className="nudge-timer-card__sec">{opt.seconds}s</span>
+                        <span className="nudge-timer-card__label">{opt.label}</span>
+                        <span className="nudge-timer-card__desc">{opt.desc}</span>
+                        {isSelected && <span className="nudge-timer-card__glow" />}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="nudge-timer-scroll-hint">
+                  <span>← Swipe or scroll to pick viewing duration →</span>
+                </div>
+              </div>
+
+              {/* Interactive Scrubber Slider */}
+              <div className="nudge-timer-scrubber-area">
+                <div className="nudge-timer-slider-header">
+                  <span className="nudge-timer-slider-label">⚡ Precision Timer Dial</span>
+                  <span className="nudge-timer-slider-value">{duration} seconds</span>
+                </div>
+                <input
+                  type="range"
+                  min="5"
+                  max="60"
+                  step="5"
+                  value={duration}
+                  onChange={(e) => setDuration(Number(e.target.value))}
+                  className="nudge-timer-slider"
+                  aria-label="Self destruct duration slider"
+                />
+                <div className="nudge-timer-slider-ticks">
+                  <span>5s</span>
+                  <span>15s</span>
+                  <span>30s</span>
+                  <span>45s</span>
+                  <span>60s</span>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Section 4: Message ── */}
+            <div className="nudge-section">
+              <div className="nudge-section-header">
+                <span className="nudge-section-step">4</span>
                 <span className="nudge-section-label">Add a Message (optional)</span>
               </div>
               <div className="nudge-message-field">
@@ -433,7 +513,7 @@ export default function ImageNudgeModal() {
                   </strong>
                   <span>
                     {imageDataUrl
-                      ? `✅ Picture ${imageSource === 'camera' ? 'clicked from camera' : 'chosen from gallery'} attached successfully! ${message.trim() ? `"${message.trim()}" • ` : ''}Tap to view 🔒`
+                      ? `✅ Picture ${imageSource === 'camera' ? 'clicked from camera' : 'chosen from gallery'} attached successfully! Self-destructs in ${duration}s ⏱️. ${message.trim() ? `"${message.trim()}" • ` : ''}Tap to view 🔒`
                       : `${selectedEmoji} ${message.trim() || `${user?.username || 'partner'} sent you a nudge!`}`}
                   </span>
                 </div>
@@ -443,7 +523,7 @@ export default function ImageNudgeModal() {
               </div>
               <p className="nudge-preview-card__note">
                 {imageDataUrl
-                  ? `Your partner will see this notification explicitly confirming: "✅ Picture ${imageSource === 'camera' ? 'clicked from camera' : 'chosen from gallery'} attached successfully!"`
+                  ? `Your partner will see this notification with your chosen ${duration}s timer and confirmation: "✅ Picture ${imageSource === 'camera' ? 'clicked from camera' : 'chosen from gallery'} attached successfully!"`
                   : 'Your partner will receive this notification immediately.'}
               </p>
             </div>

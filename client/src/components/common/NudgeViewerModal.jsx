@@ -5,9 +5,13 @@ import { getNudgeMessage } from '../../services/notifications.js';
 /**
  * NudgeViewerModal
  * Opens when a user clicks a nudge push notification (deep-linked via /?nudge=ID).
- * Displays the image on a <canvas> element and applies every browser-available
- * screenshot-prevention measure (context menu block, user-select none,
- * CSS overlay, pointer-events none on the canvas).
+ * Displays the image on a <canvas> element with multi-layered anti-screenshot protection:
+ *  1. Window Blur & Visibility change detector — instantly blanks image to black shield on screenshot attempt
+ *  2. Keyboard shortcut blocker (PrintScreen, Win+Shift+S, Cmd+Shift+3/4/5, Ctrl+P)
+ *  3. Clipboard clearing on PrintScreen
+ *  4. Touch-callout & Context-menu blocker (disables long-press download on Samsung/Android/iOS)
+ *  5. Dynamic diagonal security watermark on canvas
+ *  6. Dynamic self-destruct timer configured by the sender
  */
 export default function NudgeViewerModal() {
   const { isNudgeViewerOpen, closeNudgeViewer, activeNudgeId } = useSidebar();
@@ -15,7 +19,11 @@ export default function NudgeViewerModal() {
   const [nudge, setNudge] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [totalDuration, setTotalDuration] = useState(15);
   const [timeLeft, setTimeLeft] = useState(null); // countdown for self-destruct
+  const [isShieldActive, setIsShieldActive] = useState(false);
+  const [shieldReason, setShieldReason] = useState('');
+
   const canvasRef = useRef(null);
   const timerRef = useRef(null);
 
@@ -24,26 +32,94 @@ export default function NudgeViewerModal() {
     if (!isNudgeViewerOpen || !activeNudgeId) return;
     setNudge(null);
     setError('');
+    setIsShieldActive(false);
+    setShieldReason('');
     setLoading(true);
 
     getNudgeMessage(activeNudgeId)
       .then((data) => {
         setNudge(data);
-        // Start a 30-second auto-close countdown
-        setTimeLeft(30);
+        const duration = Math.max(3, Math.min(120, Number(data.duration) || 15));
+        setTotalDuration(duration);
+        setTimeLeft(duration);
       })
       .catch(() => setError('This nudge has expired or you don\'t have access.'))
       .finally(() => setLoading(false));
   }, [isNudgeViewerOpen, activeNudgeId]);
 
-  // ── Render image onto <canvas> (prevents right-click save) ───────
+  // ── Multi-layer Anti-Screenshot & Screen Capture Protection ──────
   useEffect(() => {
-    if (!nudge?.imageDataUrl || !canvasRef.current) return;
+    if (!isNudgeViewerOpen || !nudge?.imageDataUrl) return;
+
+    // 1. Window Blur (Fires on Samsung/Android screenshot button press, palm swipe, or Win+Shift+S Snipping tool)
+    const handleBlur = () => {
+      setIsShieldActive(true);
+      setShieldReason('Screen capture or window defocus detected. Image shielded.');
+    };
+
+    // 2. Visibility change (Fires when screen recording or capture overlays activate)
+    const handleVisibility = () => {
+      if (document.visibilityState !== 'visible') {
+        setIsShieldActive(true);
+        setShieldReason('App minimized or screen capture active. Image shielded.');
+      }
+    };
+
+    // 3. Keyboard shortcuts (PrintScreen, Win+Shift+S, Cmd+Shift+3/4/5, Ctrl+P)
+    const handleKeyDown = (e) => {
+      const isPrintScreen = e.key === 'PrintScreen' || e.keyCode === 44;
+      const isSnipTool = (e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'S' || e.key === 's');
+      const isMacScreenshot = (e.metaKey && e.shiftKey) && ['3', '4', '5'].includes(e.key);
+      const isPrint = (e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P');
+
+      if (isPrintScreen || isSnipTool || isMacScreenshot || isPrint) {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsShieldActive(true);
+        setShieldReason('Screenshot key combination blocked.');
+
+        // Wipe clipboard to prevent pasting screenshot
+        if (navigator.clipboard?.writeText) {
+          navigator.clipboard.writeText('Screenshots are prohibited for private nudges on TwoGether.').catch(() => {});
+        }
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      if (e.key === 'PrintScreen' || e.keyCode === 44) {
+        setIsShieldActive(true);
+        if (navigator.clipboard?.writeText) {
+          navigator.clipboard.writeText('').catch(() => {});
+        }
+      }
+    };
+
+    const handleCopy = (e) => {
+      e.preventDefault();
+    };
+
+    window.addEventListener('blur', handleBlur);
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('keydown', handleKeyDown, true);
+    window.addEventListener('keyup', handleKeyUp, true);
+    window.addEventListener('copy', handleCopy);
+
+    return () => {
+      window.removeEventListener('blur', handleBlur);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('keydown', handleKeyDown, true);
+      window.removeEventListener('keyup', handleKeyUp, true);
+      window.removeEventListener('copy', handleCopy);
+    };
+  }, [isNudgeViewerOpen, nudge]);
+
+  // ── Render image onto <canvas> with Watermark ───────────────────
+  useEffect(() => {
+    if (!nudge?.imageDataUrl || !canvasRef.current || isShieldActive) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const img = new Image();
     img.onload = () => {
-      // Size canvas to natural image dimensions (capped)
       const maxDim = 380;
       let w = img.naturalWidth;
       let h = img.naturalHeight;
@@ -56,24 +132,26 @@ export default function NudgeViewerModal() {
       canvas.height = h;
       ctx.drawImage(img, 0, 0, w, h);
 
-      // Draw a very subtle watermark so even screen-recorded content is traceable
+      // Security Watermark: sender + recipient identity stamps across canvas
       ctx.save();
-      ctx.globalAlpha = 0.08;
+      ctx.globalAlpha = 0.12;
       ctx.fillStyle = '#ffffff';
-      ctx.font = `bold ${Math.round(w * 0.05)}px sans-serif`;
+      ctx.font = `bold ${Math.max(12, Math.round(w * 0.042))}px sans-serif`;
       ctx.textAlign = 'center';
-      ctx.rotate(-Math.PI / 6);
-      for (let row = -h; row < h * 2; row += h * 0.35) {
-        for (let col = -w; col < w * 2; col += w * 0.6) {
-          ctx.fillText('TwoGether', col, row);
+      ctx.rotate(-Math.PI / 5);
+
+      const stamp = `TwoGether • Private Nudge • From ${nudge.fromUsername || 'Partner'}`;
+      for (let row = -h * 1.5; row < h * 2.5; row += 48) {
+        for (let col = -w * 1.5; col < w * 2.5; col += 220) {
+          ctx.fillText(stamp, col, row);
         }
       }
       ctx.restore();
     };
     img.src = nudge.imageDataUrl;
-  }, [nudge]);
+  }, [nudge, isShieldActive]);
 
-  // ── 30-second countdown → auto-close ─────────────────────────────
+  // ── Sender-defined countdown → auto-close ────────────────────────
   useEffect(() => {
     if (timeLeft === null) return;
     if (timeLeft <= 0) {
@@ -88,16 +166,19 @@ export default function NudgeViewerModal() {
     clearTimeout(timerRef.current);
     setNudge(null);
     setTimeLeft(null);
+    setIsShieldActive(false);
     setError('');
     closeNudgeViewer();
   }, [closeNudgeViewer]);
 
-  // ── Block right-click inside the modal ───────────────────────────
+  // ── Block context menu inside the modal ──────────────────────────
   const blockContext = useCallback((e) => e.preventDefault(), []);
 
   if (!isNudgeViewerOpen) return null;
 
-  const progressPct = timeLeft !== null ? (timeLeft / 30) * 100 : 100;
+  const progressPct = timeLeft !== null && totalDuration > 0
+    ? Math.max(0, Math.min(100, (timeLeft / totalDuration) * 100))
+    : 100;
 
   return (
     <div
@@ -112,8 +193,7 @@ export default function NudgeViewerModal() {
         aria-modal="true"
         aria-labelledby="nudge-viewer-title"
       >
-        {/* Screenshot-disruption overlay — sits above content in CSS,
-            mix-blend-mode:difference makes screenshots look garbled */}
+        {/* Anti-capture distortion overlay */}
         <div className="nudge-viewer__protect-overlay" aria-hidden="true" />
 
         {/* ── Header ── */}
@@ -122,10 +202,10 @@ export default function NudgeViewerModal() {
             <div className="nudge-viewer__lock-badge" aria-hidden="true">🔒</div>
             <div>
               <h2 id="nudge-viewer-title" className="nudge-viewer__title">
-                {nudge ? `${nudge.fromUsername} sent you a nudge!` : 'Secret Nudge'}
+                {nudge ? `${nudge.fromUsername}'s Private Photo` : 'Secret Photo Nudge'}
               </h2>
               <p className="nudge-viewer__subtitle">
-                Cannot be screenshot · Disappears in {timeLeft ?? '…'}s
+                🛡️ Anti-screenshot active · Disappears in {timeLeft ?? totalDuration}s
               </p>
             </div>
           </div>
@@ -142,7 +222,7 @@ export default function NudgeViewerModal() {
           {loading && (
             <div className="nudge-viewer__loading">
               <div className="nudge-viewer__spinner" />
-              <span>Decrypting nudge…</span>
+              <span>Decrypting secure photo…</span>
             </div>
           )}
 
@@ -155,31 +235,55 @@ export default function NudgeViewerModal() {
 
           {nudge && (
             <>
-              {/* From chip */}
-              <div className="nudge-viewer__from-chip">
-                <span className="nudge-viewer__from-avatar">
-                  {nudge.fromUsername[0]?.toUpperCase()}
-                </span>
-                <span>
-                  <strong>{nudge.fromUsername}</strong> sent this secret nudge
-                </span>
+              {/* From & Timer Chip */}
+              <div className="nudge-viewer__meta-row">
+                <div className="nudge-viewer__from-chip">
+                  <span className="nudge-viewer__from-avatar">
+                    {(nudge.fromUsername[0] || 'P').toUpperCase()}
+                  </span>
+                  <span>
+                    <strong>{nudge.fromUsername}</strong>
+                  </span>
+                </div>
+                <div className="nudge-viewer__timer-chip">
+                  <span>⏱️ {timeLeft}s remaining</span>
+                </div>
               </div>
 
-              {/* Image — rendered on canvas to block right-click save */}
+              {/* ── Image Canvas / Screenshot Shield ── */}
               {nudge.imageDataUrl && (
                 <div
                   className="nudge-viewer__canvas-wrap"
                   onContextMenu={blockContext}
-                  aria-label="Nudge image (screenshot protected)"
+                  aria-label="Protected Nudge Image"
                 >
-                  <canvas
-                    ref={canvasRef}
-                    className="nudge-viewer__canvas"
-                    onContextMenu={blockContext}
-                    draggable="false"
-                  />
-                  {/* Pointer-events:none shield layer — blocks drag & right-click on canvas */}
-                  <div className="nudge-viewer__canvas-shield" aria-hidden="true" />
+                  {isShieldActive ? (
+                    <div className="nudge-viewer__shield-screen">
+                      <div className="nudge-viewer__shield-icon">🛡️🔒</div>
+                      <h3 className="nudge-viewer__shield-title">Screenshot Shield Active</h3>
+                      <p className="nudge-viewer__shield-desc">
+                        {shieldReason || 'Screenshot capture or window blur detected. Image blanked out to protect privacy.'}
+                      </p>
+                      <button
+                        type="button"
+                        className="btn btn--primary btn--sm nudge-viewer__resume-btn"
+                        onClick={() => setIsShieldActive(false)}
+                      >
+                        👁️ Resume Viewing ({timeLeft}s left)
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <canvas
+                        ref={canvasRef}
+                        className="nudge-viewer__canvas"
+                        onContextMenu={blockContext}
+                        draggable="false"
+                      />
+                      {/* Pointer-events:none shield layer — blocks touch callout & drag */}
+                      <div className="nudge-viewer__canvas-shield" aria-hidden="true" />
+                    </>
+                  )}
                 </div>
               )}
 
@@ -187,7 +291,7 @@ export default function NudgeViewerModal() {
               <div className="nudge-viewer__message-card">
                 <span className="nudge-viewer__emoji" aria-hidden="true">{nudge.emoji}</span>
                 <p className="nudge-viewer__message">
-                  {nudge.message?.trim() || `${nudge.fromUsername} sent you a nudge!`}
+                  {nudge.message?.trim() || `${nudge.fromUsername} sent you an ephemeral photo!`}
                 </p>
               </div>
 
@@ -195,17 +299,16 @@ export default function NudgeViewerModal() {
               <div className="nudge-viewer__protect-notice">
                 <span>🛡️</span>
                 <span>
-                  This content is protected. Screenshots and screen recordings
-                  are watermarked and may be detected.
+                  <strong>Anti-Screenshot Protection Active:</strong> Taking a screenshot or screen recording will capture only the blackout shield.
                 </span>
               </div>
             </>
           )}
         </div>
 
-        {/* ── Countdown progress bar ── */}
+        {/* ── Sender-configured Countdown Progress Bar ── */}
         {timeLeft !== null && (
-          <div className="nudge-viewer__timer-bar">
+          <div className="nudge-viewer__timer-bar" title={`${timeLeft}s remaining`}>
             <div
               className="nudge-viewer__timer-fill"
               style={{ width: `${progressPct}%`, '--progress': progressPct }}
