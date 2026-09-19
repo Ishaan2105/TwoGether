@@ -4850,10 +4850,10 @@ html.desktop-site-view .auth-card {
   box-shadow: 0 4px 20px rgba(40, 54, 24, 0.06);
 }
 
-:root .card h1, :root .card h2, :root .card h3, :root .card h4,
-[data-theme="dark"] .card h1, [data-theme="dark"] .card h2, [data-theme="dark"] .card h3, [data-theme="dark"] .card h4,
-[data-theme="solaris"] .card h1, [data-theme="solaris"] .card h2, [data-theme="solaris"] .card h3, [data-theme="solaris"] .card h4,
-[data-theme="botanica"] .card h1, [data-theme="botanica"] .card h2, [data-theme="botanica"] .card h3, [data-theme="botanica"] .card h4,
+:root .card:not(.duo-shells-empty) h1, :root .card:not(.duo-shells-empty) h2, :root .card:not(.duo-shells-empty) h3, :root .card:not(.duo-shells-empty) h4,
+[data-theme="dark"] .card:not(.duo-shells-empty) h1, [data-theme="dark"] .card:not(.duo-shells-empty) h2, [data-theme="dark"] .card:not(.duo-shells-empty) h3, [data-theme="dark"] .card:not(.duo-shells-empty) h4,
+[data-theme="solaris"] .card:not(.duo-shells-empty) h1, [data-theme="solaris"] .card:not(.duo-shells-empty) h2, [data-theme="solaris"] .card:not(.duo-shells-empty) h3, [data-theme="solaris"] .card:not(.duo-shells-empty) h4,
+[data-theme="botanica"] .card:not(.duo-shells-empty) h1, [data-theme="botanica"] .card:not(.duo-shells-empty) h2, [data-theme="botanica"] .card:not(.duo-shells-empty) h3, [data-theme="botanica"] .card:not(.duo-shells-empty) h4,
 :root .hero-card h1, :root .hero-card h2, :root .hero-card h3,
 [data-theme="dark"] .hero-card h1, [data-theme="dark"] .hero-card h2, [data-theme="dark"] .hero-card h3,
 [data-theme="solaris"] .hero-card h1, [data-theme="solaris"] .hero-card h2, [data-theme="solaris"] .hero-card h3,
@@ -4865,10 +4865,10 @@ html.desktop-site-view .auth-card {
   color: #283618 !important;
 }
 
-:root .card p, :root .card .muted,
-[data-theme="dark"] .card p, [data-theme="dark"] .card .muted,
-[data-theme="solaris"] .card p, [data-theme="solaris"] .card .muted,
-[data-theme="botanica"] .card p, [data-theme="botanica"] .card .muted,
+:root .card:not(.duo-shells-empty) p, :root .card:not(.duo-shells-empty) .muted,
+[data-theme="dark"] .card:not(.duo-shells-empty) p, [data-theme="dark"] .card:not(.duo-shells-empty) .muted,
+[data-theme="solaris"] .card:not(.duo-shells-empty) p, [data-theme="solaris"] .card:not(.duo-shells-empty) .muted,
+[data-theme="botanica"] .card:not(.duo-shells-empty) p, [data-theme="botanica"] .card:not(.duo-shells-empty) .muted,
 :root .hero-card__meta,
 [data-theme="dark"] .hero-card__meta,
 [data-theme="solaris"] .hero-card__meta,
@@ -5559,38 +5559,66 @@ html.desktop-site-view .auth-card {
   animation: pulseGlow 2s infinite ease-in-out;
 }
 
+:root .card.duo-shells-empty,
+[data-theme="dark"] .card.duo-shells-empty,
+[data-theme="solaris"] .card.duo-shells-empty,
+[data-theme="botanica"] .card.duo-shells-empty,
+.card.duo-shells-empty,
 .duo-shells-empty {
-  background: rgba(16, 21, 9, 0.55) !important;
-  border: 1px solid rgba(96, 108, 56, 0.35) !important;
+  background: rgba(16, 21, 9, 0.65) !important;
+  border: 1px solid rgba(96, 108, 56, 0.45) !important;
   border-radius: 14px !important;
   padding: 2.5rem 1.5rem !important;
   text-align: center !important;
-  color: #ffffff !important;
+  color: #fefae0 !important;
 }
 
+:root .card.duo-shells-empty h4,
+[data-theme="dark"] .card.duo-shells-empty h4,
+[data-theme="solaris"] .card.duo-shells-empty h4,
+[data-theme="botanica"] .card.duo-shells-empty h4,
+.card.duo-shells-empty h4,
 .duo-shells-empty h4 {
   color: #fefae0 !important;
-  font-size: 1.15rem !important;
+  font-size: 1.25rem !important;
   font-weight: 800 !important;
-  margin: 0 0 0.4rem 0 !important;
+  margin: 0 0 0.45rem 0 !important;
+  letter-spacing: -0.01em !important;
 }
 
+:root .card.duo-shells-empty p,
+:root .card.duo-shells-empty .muted,
+[data-theme="dark"] .card.duo-shells-empty p,
+[data-theme="dark"] .card.duo-shells-empty .muted,
+[data-theme="solaris"] .card.duo-shells-empty p,
+[data-theme="solaris"] .card.duo-shells-empty .muted,
+[data-theme="botanica"] .card.duo-shells-empty p,
+[data-theme="botanica"] .card.duo-shells-empty .muted,
+.card.duo-shells-empty p,
+.card.duo-shells-empty .muted,
+.duo-shells-empty p,
 .duo-shells-empty p.muted {
   color: #fefae0 !important;
-  font-size: 0.88rem !important;
+  font-size: 0.92rem !important;
   max-width: 680px !important;
-  margin: 0.4rem auto 1.25rem auto !important;
-  line-height: 1.5 !important;
-  opacity: 0.95;
+  margin: 0.4rem auto 1.35rem auto !important;
+  line-height: 1.55 !important;
+  opacity: 0.95 !important;
 }
 
+:root .card.duo-shells-empty .btn--primary,
+[data-theme="dark"] .card.duo-shells-empty .btn--primary,
+[data-theme="solaris"] .card.duo-shells-empty .btn--primary,
+[data-theme="botanica"] .card.duo-shells-empty .btn--primary,
+.card.duo-shells-empty .btn--primary,
 .duo-shells-empty .btn--primary {
   background: #606c38 !important;
-  color: #ffffff !important;
-  border: none !important;
+  color: #fefae0 !important;
+  border: 1px solid rgba(254, 250, 224, 0.3) !important;
   border-radius: 8px !important;
   font-weight: 700 !important;
-  padding: 0.5rem 1.25rem !important;
+  padding: 0.55rem 1.35rem !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
 }
 
 .duo-shells-empty__icon {

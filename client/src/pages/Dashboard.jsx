@@ -264,8 +264,8 @@ export default function Dashboard() {
                       </span>
                     )}
                   </div>
-                  <h3>Shared Synergy Shells</h3>
-                  <p className="muted">
+                  <h3 style={{ color: '#fefae0' }}>Shared Synergy Shells</h3>
+                  <p className="muted" style={{ color: '#fefae0', opacity: 0.95 }}>
                     Your distinct daily habits automatically linked under shared accountability domains:
                   </p>
                 </div>
@@ -393,8 +393,8 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <div className="card duo-shells-empty">
-                  <h4>No overlapping task shells yet</h4>
-                  <p className="muted">
+                  <h4 style={{ color: '#fefae0' }}>No overlapping task shells yet</h4>
+                  <p className="muted" style={{ color: '#fefae0', opacity: 0.95 }}>
                     When you and @{partner.username} both have habits in matching domains (like Exercise, Hydration, or Reading), the system will automatically fuse them into Shared Synergy Shells here!
                   </p>
                   <Link to="/tasks" className="btn btn--primary btn--sm">
