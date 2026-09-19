@@ -5629,13 +5629,33 @@ html.desktop-site-view .auth-card {
 
 .duo-solo-section {
   margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-subtle);
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(254, 250, 224, 0.15) !important;
 }
 
+:root .duo-solo-section h4,
+[data-theme="dark"] .duo-solo-section h4,
+[data-theme="solaris"] .duo-solo-section h4,
+[data-theme="botanica"] .duo-solo-section h4,
 .duo-solo-section h4 {
-  font-size: 0.95rem;
-  margin: 0 0 0.2rem 0;
+  color: #fefae0 !important;
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  margin: 0 0 0.35rem 0 !important;
+}
+
+:root .duo-solo-section p,
+:root .duo-solo-section p.muted,
+[data-theme="dark"] .duo-solo-section p,
+[data-theme="dark"] .duo-solo-section p.muted,
+[data-theme="solaris"] .duo-solo-section p,
+[data-theme="solaris"] .duo-solo-section p.muted,
+[data-theme="botanica"] .duo-solo-section p,
+[data-theme="botanica"] .duo-solo-section p.muted,
+.duo-solo-section p.muted {
+  color: #fefae0 !important;
+  font-size: 0.88rem !important;
+  opacity: 0.95 !important;
 }
 
 .duo-solo-grid {
@@ -5649,10 +5669,10 @@ html.desktop-site-view .auth-card {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: var(--bg-card);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.15rem;
+  background: rgba(16, 21, 9, 0.65) !important;
+  border: 1px solid rgba(96, 108, 56, 0.45) !important;
+  border-radius: 12px !important;
 }
 
 .duo-solo-card__icon {
@@ -5666,8 +5686,13 @@ html.desktop-site-view .auth-card {
 }
 
 .duo-solo-card__info strong {
-  font-size: 0.88rem;
-  color: var(--cyan);
+  font-size: 0.92rem;
+  color: #fefae0 !important;
+}
+
+.duo-solo-card__info span {
+  color: #d5e4c3 !important;
+  font-size: 0.8rem;
 }
 
 .task-tag--shell {
