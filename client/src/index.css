@@ -1165,113 +1165,309 @@ button {
 
 /* ---------- Persistent Desktop Sidebar & Responsive Mobile Drawer ---------- */
 
-/* Mobile Top Header (< 900px only) */
-.mobile-topbar {
+/* ============================================================
+   PORTRAIT MOBILE: TOP BAR & BOTTOM TAB BAR
+   ============================================================ */
+
+/* ── 1. Portrait Top Bar ── */
+.portrait-topbar {
   display: none;
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 56px;
-  background: var(--bg-card-solid);
-  border-bottom: 1px solid var(--border);
-  z-index: 80;
-  padding: 0 1rem;
+  background: rgba(10, 14, 23, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.2);
+  z-index: 1000;
+  padding: 0 0.85rem;
   align-items: center;
   justify-content: space-between;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
-.mobile-topbar__left {
+.portrait-topbar__spacer {
+  flex: 1;
+  min-width: 32px;
+  max-width: 110px;
+}
+
+.portrait-topbar__center {
+  flex: 2;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-}
-
-.mobile-topbar__toggle {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 4px;
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  color: var(--text);
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
-}
-
-.mobile-topbar__toggle:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--cyan);
-}
-
-.mobile-topbar__hamburger-line {
-  width: 16px;
-  height: 2px;
-  border-radius: 999px;
-  background: var(--text);
-  transition: background 0.2s ease;
-}
-
-.mobile-topbar__brand {
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
-  font-weight: 900;
-  font-size: 1.08rem;
-  letter-spacing: 0.03em;
-  color: var(--text);
   text-decoration: none;
 }
 
-.mobile-topbar__logo {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: var(--gradient-primary);
-  color: var(--btn-primary-text);
-  font-weight: 900;
-  font-size: 0.95rem;
-}
-
-.mobile-topbar__logo-img {
+.portrait-topbar__logo {
   width: 28px;
   height: 28px;
   border-radius: 7px;
   object-fit: cover;
-  border: 1px solid rgba(var(--cyan-rgb), 0.35);
-  box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.2);
+  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.35);
+  box-shadow: 0 0 10px rgba(var(--cyan-rgb, 6, 182, 212), 0.25);
   background: #ffffff;
   flex-shrink: 0;
 }
 
-.mobile-topbar__avatar {
+.portrait-topbar__brand {
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--text, #f8fafc);
+  text-shadow: 0 0 12px rgba(var(--cyan-rgb, 6, 182, 212), 0.35);
+}
+
+.portrait-topbar__right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  min-width: 32px;
+  max-width: 140px;
+}
+
+.portrait-topbar__account-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.25);
+  color: var(--text, #f8fafc);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 100%;
+}
+
+.portrait-topbar__account-btn:hover,
+.portrait-topbar__account-btn--open {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--cyan, #06b6d4);
+  box-shadow: 0 0 12px rgba(var(--cyan-rgb, 6, 182, 212), 0.25);
+}
+
+.portrait-topbar__avatar-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gradient-primary, linear-gradient(135deg, #06b6d4, #3b82f6));
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
-  color: var(--btn-primary-text);
-  font-weight: 800;
-  font-size: 0.9rem;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(var(--cyan-rgb), 0.35);
-  transition: transform 0.18s ease;
+  flex-shrink: 0;
 }
 
-.mobile-topbar__avatar:hover {
-  transform: scale(1.06);
+.portrait-topbar__account-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portrait-topbar__chevron {
+  color: var(--text-muted, #94a3b8);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.portrait-topbar__chevron--open {
+  transform: rotate(180deg);
+  color: var(--cyan, #06b6d4);
+}
+
+/* Account Dropdown Modal / Popover */
+.portrait-topbar__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 210px;
+  background: var(--bg-card, #121826);
+  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 18px rgba(var(--cyan-rgb, 6, 182, 212), 0.15);
+  border-radius: 14px;
+  padding: 0.85rem;
+  z-index: 1001;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.portrait-topbar__dropdown-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.portrait-topbar__dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-primary, linear-gradient(135deg, #06b6d4, #3b82f6));
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.portrait-topbar__dropdown-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.portrait-topbar__dropdown-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text, #f8fafc);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portrait-topbar__dropdown-email {
+  font-size: 0.74rem;
+  color: var(--text-muted, #94a3b8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portrait-topbar__dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0 0.65rem 0;
+}
+
+.portrait-topbar__logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.portrait-topbar__logout-btn:hover {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+}
+
+/* ── 2. Portrait Bottom Tab Bar ── */
+.portrait-bottom-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.22);
+  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.6);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.portrait-tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  padding: 0.25rem 0.1rem;
+  text-decoration: none;
+  color: var(--text-muted, #94a3b8);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.portrait-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  transition: transform 0.18s ease, color 0.18s ease;
+  color: inherit;
+}
+
+.portrait-tab-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.15;
+}
+
+.portrait-tab-item:active {
+  transform: scale(0.92);
+}
+
+/* Active Tab Item */
+.portrait-tab-item--active {
+  color: var(--cyan, #06b6d4) !important;
+  font-weight: 800;
+}
+
+.portrait-tab-item--active .portrait-tab-icon {
+  color: var(--cyan, #06b6d4) !important;
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 6px rgba(var(--cyan-rgb, 6, 182, 212), 0.55));
+}
+
+.portrait-tab-item--active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2.5px;
+  background: var(--cyan, #06b6d4);
+  border-radius: 999px;
+  box-shadow: 0 0 10px var(--cyan, #06b6d4);
+}
+
+/* PWA App Tab Item */
+.portrait-tab-item--pwa .portrait-tab-icon {
+  color: #f59e0b;
+}
+
+.portrait-tab-item--pwa:hover .portrait-tab-icon,
+.portrait-tab-item--pwa:active .portrait-tab-icon {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.7));
 }
 
 /* Sidebar Drawer Shell */
@@ -2753,9 +2949,11 @@ button {
 
 /* Desktop Layout (>= 900px) */
 @media (min-width: 900px) {
-  /* Complete removal of Topbar on Desktop */
+  /* Complete removal of Topbar and Bottom Tab Bar on Desktop */
   .navbar,
-  .mobile-topbar {
+  .mobile-topbar,
+  .portrait-topbar,
+  .portrait-bottom-bar {
     display: none !important;
   }
 
@@ -2817,8 +3015,17 @@ button {
     display: none !important;
   }
 
-  .mobile-topbar {
+  .portrait-topbar {
     display: flex;
+  }
+
+  .portrait-bottom-bar {
+    display: flex;
+  }
+
+  .app-shell {
+    padding-top: 58px !important;
+    padding-bottom: 74px !important;
   }
 
   .sidebar-drawer {
@@ -14990,6 +15197,12 @@ html:has(.landing) .scroll-sequence-vignette {
 
 @media (max-height: 550px) and (orientation: landscape),
        (max-height: 550px) {
+
+  /* In mobile landscape, hide portrait topbar and bottom bar */
+  .portrait-topbar,
+  .portrait-bottom-bar {
+    display: none !important;
+  }
 
   /* Ensure 3D canvas is full-bleed with no cropped rounded box */
   .scroll-canvas-fixed-wrap,
