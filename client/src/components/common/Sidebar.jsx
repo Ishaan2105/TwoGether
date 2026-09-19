@@ -7,6 +7,7 @@ import { useDuo } from '../../context/DuoContext.jsx';
 export default function Sidebar() {
   const {
     isSidebarOpen,
+    toggleSidebar,
     closeSidebar,
     openPWAInstall,
     isInstalled,
@@ -30,7 +31,7 @@ export default function Sidebar() {
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
         if (isProfileOpen) setIsProfileOpen(false);
-        else if (isSidebarOpen && window.innerWidth < 900) closeSidebar();
+        else if (isSidebarOpen) closeSidebar();
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -41,15 +42,15 @@ export default function Sidebar() {
     };
   }, [isProfileOpen, isSidebarOpen, closeSidebar]);
 
-  // Close sidebar on route change on mobile
+  // Close sidebar on route change
   useEffect(() => {
-    if (window.innerWidth < 900) closeSidebar();
+    closeSidebar();
     setIsProfileOpen(false);
   }, [location.pathname, closeSidebar]);
 
   const handleLogout = () => {
     setIsProfileOpen(false);
-    if (window.innerWidth < 900) closeSidebar();
+    closeSidebar();
     logout();
     navigate('/');
   };
@@ -62,23 +63,52 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Dimmed backdrop overlay (mobile only) */}
+      {/* ── Fixed Accessible Edge Toggle Trigger (Visible in Landscape Mobile / PWA View) ── */}
+      <button
+        type="button"
+        className={`sidebar-edge-toggle ${isSidebarOpen ? 'sidebar-edge-toggle--hidden' : ''}`}
+        onClick={toggleSidebar}
+        aria-label={isSidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={isSidebarOpen}
+        aria-controls="main-sidebar-drawer"
+        id="sidebar-edge-toggle-btn"
+        title="Open navigation menu"
+      >
+        <span className="sidebar-edge-toggle__bar sidebar-edge-toggle__bar--1" />
+        <span className="sidebar-edge-toggle__bar sidebar-edge-toggle__bar--2" />
+        <span className="sidebar-edge-toggle__bar sidebar-edge-toggle__bar--3" />
+      </button>
+
+      {/* Dimmed backdrop overlay with dynamic blur effect */}
       {isSidebarOpen && (
-        <div className="sidebar-backdrop" onClick={closeSidebar} aria-hidden="true" />
+        <div
+          className="sidebar-backdrop"
+          onClick={closeSidebar}
+          aria-hidden="true"
+        />
       )}
 
       <aside
+        id="main-sidebar-drawer"
         className={`sidebar-drawer ${isSidebarOpen ? 'sidebar-drawer--open' : ''}`}
         role="navigation"
         aria-label="Main application sidebar"
       >
         {/* ── 1. Brand Header ── */}
         <div className="sidebar-header">
-          <NavLink to="/" className="sidebar-brand" onClick={() => window.innerWidth < 900 && closeSidebar()}>
+          <NavLink to="/" className="sidebar-brand" onClick={closeSidebar}>
             <img src="/tg-logo.png" alt="TwoGether Logo" className="sidebar-brand-img" />
             <span className="sidebar-brand-name">TwoGether</span>
           </NavLink>
-          <button type="button" className="sidebar-close-btn" onClick={closeSidebar} aria-label="Close sidebar">✕</button>
+          <button
+            type="button"
+            className="sidebar-close-btn"
+            onClick={closeSidebar}
+            aria-label="Close sidebar"
+            id="sidebar-drawer-close-btn"
+          >
+            ✕
+          </button>
         </div>
 
         {/* ── 2. Scrollable Navigation Content ── */}
@@ -87,6 +117,7 @@ export default function Sidebar() {
             <NavLink
               to="/tasks"
               className={({ isActive }) => `sidebar-nav-item ${isActive ? 'sidebar-nav-item--active' : ''}`}
+              onClick={closeSidebar}
             >
               <span className="sidebar-nav-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -100,6 +131,7 @@ export default function Sidebar() {
             <NavLink
               to="/dashboard"
               className={({ isActive }) => `sidebar-nav-item ${isActive ? 'sidebar-nav-item--active' : ''}`}
+              onClick={closeSidebar}
             >
               <span className="sidebar-nav-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -117,6 +149,7 @@ export default function Sidebar() {
               className={({ isActive }) =>
                 `sidebar-nav-item ${isActive || location.pathname === '/leaderboard' ? 'sidebar-nav-item--active' : ''}`
               }
+              onClick={closeSidebar}
             >
               <span className="sidebar-nav-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -130,6 +163,7 @@ export default function Sidebar() {
             <NavLink
               to="/leaderboard/duo"
               className={({ isActive }) => `sidebar-nav-item ${isActive ? 'sidebar-nav-item--active' : ''}`}
+              onClick={closeSidebar}
             >
               <span className="sidebar-nav-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -144,6 +178,7 @@ export default function Sidebar() {
               to="/settings"
               className={({ isActive }) => `sidebar-nav-item ${isActive ? 'sidebar-nav-item--active' : ''}`}
               id="settings-nav-btn"
+              onClick={closeSidebar}
             >
               <span className="sidebar-nav-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -156,7 +191,14 @@ export default function Sidebar() {
 
             {/* Install PWA — hidden once installed */}
             {!isInstalled && (
-              <button type="button" className="sidebar-nav-item" onClick={openPWAInstall}>
+              <button
+                type="button"
+                className="sidebar-nav-item"
+                onClick={() => {
+                  closeSidebar();
+                  openPWAInstall();
+                }}
+              >
                 <span className="sidebar-nav-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />

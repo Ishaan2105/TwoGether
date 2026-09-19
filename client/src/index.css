@@ -2982,9 +2982,199 @@ button {
    LAYOUT ENGINE & TIGHT CONTENT SPACING (ZERO EXCESS GAPS)
    ============================================================ */
 
-/* Desktop & Landscape Layout (>= 900px OR orientation: landscape OR .landscape-mode) */
-@media (min-width: 900px), (orientation: landscape) {
-  /* Complete removal of Topbar and Bottom Bar in Desktop & Landscape */
+/* ============================================================
+   COLLAPSIBLE OVERLAPPING SIDEBAR & EDGE TRIGGER BUTTON
+   ============================================================ */
+
+/* Keyframe for buttery 60fps backdrop blur & dimming */
+@keyframes sidebarBackdropFade {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* ── Fixed Accessible Edge Toggle Trigger ── */
+.sidebar-edge-toggle {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 9999;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--bg-card, #121826);
+  border: 1.5px solid var(--border, rgba(255, 255, 255, 0.16));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 14px rgba(var(--cyan-rgb, 6, 182, 212), 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4.5px;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease, box-shadow 0.22s ease;
+  will-change: transform, opacity;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-edge-toggle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--cyan-rgb, 6, 182, 212), 0.3);
+  border-color: var(--btn-primary-bg, var(--cyan, #06b6d4));
+}
+
+.sidebar-edge-toggle:active {
+  transform: scale(0.92);
+}
+
+.sidebar-edge-toggle--hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateX(-16px) scale(0.85) !important;
+}
+
+.sidebar-edge-toggle__bar {
+  width: 20px;
+  height: 2.2px;
+  background: var(--text, #ffffff);
+  border-radius: 2px;
+  transition: transform 0.22s ease, opacity 0.22s ease, background 0.22s ease;
+}
+
+.sidebar-edge-toggle:hover .sidebar-edge-toggle__bar {
+  background: var(--btn-primary-bg, var(--cyan, #06b6d4));
+}
+
+/* ── Landscape Mobile & PWA Mode Layout: Full-Width Content with Overlapping Drawer ── */
+@media (orientation: landscape), (max-width: 1023px) {
+  /* Content takes 100% full width — ZERO SQUISHING of data */
+  .app-shell {
+    margin-left: 0 !important;
+    width: 100% !important;
+    min-height: 100vh;
+    box-sizing: border-box !important;
+  }
+
+  .landing,
+  .auth-page,
+  .dashboard,
+  .tasks-page {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Padding leaves room for edge toggle button so nothing is obscured */
+  .container.dashboard,
+  .container.tasks-page {
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    padding: 1rem 1.5rem 1.5rem 4.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Hide topbar in landscape to maximize vertical view space */
+  .navbar,
+  .mobile-topbar,
+  .portrait-topbar,
+  .portrait-bottom-bar {
+    display: none !important;
+  }
+
+  /* Edge toggle button is visible */
+  .sidebar-edge-toggle {
+    display: flex !important;
+  }
+
+  /* Overlapping Collapsible Sidebar Drawer */
+  .sidebar-drawer {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    max-width: 82vw !important;
+    height: 100% !important;
+    z-index: 10001 !important;
+    transform: translateX(-100%) !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    box-shadow: 18px 0 55px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 0, 0, 0.6) !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s !important;
+    will-change: transform;
+    overflow: hidden !important;
+  }
+
+  .sidebar-drawer--open {
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  /* Dynamic CSS Backdrop Blur & Dimming */
+  .sidebar-backdrop {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.65) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    z-index: 10000 !important;
+    opacity: 0;
+    animation: sidebarBackdropFade 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    will-change: opacity, backdrop-filter;
+    cursor: pointer;
+  }
+
+  .sidebar-close-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ── Portrait Mobile Adjustments (< 899px and orientation: portrait) ── */
+@media (max-width: 899px) and (orientation: portrait) {
+  /* In portrait, edge toggle is hidden (topbar has hamburger) */
+  .sidebar-edge-toggle {
+    display: none !important;
+  }
+
+  .mobile-topbar,
+  .portrait-topbar {
+    display: flex !important;
+  }
+
+  .portrait-bottom-bar {
+    display: flex !important;
+  }
+
+  .app-shell {
+    padding-top: 58px !important;
+    padding-bottom: 76px !important;
+  }
+
+  .container.dashboard,
+  .container.tasks-page {
+    padding: 0.85rem 1rem !important;
+  }
+}
+
+/* ── Large Desktop Screen Layout (Monitors >= 1024px width AND > 600px height) ── */
+@media (min-width: 1024px) and (min-height: 601px) and (orientation: landscape) {
+  .sidebar-edge-toggle {
+    display: none !important;
+  }
+
   .navbar,
   .mobile-topbar,
   .portrait-topbar,
@@ -3000,15 +3190,16 @@ button {
     top: 0 !important;
     left: 0 !important;
     bottom: 0 !important;
+    width: 250px !important;
+    z-index: 90 !important;
+    box-shadow: none !important;
   }
 
   .sidebar-backdrop,
-  .sidebar-close-btn,
-  .navbar__sidebar-toggle {
+  .sidebar-close-btn {
     display: none !important;
   }
 
-  /* Single consistent margin for the entire page root - flush with 250px sidebar */
   .app-shell {
     margin-left: 250px !important;
     width: calc(100% - 250px) !important;
@@ -3020,123 +3211,14 @@ button {
   .auth-page {
     margin-left: 0 !important;
     width: 100% !important;
-    min-height: 100vh;
-    box-sizing: border-box;
   }
 
-  /* Remove any nested double margins on main content containers */
-  .dashboard,
-  .tasks-page {
-    margin-left: 0 !important;
-    padding-top: 1.5rem !important;
-    padding-bottom: 2.5rem !important;
-  }
-
-  /* Left-aligned container with pleasant, crisp padding directly beside sidebar */
   .container.dashboard,
   .container.tasks-page {
     margin: 0 !important;
     max-width: 1320px !important;
     width: 100% !important;
     padding: 1.5rem 2rem !important;
-  }
-
-  .landing .container {
-    margin: 0 auto !important;
-    max-width: 1320px !important;
-    padding: 2rem 2.5rem !important;
-  }
-}
-
-/* Explicit class-based landscape mode activation */
-html.landscape-mode .navbar,
-html.landscape-mode .mobile-topbar,
-html.landscape-mode .portrait-topbar,
-html.landscape-mode .portrait-bottom-bar {
-  display: none !important;
-}
-
-html.landscape-mode .sidebar-drawer {
-  transform: none !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  bottom: 0 !important;
-}
-
-html.landscape-mode .sidebar-backdrop,
-html.landscape-mode .sidebar-close-btn,
-html.landscape-mode .navbar__sidebar-toggle {
-  display: none !important;
-}
-
-html.landscape-mode .app-shell {
-  margin-left: 250px !important;
-  width: calc(100% - 250px) !important;
-}
-
-/* Responsive Mobile Portrait Layout (< 899px AND orientation: portrait) */
-@media (max-width: 899px) and (orientation: portrait) {
-  html:not(.landscape-mode) .navbar {
-    display: none !important;
-  }
-
-  html:not(.landscape-mode) .mobile-topbar,
-  html:not(.landscape-mode) .portrait-topbar {
-    display: flex !important;
-  }
-
-  html:not(.landscape-mode) .portrait-bottom-bar {
-    display: flex !important;
-  }
-
-  html:not(.landscape-mode) .sidebar-drawer {
-    width: 275px;
-    max-width: 86vw;
-    z-index: 9999;
-    transform: translateX(-100%);
-    box-shadow: 12px 0 45px rgba(0, 0, 0, 0.7);
-  }
-
-  html:not(.landscape-mode) .sidebar-drawer--open {
-    transform: translateX(0) !important;
-  }
-
-  html:not(.landscape-mode) .sidebar-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 9998;
-    animation: sidebarBackdropFade 0.22s ease forwards;
-  }
-
-  html:not(.landscape-mode) .app-shell {
-    margin-left: 0 !important;
-    width: 100% !important;
-    padding-top: 58px !important;
-    padding-bottom: 76px !important;
-    box-sizing: border-box !important;
-  }
-
-  html:not(.landscape-mode) .landing,
-  html:not(.landscape-mode) .auth-page,
-  html:not(.landscape-mode) .dashboard,
-  html:not(.landscape-mode) .tasks-page {
-    margin-left: 0 !important;
-    width: 100% !important;
-  }
-
-  html:not(.landscape-mode) .container.dashboard,
-  html:not(.landscape-mode) .container.tasks-page,
-  html:not(.landscape-mode) .landing .container {
-    margin: 0 auto !important;
-    padding: 0.85rem 1rem !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
   }
 }
 
@@ -15612,28 +15694,15 @@ html:has(.landing) .scroll-sequence-vignette {
     margin-top: 0.2rem !important;
   }
 
-  /* Compact & Sleek Sidebar on Mobile Landscape */
+  /* Compact & Sleek Collapsible Overlapping Drawer on Mobile Landscape */
   .sidebar-drawer {
-    width: 220px !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    transform: none !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    z-index: 90 !important;
+    width: 250px !important;
+    max-width: 78vw !important;
   }
 
-  .app-shell {
-    margin-left: 220px !important;
-    width: calc(100% - 220px) !important;
-  }
-
-  .sidebar-backdrop,
-  .sidebar-close-btn,
-  .mobile-topbar {
-    display: none !important;
+  .sidebar-content {
+    overflow-y: auto !important;
+    scrollbar-width: thin;
   }
 
   .sidebar-header {
