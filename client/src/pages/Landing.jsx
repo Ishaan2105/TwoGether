@@ -101,6 +101,17 @@ export default function Landing() {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [fadeQuote, setFadeQuote] = useState(false);
 
+  // Ensure the landing page color theme is always Dark Blue (#023047 / #011d2b)
+  // regardless of which theme the user selects under settings
+  useEffect(() => {
+    document.documentElement.classList.add('landing-dark-theme');
+    document.body.classList.add('landing-dark-theme');
+    return () => {
+      document.documentElement.classList.remove('landing-dark-theme');
+      document.body.classList.remove('landing-dark-theme');
+    };
+  }, []);
+
   // Auto-rotate quotes every 8 seconds
   useEffect(() => {
     const timer = setInterval(() => {

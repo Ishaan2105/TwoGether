@@ -110,6 +110,15 @@ export default function App() {
       vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
       document.documentElement.classList.remove('desktop-site-view');
     }
+
+    // Landing page color theme is always Dark Blue (#023047 / #011d2b)
+    if (location.pathname === '/') {
+      document.documentElement.classList.add('landing-dark-theme');
+      document.body.classList.add('landing-dark-theme');
+    } else {
+      document.documentElement.classList.remove('landing-dark-theme');
+      document.body.classList.remove('landing-dark-theme');
+    }
   }, [isPublicPage, location.pathname]);
 
   return (
