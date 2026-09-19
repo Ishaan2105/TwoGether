@@ -32,6 +32,11 @@ export default function Login() {
 
   // Ensure Login page color theme is always Dark Blue (#0a192f / #050f1d)
   useEffect(() => {
+    try {
+      localStorage.removeItem('twogether_recent_logins');
+    } catch {
+      // Ignore
+    }
     document.documentElement.classList.add('landing-dark-theme');
     document.body.classList.add('landing-dark-theme');
     return () => {
@@ -66,17 +71,6 @@ export default function Login() {
 
     const clean = val.trim().toLowerCase();
 
-    // Check locally saved logins for instant preview
-    let localMatches = [];
-    try {
-      const saved = JSON.parse(localStorage.getItem('twogether_recent_logins') || '[]');
-      localMatches = saved
-        .filter((item) => item.toLowerCase().startsWith(clean))
-        .map((u) => ({ username: u, customTitle: 'Recent on this device' }));
-    } catch {
-      // Ignore
-    }
-
     if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
 
     debounceTimerRef.current = setTimeout(async () => {
@@ -84,25 +78,11 @@ export default function Login() {
         const res = await api.get(`/auth/predict-username?q=${encodeURIComponent(clean)}`);
         const serverMatches = res.data.predictions || [];
 
-        // Merge and deduplicate by username
-        const seen = new Set();
-        const combined = [];
-
-        [...serverMatches, ...localMatches].forEach((item) => {
-          const lower = item.username.toLowerCase();
-          if (!seen.has(lower)) {
-            seen.add(lower);
-            combined.push(item);
-          }
-        });
-
-        setPredictions(combined);
-        setShowPredictions(combined.length > 0);
+        setPredictions(serverMatches);
+        setShowPredictions(serverMatches.length > 0);
       } catch {
-        if (localMatches.length > 0) {
-          setPredictions(localMatches);
-          setShowPredictions(true);
-        }
+        setPredictions([]);
+        setShowPredictions(false);
       }
     }, 120);
   };
@@ -138,16 +118,6 @@ export default function Login() {
     setSubmitting(true);
     try {
       await login(identifier, password);
-
-      // Save identifier to recent logins for future fast prediction
-      try {
-        const saved = JSON.parse(localStorage.getItem('twogether_recent_logins') || '[]');
-        const updated = [identifier.trim(), ...saved.filter((u) => u.toLowerCase() !== identifier.trim().toLowerCase())].slice(0, 5);
-        localStorage.setItem('twogether_recent_logins', JSON.stringify(updated));
-      } catch {
-        // Ignore
-      }
-
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials. Please verify and try again.');
