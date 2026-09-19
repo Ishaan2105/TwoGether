@@ -2608,41 +2608,41 @@ button {
    Reference Image: Clean Light Canvas #ffffff, Midnight Plum #450920 Text, Deep Rosewood #a53860 Active Capsule & Profile Capsule
    ──────────────────────────────────────────────────────────── */
 [data-theme="pearl"] .sidebar-drawer {
-  background: #ffffff !important;
-  border-right: 1px solid rgba(218, 98, 125, 0.16) !important;
-  box-shadow: 2px 0 20px rgba(69, 9, 32, 0.03) !important;
+  background: #a53860 !important;
+  border-right: 1px solid rgba(69, 9, 32, 0.2) !important;
+  box-shadow: 2px 0 20px rgba(69, 9, 32, 0.15) !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-header {
-  border-bottom: 1px solid rgba(218, 98, 125, 0.14) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-brand,
 [data-theme="pearl"] .sidebar-drawer .sidebar-brand-name {
-  color: #450920 !important;
+  color: #ffffff !important;
   font-weight: 800;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-logo {
-  background: #f9dbbd !important;
-  color: #450920 !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
   border: none !important;
   border-radius: 12px !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-close-btn {
-  background: rgba(218, 98, 125, 0.1) !important;
-  border-color: rgba(218, 98, 125, 0.2) !important;
-  color: #450920 !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-section-title {
-  color: #a53860 !important;
+  color: rgba(255, 255, 255, 0.7) !important;
   opacity: 0.9;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-nav-item {
-  color: #450920 !important;
+  color: #ffffff !important;
   font-weight: 600;
   border-radius: 12px !important;
   transition: all 0.18s ease;
@@ -2651,52 +2651,52 @@ button {
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-nav-icon {
-  color: #450920 !important;
+  color: #ffffff !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-nav-item:hover {
-  background: rgba(255, 165, 171, 0.22) !important;
-  color: #450920 !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
   border-color: transparent !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-nav-item:hover .sidebar-nav-icon {
-  color: #450920 !important;
+  color: #ffffff !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-nav-item--active {
-  background: #a53860 !important;
-  color: #ffffff !important;
+  background: #ffffff !important;
+  color: #450920 !important;
   border-color: transparent !important;
   border-radius: 12px !important;
-  box-shadow: 0 4px 14px rgba(165, 56, 96, 0.28) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-nav-item--active .sidebar-nav-icon {
-  color: #ffffff !important;
-}
-
-[data-theme="pearl"] .sidebar-drawer .sidebar-nav-badge {
-  background: #f9dbbd !important;
   color: #450920 !important;
 }
 
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
 [data-theme="pearl"] .sidebar-drawer .sidebar-footer {
-  background: #ffffff !important;
-  border-top: 1px solid rgba(218, 98, 125, 0.14) !important;
+  background: #a53860 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.18) !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-profile-trigger {
-  background: #a53860 !important;
-  border: 1px solid rgba(165, 56, 96, 0.4) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   border-radius: 14px !important;
-  box-shadow: 0 4px 14px rgba(165, 56, 96, 0.25) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-profile-trigger:hover {
-  background: #8e2d51 !important;
-  border-color: rgba(165, 56, 96, 0.6) !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
 [data-theme="pearl"] .sidebar-drawer .sidebar-profile-name {
