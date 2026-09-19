@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import api from '../services/api.js';
@@ -6,6 +6,16 @@ import api from '../services/api.js';
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+
+  // Ensure Register page color theme is always Dark Blue (#0a192f / #050f1d)
+  useEffect(() => {
+    document.documentElement.classList.add('landing-dark-theme');
+    document.body.classList.add('landing-dark-theme');
+    return () => {
+      document.documentElement.classList.remove('landing-dark-theme');
+      document.body.classList.remove('landing-dark-theme');
+    };
+  }, []);
 
   const [form, setForm] = useState({
     username: '',

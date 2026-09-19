@@ -30,6 +30,16 @@ export default function Login() {
   const wrapperRef = useRef(null);
   const debounceTimerRef = useRef(null);
 
+  // Ensure Login page color theme is always Dark Blue (#0a192f / #050f1d)
+  useEffect(() => {
+    document.documentElement.classList.add('landing-dark-theme');
+    document.body.classList.add('landing-dark-theme');
+    return () => {
+      document.documentElement.classList.remove('landing-dark-theme');
+      document.body.classList.remove('landing-dark-theme');
+    };
+  }, []);
+
   // Close prediction dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e) {

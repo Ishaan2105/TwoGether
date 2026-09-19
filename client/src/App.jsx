@@ -111,8 +111,8 @@ export default function App() {
       document.documentElement.classList.remove('desktop-site-view');
     }
 
-    // Landing page color theme is always Dark Blue (#023047 / #011d2b)
-    if (location.pathname === '/') {
+    // Landing, Login, and Register pages color theme is always Dark Blue (#0a192f / #050f1d)
+    if (isPublicPage) {
       document.documentElement.classList.add('landing-dark-theme');
       document.body.classList.add('landing-dark-theme');
     } else {

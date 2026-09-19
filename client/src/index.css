@@ -3648,9 +3648,12 @@ html.desktop-site-view .auth-card {
 
 html.landing-dark-theme,
 html:has(.landing),
+html:has(.auth-page),
 body.landing-dark-theme,
 body:has(.landing),
-.landing {
+body:has(.auth-page),
+.landing,
+.auth-page {
   /* ── 1. Base Navy Blue & Surface Hierarchy (#0a192f) ── */
   --bg-primary: #0a192f !important;
   --bg-secondary: #0f2444 !important;
@@ -3721,8 +3724,10 @@ body:has(.landing),
 
 html.landing-dark-theme body,
 html:has(.landing) body,
+html:has(.auth-page) body,
 body.landing-dark-theme,
-body:has(.landing) {
+body:has(.landing),
+body:has(.auth-page) {
   background:
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.18), transparent 60%),
     radial-gradient(ellipse 70% 60% at 50% 110%, rgba(30, 58, 138, 0.28), transparent 70%),
@@ -4084,6 +4089,187 @@ html:has(.landing) .scroll-sequence-vignette {
   background: #050f1d !important;
   border-top: 1px solid rgba(56, 189, 248, 0.15) !important;
   color: #94a3b8 !important;
+}
+
+/* ============================================================
+   AUTH PAGES (LOGIN & REGISTER) - NAVY BLUE THEME OVERRIDES
+   ============================================================ */
+
+.auth-page {
+  background: transparent !important;
+}
+
+.auth-card {
+  background: rgba(13, 32, 59, 0.85) !important;
+  border: 1px solid rgba(56, 189, 248, 0.18) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 10px 40px rgba(3, 10, 20, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+.auth-card h1 {
+  color: #f8fafc !important;
+}
+
+.auth-card__brand {
+  color: #f8fafc !important;
+}
+
+.auth-brand-img {
+  border-color: rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25) !important;
+}
+
+.auth-card__sub {
+  color: #94a3b8 !important;
+}
+
+.auth-card__footer {
+  color: #94a3b8 !important;
+}
+
+.auth-card__footer a {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+}
+
+.auth-card__footer a:hover {
+  color: #7dd3fc !important;
+  text-decoration: underline !important;
+}
+
+.auth-card .form-group label {
+  color: #94a3b8 !important;
+}
+
+.auth-card .form-group input,
+.auth-card .form-input {
+  background: rgba(6, 18, 36, 0.75) !important;
+  border: 1px solid rgba(56, 189, 248, 0.20) !important;
+  color: #f8fafc !important;
+}
+
+.auth-card .form-group input:focus,
+.auth-card .form-input:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18) !important;
+}
+
+.auth-card .forgot-password-link {
+  color: #38bdf8 !important;
+}
+
+.auth-card .forgot-password-link:hover {
+  color: #7dd3fc !important;
+}
+
+.auth-card .password-toggle-btn {
+  color: #94a3b8 !important;
+}
+
+.auth-card .password-toggle-btn:hover {
+  color: #f8fafc !important;
+}
+
+.auth-card .form-hint {
+  color: #94a3b8 !important;
+}
+
+.auth-card .checking-text {
+  color: #38bdf8 !important;
+}
+
+.auth-card .username-suggestions-box {
+  background: rgba(6, 18, 36, 0.6) !important;
+  border: 1px solid rgba(56, 189, 248, 0.18) !important;
+}
+
+.auth-card .username-suggestions-title {
+  color: #94a3b8 !important;
+}
+
+.auth-card .username-suggestion-pill {
+  background: rgba(56, 189, 248, 0.12) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  color: #38bdf8 !important;
+}
+
+.auth-card .username-suggestion-pill:hover {
+  background: rgba(56, 189, 248, 0.22) !important;
+  color: #f8fafc !important;
+}
+
+.auth-card .login-predictions-dropdown {
+  background: #0d203b !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  box-shadow: 0 12px 35px rgba(3, 10, 20, 0.8) !important;
+}
+
+.auth-card .login-predictions-header {
+  border-bottom: 1px solid rgba(56, 189, 248, 0.15) !important;
+  color: #94a3b8 !important;
+}
+
+.auth-card .login-prediction-item {
+  color: #f8fafc !important;
+}
+
+.auth-card .login-prediction-item:hover,
+.auth-card .login-prediction-item--active {
+  background: rgba(56, 189, 248, 0.12) !important;
+}
+
+.auth-card .login-prediction-avatar {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+.auth-card .login-prediction-badge {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #7dd3fc !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+}
+
+.auth-card .login-prediction-action {
+  color: #38bdf8 !important;
+}
+
+.auth-card .btn--primary {
+  background: linear-gradient(135deg, #fb8500 0%, #ffb703 100%) !important;
+  color: #0a192f !important;
+  border: none !important;
+  box-shadow: 0 4px 18px rgba(251, 133, 0, 0.35) !important;
+  font-weight: 800 !important;
+}
+
+.auth-card .btn--primary:hover {
+  background: linear-gradient(135deg, #ff951a 0%, #ffc229 100%) !important;
+  box-shadow: 0 6px 24px rgba(251, 133, 0, 0.5) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Forgot Password Modal in Auth Page */
+.auth-page .forgot-modal {
+  background: #0a192f !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 20px 60px rgba(3, 10, 20, 0.85) !important;
+}
+
+.auth-page .forgot-modal h2 {
+  color: #f8fafc !important;
+}
+
+.auth-page .forgot-modal__desc {
+  color: #94a3b8 !important;
+}
+
+.auth-page .modal-overlay {
+  background: rgba(5, 15, 29, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
 
 /* ---------- Landing ---------- */
