@@ -156,16 +156,16 @@ export default function NudgeViewerModal() {
     img.src = nudge.imageDataUrl;
   }, [nudge, isShieldActive]);
 
-  // ── Sender-defined countdown → auto-close ────────────────────────
+  // ── Sender-defined countdown → auto-close (ticks only after photo is loaded) ──
   useEffect(() => {
-    if (timeLeft === null) return;
+    if (loading || !nudge || timeLeft === null) return;
     if (timeLeft <= 0) {
       handleClose();
       return;
     }
     timerRef.current = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     return () => clearTimeout(timerRef.current);
-  }, [timeLeft]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [timeLeft, loading, nudge]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClose = useCallback(() => {
     clearTimeout(timerRef.current);

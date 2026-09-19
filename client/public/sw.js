@@ -4,7 +4,7 @@
             basic offline caching.
 ───────────────────────────────────────────── */
 
-const CACHE_NAME = 'twogether-v5';
+const CACHE_NAME = 'twogether-v6';
 const OFFLINE_SHELL = ['/', '/manifest.json', '/pwa-192.png', '/pwa-512.png', '/favicon.png'];
 
 // ── Install: pre-cache the app shell ─────────
@@ -123,10 +123,17 @@ self.addEventListener('notificationclick', (event) => {
     self.clients
       .matchAll({ type: 'window', includeUncontrolled: true })
       .then((clientList) => {
-        // Focus existing window and navigate
+        // Focus existing window and navigate/postMessage
         for (const client of clientList) {
           if ('focus' in client) {
             client.focus();
+            if (notifData.type === 'image-nudge' && notifData.nudgeId) {
+              client.postMessage({
+                type: 'OPEN_IMAGE_NUDGE',
+                nudgeId: notifData.nudgeId,
+                duration: notifData.duration,
+              });
+            }
             if (client.navigate) client.navigate(targetUrl);
             return;
           }

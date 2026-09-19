@@ -45,6 +45,19 @@ function NudgeWatcher() {
     }
   }, [searchParams, user, openNudgeViewer, setSearchParams]);
 
+  // Handle push notification click when PWA window is already active/open
+  useEffect(() => {
+    if (!('serviceWorker' in navigator) || !user) return;
+    const handleSwMessage = (event) => {
+      if (event.data?.type === 'OPEN_IMAGE_NUDGE' && event.data?.nudgeId) {
+        const dur = event.data.duration ? parseInt(event.data.duration, 10) : null;
+        openNudgeViewer(event.data.nudgeId, dur && !isNaN(dur) ? dur : null);
+      }
+    };
+    navigator.serviceWorker.addEventListener('message', handleSwMessage);
+    return () => navigator.serviceWorker.removeEventListener('message', handleSwMessage);
+  }, [user, openNudgeViewer]);
+
   return null;
 }
 

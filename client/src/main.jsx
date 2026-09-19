@@ -26,6 +26,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 // Pre-register service worker for PWA & push notifications with automatic update
 if ('serviceWorker' in navigator) {
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      refreshing = true;
+      window.location.reload();
+    }
+  });
+
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/sw.js')
