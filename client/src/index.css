@@ -3642,8 +3642,8 @@ html.desktop-site-view .auth-card {
 }
 
 /* ============================================================
-   PERMANENT LANDING PAGE DARK BLUE THEME (#023047 & #011d2b)
-   Always stays dark blue regardless of user settings theme
+   PERMANENT LANDING PAGE NAVY BLUE THEME (#0a192f & #050f1d)
+   Always stays pure navy blue regardless of user settings theme
    ============================================================ */
 
 html.landing-dark-theme,
@@ -3651,73 +3651,72 @@ html:has(.landing),
 body.landing-dark-theme,
 body:has(.landing),
 .landing {
-  /* ── 1. Base Prussian Abyss & Surface Hierarchy (#023047) ── */
-  --bg-primary: #023047 !important;
-  --bg-secondary: #053b56 !important;
-  --bg-card: rgba(2, 48, 71, 0.82) !important;
-  --bg-card-hover: rgba(5, 59, 86, 0.92) !important;
-  --bg-card-solid: #043852 !important;
-  --bg-surface: #042e44 !important;
-  --bg-input: rgba(1, 24, 38, 0.70) !important;
-  --bg-overlay: rgba(2, 48, 71, 0.94) !important;
-  --navbar-bg: rgba(2, 48, 71, 0.90) !important;
-  --modal-bg: linear-gradient(150deg, #05486c 0%, #023047 55%, #011d2b 100%) !important;
-  --canvas-bg: #011d2b !important;
+  /* ── 1. Base Navy Blue & Surface Hierarchy (#0a192f) ── */
+  --bg-primary: #0a192f !important;
+  --bg-secondary: #0f2444 !important;
+  --bg-card: rgba(13, 32, 59, 0.85) !important;
+  --bg-card-hover: rgba(18, 43, 78, 0.92) !important;
+  --bg-card-solid: #0d203b !important;
+  --bg-surface: #0a1a33 !important;
+  --bg-input: rgba(6, 18, 36, 0.75) !important;
+  --bg-overlay: rgba(10, 25, 47, 0.95) !important;
+  --navbar-bg: rgba(10, 25, 47, 0.90) !important;
+  --modal-bg: linear-gradient(150deg, #0f2b52 0%, #0a192f 55%, #05101f 100%) !important;
+  --canvas-bg: #050f1d !important;
 
   /* ── 2. Subtle & Focus Borders ── */
-  --border: rgba(142, 202, 230, 0.20) !important;
-  --border-subtle: rgba(142, 202, 230, 0.10) !important;
-  --border-focus: #219ebc !important;
+  --border: rgba(56, 189, 248, 0.20) !important;
+  --border-subtle: rgba(56, 189, 248, 0.10) !important;
+  --border-focus: #38bdf8 !important;
 
-  /* ── 3. The 5 Palette Color Tokens ── */
-  --cyan: #219ebc !important;
-  --cyan-rgb: 33, 158, 188 !important;
+  /* ── 3. The Palette Color Tokens (Sky, Cyan, Amber, Solar Orange, Navy) ── */
+  --cyan: #38bdf8 !important;
+  --cyan-rgb: 56, 189, 248 !important;
   --teal: #8ecae6 !important;
   --teal-rgb: 142, 202, 230 !important;
   --amber: #ffb703 !important;
   --amber-rgb: 255, 183, 3 !important;
   --orange: #fb8500 !important;
   --orange-rgb: 251, 133, 0 !important;
-  --abyss: #023047 !important;
-  --abyss-rgb: 2, 48, 71 !important;
+  --abyss: #0a192f !important;
+  --abyss-rgb: 10, 25, 47 !important;
 
-  --violet: #8ecae6 !important;
+  --violet: #818cf8 !important;
   --success: #10b981 !important;
   --danger: #fb8500 !important;
 
-  /* ── 4. Typography & Readability (WCAG AAA Contrast > 8.5:1 on #023047) ── */
+  /* ── 4. Typography & Readability (WCAG AAA Contrast > 10:1 on #0a192f) ── */
   --text: #f8fafc !important;
   --text-main: #f8fafc !important;
-  --text-muted: #8ecae6 !important;
-  --text-dim: #70b4d4 !important;
-  --text-inverse: #023047 !important;
-  --btn-primary-text: #023047 !important;
+  --text-muted: #94a3b8 !important;
+  --text-dim: #7dd3fc !important;
+  --text-inverse: #0a192f !important;
+  --btn-primary-text: #0a192f !important;
 
   /* ── 5. Radii, Transitions, Shadows ── */
   --radius: 14px;
   --radius-sm: 10px;
   --transition: 0.2s ease;
-  --shadow: 0 10px 40px rgba(1, 24, 38, 0.60) !important;
-  --shadow-card: 0 6px 24px rgba(1, 24, 38, 0.45) !important;
-  --shadow-glow: 0 0 30px rgba(33, 158, 188, 0.38) !important;
+  --shadow: 0 10px 40px rgba(3, 10, 20, 0.65) !important;
+  --shadow-card: 0 6px 24px rgba(3, 10, 20, 0.50) !important;
+  --shadow-glow: 0 0 30px rgba(56, 189, 248, 0.35) !important;
   --shadow-amber: 0 0 25px rgba(255, 183, 3, 0.35) !important;
   --shadow-orange: 0 0 25px rgba(251, 133, 0, 0.35) !important;
 
-  /* ── 6. Balanced Atmospheric Gradients ── */
-  --gradient-primary: linear-gradient(135deg, #219ebc 0%, #8ecae6 100%) !important;
+  /* ── 6. Balanced Atmospheric Navy Gradients ── */
+  --gradient-primary: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%) !important;
   --gradient-solar: linear-gradient(135deg, #fb8500 0%, #ffb703 100%) !important;
-  --gradient-sunset: linear-gradient(135deg, #219ebc 0%, #ffb703 55%, #fb8500 100%) !important;
-  --gradient-abyss: linear-gradient(180deg, #043852 0%, #023047 100%) !important;
+  --gradient-sunset: linear-gradient(135deg, #38bdf8 0%, #ffb703 55%, #fb8500 100%) !important;
+  --gradient-abyss: linear-gradient(180deg, #0d203b 0%, #0a192f 100%) !important;
 
   --body-bg:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(33, 158, 188, 0.24), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(251, 133, 0, 0.16), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 0% 90%, rgba(255, 183, 3, 0.14), transparent 60%),
-    #023047 !important;
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.18), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(30, 58, 138, 0.28), transparent 70%),
+    #0a192f !important;
   --vignette-bg:
-    radial-gradient(ellipse at center, rgba(2, 48, 71, 0.05) 0%, rgba(1, 24, 36, 0.65) 75%, #011d2b 100%),
-    linear-gradient(180deg, rgba(2, 48, 71, 0.7) 0%, transparent 15%, transparent 85%, #011d2b 100%) !important;
-  --canvas-bg: #011d2b !important;
+    radial-gradient(ellipse at center, rgba(10, 25, 47, 0.05) 0%, rgba(5, 15, 29, 0.65) 75%, #050f1d 100%),
+    linear-gradient(180deg, rgba(10, 25, 47, 0.7) 0%, transparent 15%, transparent 85%, #050f1d 100%) !important;
+  --canvas-bg: #050f1d !important;
 }
 
 html.landing-dark-theme body,
@@ -3725,63 +3724,62 @@ html:has(.landing) body,
 body.landing-dark-theme,
 body:has(.landing) {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(33, 158, 188, 0.24), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(251, 133, 0, 0.16), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 0% 90%, rgba(255, 183, 3, 0.14), transparent 60%),
-    #023047 !important;
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.18), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(30, 58, 138, 0.28), transparent 70%),
+    #0a192f !important;
   color: #f8fafc !important;
 }
 
-/* Force 3D scroll canvas background & vignette to Dark Blue Oceanic #011d2b */
+/* Force 3D scroll canvas background & vignette to Deep Navy Blue #050f1d */
 .landing .scroll-canvas-fixed-wrap,
 html.landing-dark-theme .scroll-canvas-fixed-wrap,
 html:has(.landing) .scroll-canvas-fixed-wrap {
-  background: #011d2b !important;
+  background: #050f1d !important;
 }
 
 .landing .scroll-sequence-vignette,
 html.landing-dark-theme .scroll-sequence-vignette,
 html:has(.landing) .scroll-sequence-vignette {
   background:
-    radial-gradient(ellipse at center, rgba(2, 48, 71, 0.05) 0%, rgba(1, 24, 36, 0.65) 75%, #011d2b 100%),
-    linear-gradient(180deg, rgba(2, 48, 71, 0.7) 0%, transparent 15%, transparent 85%, #011d2b 100%) !important;
+    radial-gradient(ellipse at center, rgba(10, 25, 47, 0.05) 0%, rgba(5, 15, 29, 0.65) 75%, #050f1d 100%),
+    linear-gradient(180deg, rgba(10, 25, 47, 0.7) 0%, transparent 15%, transparent 85%, #050f1d 100%) !important;
 }
 
 .landing .canvas-loader {
-  background: #043852 !important;
-  border: 1px solid rgba(142, 202, 230, 0.2) !important;
-  box-shadow: 0 10px 40px rgba(1, 24, 38, 0.6) !important;
+  background: #0d203b !important;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+  box-shadow: 0 10px 40px rgba(3, 10, 20, 0.65) !important;
 }
 
 .landing .canvas-loader p {
-  color: #8ecae6 !important;
+  color: #38bdf8 !important;
 }
 
 /* Landing Hero & Typography Overrides */
 .landing .hero__badge {
-  background: rgba(33, 158, 188, 0.12) !important;
-  border-color: rgba(33, 158, 188, 0.3) !important;
+  background: rgba(56, 189, 248, 0.12) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
 }
 
 .landing .hero__badge-text {
-  color: #8ecae6 !important;
+  color: #38bdf8 !important;
 }
 
 .landing .hero__title,
 .landing .hero__title span:not(.hero__title--accent) {
   color: #f8fafc !important;
-  text-shadow: 0 4px 24px rgba(1, 24, 38, 0.95), 0 0 40px rgba(33, 158, 188, 0.25) !important;
+  text-shadow: 0 4px 24px rgba(3, 10, 20, 0.95), 0 0 40px rgba(56, 189, 248, 0.25) !important;
 }
 
 .landing .hero__title--accent {
-  background: linear-gradient(135deg, #219ebc 0%, #8ecae6 100%) !important;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
 }
 
 .landing .hero__sub {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .hero__sub strong {
@@ -3789,69 +3787,69 @@ html:has(.landing) .scroll-sequence-vignette {
 }
 
 .landing .hero__highlight-item {
-  color: #8ecae6 !important;
-  background: rgba(2, 48, 71, 0.82) !important;
-  border-color: rgba(142, 202, 230, 0.2) !important;
+  color: #94a3b8 !important;
+  background: rgba(13, 32, 59, 0.85) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
 }
 
 /* Landing Interactive Scenes Overrides */
 .landing .scene-card h2 {
   color: #f8fafc !important;
-  text-shadow: 0 4px 24px rgba(1, 24, 38, 0.95), 0 0 40px rgba(33, 158, 188, 0.25) !important;
+  text-shadow: 0 4px 24px rgba(3, 10, 20, 0.95), 0 0 40px rgba(56, 189, 248, 0.25) !important;
 }
 
 .landing .scene-card p,
 .landing .scene-card p.muted {
-  color: #8ecae6 !important;
-  text-shadow: 0 2px 14px rgba(1, 24, 38, 0.95) !important;
+  color: #94a3b8 !important;
+  text-shadow: 0 2px 14px rgba(3, 10, 20, 0.95) !important;
 }
 
 .landing .scene-card p strong {
   color: #f8fafc !important;
-  text-shadow: 0 0 12px rgba(33, 158, 188, 0.5) !important;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.5) !important;
 }
 
 .landing .scene-quote-title {
   color: #f8fafc !important;
-  text-shadow: 0 4px 24px rgba(1, 24, 38, 0.95) !important;
+  text-shadow: 0 4px 24px rgba(3, 10, 20, 0.95) !important;
 }
 
 .landing .scene-quote-sub {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .scene-quote-cite {
-  color: #219ebc !important;
+  color: #38bdf8 !important;
 }
 
 .landing .scene-quote-counter {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .scene-quote-dot {
-  background: rgba(142, 202, 230, 0.25) !important;
+  background: rgba(56, 189, 248, 0.25) !important;
 }
 
 .landing .scene-quote-dot--active {
-  background: #219ebc !important;
-  box-shadow: 0 0 12px rgba(33, 158, 188, 0.6) !important;
+  background: #38bdf8 !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6) !important;
 }
 
 .landing .scene-stat-item strong {
-  background: linear-gradient(135deg, #219ebc 0%, #8ecae6 100%) !important;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
 }
 
 .landing .scene-shell-preview {
-  background: rgba(2, 48, 71, 0.75) !important;
-  border-color: rgba(33, 158, 188, 0.4) !important;
+  background: rgba(13, 32, 59, 0.85) !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
 }
 
 .landing .scene-shell-habit {
-  background: rgba(5, 59, 86, 0.85) !important;
-  border-color: rgba(142, 202, 230, 0.25) !important;
+  background: rgba(18, 43, 78, 0.9) !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
   color: #f8fafc !important;
 }
 
@@ -3859,7 +3857,7 @@ html:has(.landing) .scroll-sequence-vignette {
   color: #ffb703 !important;
 }
 
-/* All landing cards & sections: deep dark blue #043852 / rgba(2, 48, 71, 0.82) */
+/* All landing cards & sections: Navy Blue #0d203b / rgba(13, 32, 59, 0.85) */
 .landing .quote-card,
 .landing .step-card,
 .landing .feature-card,
@@ -3868,42 +3866,42 @@ html:has(.landing) .scroll-sequence-vignette {
 .landing .xp-dual-progression,
 .landing .final-cta,
 .landing .card {
-  background: rgba(2, 48, 71, 0.82) !important;
-  border-color: rgba(142, 202, 230, 0.20) !important;
+  background: rgba(13, 32, 59, 0.85) !important;
+  border-color: rgba(56, 189, 248, 0.18) !important;
   color: #f8fafc !important;
-  box-shadow: 0 6px 24px rgba(1, 24, 38, 0.45) !important;
+  box-shadow: 0 6px 24px rgba(3, 10, 20, 0.50) !important;
 }
 
 .landing .quote-card:hover,
 .landing .step-card:hover,
 .landing .feature-card:hover,
 .landing .xp-card:hover {
-  border-color: rgba(33, 158, 188, 0.45) !important;
-  box-shadow: 0 10px 40px rgba(1, 24, 38, 0.60) !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
+  box-shadow: 0 10px 40px rgba(3, 10, 20, 0.65) !important;
 }
 
 .landing .quote-card__header {
-  border-bottom-color: rgba(142, 202, 230, 0.15) !important;
+  border-bottom-color: rgba(56, 189, 248, 0.15) !important;
 }
 
 .landing .quote-card__label {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .quote-refresh-btn {
   background: transparent !important;
-  border: 1px solid rgba(142, 202, 230, 0.3) !important;
-  color: #219ebc !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  color: #38bdf8 !important;
 }
 
 .landing .quote-refresh-btn:hover {
-  background: rgba(33, 158, 188, 0.15) !important;
-  border-color: #219ebc !important;
-  color: #8ecae6 !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  border-color: #38bdf8 !important;
+  color: #e0f2fe !important;
 }
 
 .landing .quote-card__mark {
-  color: rgba(33, 158, 188, 0.2) !important;
+  color: rgba(56, 189, 248, 0.2) !important;
 }
 
 .landing .quote-card__text {
@@ -3911,16 +3909,16 @@ html:has(.landing) .scroll-sequence-vignette {
 }
 
 .landing .quote-card__author {
-  color: #219ebc !important;
+  color: #38bdf8 !important;
 }
 
 .landing .quote-dot {
-  background: rgba(142, 202, 230, 0.25) !important;
+  background: rgba(56, 189, 248, 0.25) !important;
 }
 
 .landing .quote-dot--active {
-  background: #219ebc !important;
-  box-shadow: 0 0 10px rgba(33, 158, 188, 0.5) !important;
+  background: #38bdf8 !important;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
 }
 
 .landing .section__title,
@@ -3933,11 +3931,11 @@ html:has(.landing) .scroll-sequence-vignette {
 .landing .section__sub,
 .landing .muted,
 .landing p.muted {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .step-card__num {
-  background: linear-gradient(135deg, #219ebc 0%, #8ecae6 100%) !important;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
@@ -3945,25 +3943,25 @@ html:has(.landing) .scroll-sequence-vignette {
 
 .landing .step-card p,
 .landing .feature-card p {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .feature-card__tag {
-  color: #219ebc !important;
-  background: rgba(33, 158, 188, 0.12) !important;
-  border-color: rgba(33, 158, 188, 0.3) !important;
+  color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.12) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
 }
 
 .landing .badge {
-  background: rgba(33, 158, 188, 0.15) !important;
-  color: #8ecae6 !important;
-  border-color: rgba(33, 158, 188, 0.3) !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
 }
 
 .landing .badge--pill {
-  background: rgba(33, 158, 188, 0.15) !important;
-  color: #8ecae6 !important;
-  border: 1px solid rgba(33, 158, 188, 0.3) !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
 }
 
 .landing .badge--success {
@@ -3974,39 +3972,39 @@ html:has(.landing) .scroll-sequence-vignette {
 
 /* XP Progression Explainer Specifics */
 .landing .xp-math-pill {
-  background: #053b56 !important;
-  border-color: rgba(142, 202, 230, 0.2) !important;
+  background: #0f2444 !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
 }
 
 .landing .xp-math-pill code {
-  color: #219ebc !important;
+  color: #38bdf8 !important;
 }
 
 .landing .xp-rank-step {
-  background: #053b56 !important;
-  border-color: rgba(142, 202, 230, 0.2) !important;
+  background: #0f2444 !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
 }
 
 .landing .xp-rank-step:hover {
-  border-color: rgba(33, 158, 188, 0.45) !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
 }
 
 .landing .xp-rank-step--top {
-  background: linear-gradient(135deg, rgba(33, 158, 188, 0.2), #053b56) !important;
-  border-color: rgba(33, 158, 188, 0.5) !important;
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.35), #0f2444) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
 }
 
 .landing .xp-rank-badge {
-  background: rgba(2, 48, 71, 0.9) !important;
-  border-color: rgba(142, 202, 230, 0.25) !important;
+  background: rgba(10, 25, 47, 0.9) !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
   color: #f8fafc !important;
 }
 
 .landing .xp-rank-badge--master {
-  background: #219ebc !important;
-  color: #023047 !important;
-  border-color: #219ebc !important;
-  box-shadow: 0 0 10px rgba(33, 158, 188, 0.5) !important;
+  background: #38bdf8 !important;
+  color: #0a192f !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
 }
 
 .landing .xp-rank-info strong {
@@ -4014,7 +4012,7 @@ html:has(.landing) .scroll-sequence-vignette {
 }
 
 .landing .xp-rank-info small {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .xp-progression-col h4 {
@@ -4022,38 +4020,38 @@ html:has(.landing) .scroll-sequence-vignette {
 }
 
 .landing .xp-progression-col--duo h4 {
-  color: #219ebc !important;
+  color: #38bdf8 !important;
 }
 
 .landing .xp-progression-col p {
-  color: #8ecae6 !important;
+  color: #94a3b8 !important;
 }
 
 .landing .xp-progression-icon {
   background: rgba(255, 255, 255, 0.05) !important;
-  border-color: rgba(142, 202, 230, 0.2) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
 }
 
 .landing .xp-progression-divider span {
-  background: #043852 !important;
-  border-color: rgba(142, 202, 230, 0.3) !important;
-  color: #219ebc !important;
-  box-shadow: 0 0 14px rgba(33, 158, 188, 0.25) !important;
+  background: #0d203b !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+  color: #38bdf8 !important;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.25) !important;
 }
 
 .landing .xp-formula-tag {
-  color: #219ebc !important;
+  color: #38bdf8 !important;
 }
 
 .landing .xp-card--bonus {
-  background: linear-gradient(145deg, rgba(33, 158, 188, 0.15), rgba(2, 48, 71, 0.85)) !important;
-  border-color: rgba(33, 158, 188, 0.35) !important;
+  background: linear-gradient(145deg, rgba(56, 189, 248, 0.15), rgba(13, 32, 59, 0.85)) !important;
+  border-color: rgba(56, 189, 248, 0.35) !important;
 }
 
 /* Landing Buttons */
 .landing .btn--primary {
   background: linear-gradient(135deg, #fb8500 0%, #ffb703 100%) !important;
-  color: #023047 !important;
+  color: #0a192f !important;
   border: none !important;
   box-shadow: 0 4px 18px rgba(251, 133, 0, 0.35) !important;
   font-weight: 800 !important;
@@ -4063,19 +4061,19 @@ html:has(.landing) .scroll-sequence-vignette {
   background: linear-gradient(135deg, #ff951a 0%, #ffc229 100%) !important;
   box-shadow: 0 6px 24px rgba(251, 133, 0, 0.5) !important;
   transform: translateY(-2px) !important;
-  color: #023047 !important;
+  color: #0a192f !important;
 }
 
 .landing .btn--ghost {
-  background: rgba(2, 48, 71, 0.6) !important;
-  border: 1px solid rgba(142, 202, 230, 0.35) !important;
+  background: rgba(13, 32, 59, 0.6) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
   color: #f8fafc !important;
   backdrop-filter: blur(8px) !important;
 }
 
 .landing .btn--ghost:hover {
-  background: rgba(5, 59, 86, 0.8) !important;
-  border-color: #219ebc !important;
+  background: rgba(18, 43, 78, 0.85) !important;
+  border-color: #38bdf8 !important;
   color: #ffffff !important;
   transform: translateY(-2px) !important;
 }
@@ -4083,9 +4081,9 @@ html:has(.landing) .scroll-sequence-vignette {
 /* Landing Footer */
 .landing .footer,
 .landing > .footer {
-  background: #011d2b !important;
-  border-top: 1px solid rgba(142, 202, 230, 0.15) !important;
-  color: #8ecae6 !important;
+  background: #050f1d !important;
+  border-top: 1px solid rgba(56, 189, 248, 0.15) !important;
+  color: #94a3b8 !important;
 }
 
 /* ---------- Landing ---------- */

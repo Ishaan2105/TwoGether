@@ -4,7 +4,7 @@
             basic offline caching.
 ───────────────────────────────────────────── */
 
-const CACHE_NAME = 'twogether-v20';
+const CACHE_NAME = 'twogether-v21';
 const OFFLINE_SHELL = ['/', '/manifest.json', '/pwa-192.png', '/pwa-512.png', '/favicon.png'];
 
 // ── Install: pre-cache the app shell ─────────
