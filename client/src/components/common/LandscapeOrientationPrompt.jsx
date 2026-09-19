@@ -28,10 +28,8 @@ function getIsMobileDevice() {
  * the prompt is shown.
  */
 export default function LandscapeOrientationPrompt() {
-  // Synchronous initialization so modal renders immediately on load with ZERO delay/flicker
   const [isPortrait, setIsPortrait] = useState(getIsPortrait);
   const [isMobileDevice, setIsMobileDevice] = useState(getIsMobileDevice);
-  const [dismissed, setDismissed] = useState(false);
 
   const checkOrientation = useCallback(() => {
     const portrait = getIsPortrait();
@@ -40,17 +38,21 @@ export default function LandscapeOrientationPrompt() {
     setIsPortrait(portrait);
     setIsMobileDevice(mobile);
 
-    // If device is in landscape mode, clean up any forced portrait/landscape CSS rotation
+    // If device is in landscape mode, ensure landscape classes are active
     if (!portrait) {
+      document.documentElement.classList.add('landscape-mode');
+      document.body.classList.add('landscape-mode');
       document.documentElement.classList.remove('app-forced-landscape');
       document.body.classList.remove('app-forced-landscape');
-      // When rotated physically to landscape, reset dismissed state
-      // so if the user rotates back to portrait later, the prompt will be seen again
-      setDismissed(false);
     }
   }, []);
 
   useEffect(() => {
+    // Proactively lock orientation to landscape on load
+    if (window.screen?.orientation?.lock) {
+      window.screen.orientation.lock('landscape').catch(() => {});
+    }
+
     checkOrientation();
 
     const portraitMql = window.matchMedia('(orientation: portrait)');
@@ -78,7 +80,6 @@ export default function LandscapeOrientationPrompt() {
 
   // Action: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
-    // 1. Lock screen orientation to landscape (without triggering browser fullscreen pop-up messages)
     try {
       if (window.screen?.orientation?.lock) {
         await window.screen.orientation.lock('landscape').catch(() => {});
@@ -93,17 +94,14 @@ export default function LandscapeOrientationPrompt() {
       console.warn('Orientation lock notice:', err);
     }
 
-    // 2. Apply in-project landscape layout mode
     document.documentElement.classList.add('landscape-mode');
     document.body.classList.add('landscape-mode');
     document.documentElement.classList.remove('app-forced-landscape');
     document.body.classList.remove('app-forced-landscape');
-
-    setDismissed(true);
   };
 
-  // The modal MUST be seen whenever the site is in portrait mode on mobile/touch screen
-  const showModal = isPortrait && isMobileDevice && !dismissed;
+  // Strictly visible whenever viewed on mobile in portrait mode
+  const showModal = isPortrait && isMobileDevice;
 
   return (
     <>

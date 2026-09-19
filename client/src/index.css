@@ -466,23 +466,26 @@ button {
   background-color: #ffffff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   transition: all 0.22s ease;
+  align-self: center;
+  margin-left: 0;
 }
 
 .navbar__hamburger-line:nth-child(2) {
-  width: 13px;
-  align-self: flex-start;
-  margin-left: 10px;
+  width: 18px;
+  align-self: center;
+  margin-left: 0;
 }
 
 .navbar__sidebar-toggle:hover .navbar__hamburger-line {
-  width: 19px;
+  width: 20px;
   margin-left: 0;
   align-self: center;
   background-color: #ffffff;
 }
 
 .navbar__sidebar-toggle:hover .navbar__hamburger-line:nth-child(2) {
-  background-color: #dda15e;
+  width: 20px;
+  background-color: #ffffff;
 }
 
 .navbar__brand {
@@ -1255,23 +1258,26 @@ button {
   background: #ffffff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   transition: all 0.22s ease;
+  align-self: center;
+  margin-left: 0;
 }
 
 .mobile-topbar__hamburger-line:nth-child(2) {
-  width: 13px;
-  align-self: flex-start;
-  margin-left: 10px;
+  width: 18px;
+  align-self: center;
+  margin-left: 0;
 }
 
 .mobile-topbar__toggle:hover .mobile-topbar__hamburger-line {
-  width: 19px;
+  width: 20px;
   margin-left: 0;
   align-self: center;
   background: #ffffff;
 }
 
 .mobile-topbar__toggle:hover .mobile-topbar__hamburger-line:nth-child(2) {
-  background: #dda15e;
+  width: 20px;
+  background: #ffffff;
 }
 
 .mobile-topbar__brand,
@@ -3087,29 +3093,24 @@ button {
   transform: translateX(-16px) scale(0.85) !important;
 }
 
-/* Sleek modern staggered 3-line bars */
+/* Sleek modern 3 equal lines for sidebar toggle button */
 .sidebar-edge-toggle__bar {
+  width: 20px;
   height: 2.4px;
   background: #ffffff;
   border-radius: 999px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  align-self: center;
+  margin-left: 0;
 }
 
-.sidebar-edge-toggle__bar--1 {
-  width: 20px;
-}
-
-.sidebar-edge-toggle__bar--2 {
-  width: 14px;
-  align-self: flex-start;
-  margin-left: 12px;
-}
-
+.sidebar-edge-toggle__bar--1,
+.sidebar-edge-toggle__bar--2,
 .sidebar-edge-toggle__bar--3 {
-  width: 18px;
-  align-self: flex-start;
-  margin-left: 12px;
+  width: 20px;
+  align-self: center;
+  margin-left: 0;
 }
 
 .sidebar-edge-toggle:hover .sidebar-edge-toggle__bar {
@@ -3120,7 +3121,8 @@ button {
 }
 
 .sidebar-edge-toggle:hover .sidebar-edge-toggle__bar--2 {
-  background: linear-gradient(90deg, #dda15e, #bc6c25);
+  width: 22px;
+  background: #ffffff;
 }
 
 /* ── Landscape Mobile & PWA Mode Layout: Full-Width Content with Overlapping Drawer ── */
@@ -3223,12 +3225,12 @@ button {
   }
 
   .portrait-bottom-bar {
-    display: flex !important;
+    display: none !important;
   }
 
   .app-shell {
     padding-top: 58px !important;
-    padding-bottom: 76px !important;
+    padding-bottom: 0 !important;
   }
 
   .container.dashboard,

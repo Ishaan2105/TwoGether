@@ -11,7 +11,6 @@ import Settings from './pages/Settings.jsx';
 import ProtectedRoute from './components/common/ProtectedRoute.jsx';
 import Sidebar from './components/common/Sidebar.jsx';
 import MobileTopBar from './components/common/MobileTopBar.jsx';
-import PortraitBottomBar from './components/common/PortraitBottomBar.jsx';
 import LeaderboardModal from './components/common/LeaderboardModal.jsx';
 import PWAInstallModal from './components/common/PWAInstallModal.jsx';
 import StreakShieldModal from './components/common/StreakShieldModal.jsx';
@@ -128,12 +127,11 @@ export default function App() {
 
   return (
     <>
-      {/* Global Navigation Sidebar & Mobile Bar (visible only after login on app pages) */}
+      {/* Global Navigation Sidebar (visible only after login on app pages) */}
       {showNavigation && (
         <>
           <Sidebar />
           <MobileTopBar />
-          <PortraitBottomBar />
         </>
       )}
 
