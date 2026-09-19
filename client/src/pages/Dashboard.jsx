@@ -9,7 +9,7 @@ import WhatsAppShareModal from '../components/common/WhatsAppShareModal.jsx';
 export default function Dashboard() {
   const { user } = useAuth();
   const { duo, partner, loading, lookup, pair, nudge, unpair } = useDuo();
-  const { openImageNudge } = useSidebar();
+  const { openImageNudge, openNudgeAction } = useSidebar();
   const navigate = useNavigate();
 
   const [partnerCode, setPartnerCode] = useState('');
@@ -377,7 +377,7 @@ export default function Dashboard() {
                               type="button"
                               className="btn btn--ghost btn--xs"
                               style={{ marginTop: '0.4rem', alignSelf: 'flex-start' }}
-                              onClick={() => handleSendNudge('nudge')}
+                              onClick={() => openNudgeAction('nudge')}
                             >
                               Nudge to complete
                             </button>
@@ -442,24 +442,24 @@ export default function Dashboard() {
                 <button
                   type="button"
                   className="btn btn--secondary"
-                  onClick={() => handleSendNudge('hype')}
-                  disabled={sendingNudge}
+                  onClick={() => openNudgeAction('hype')}
+                  title="Send energetic hype and celebration to partner"
                 >
                   ⚡ Send Hype
                 </button>
                 <button
                   type="button"
                   className="btn btn--secondary"
-                  onClick={() => handleSendNudge('nudge')}
-                  disabled={sendingNudge}
+                  onClick={() => openNudgeAction('nudge')}
+                  title="Send accountability nudge and reminder"
                 >
                   🔔 Nudge Partner
                 </button>
                 <button
                   type="button"
                   className="btn btn--secondary"
-                  onClick={() => handleSendNudge('sos')}
-                  disabled={sendingNudge}
+                  onClick={() => openNudgeAction('sos')}
+                  title="Trigger high-urgency Emergency SOS alert & email"
                 >
                   🚨 Emergency SOS
                 </button>

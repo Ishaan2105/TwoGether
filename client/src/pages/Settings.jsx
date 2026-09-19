@@ -3,6 +3,7 @@ import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import { useDuo } from '../context/DuoContext.jsx';
+import { useSidebar } from '../context/SidebarContext.jsx';
 import api from '../services/api.js';
 import {
   sendTestNotification,
@@ -76,19 +77,11 @@ export default function Settings() {
     }
   }, [searchParams]);
 
-  const handleSendSOS = async () => {
+  const { openNudgeAction } = useSidebar();
+
+  const handleSendSOS = () => {
     if (!duo || !partner) return;
-    setSendingSOS(true);
-    setSosError('');
-    try {
-      await nudge('sos', '🚨 Emergency SOS! Midnight cutoff is approaching — please complete your daily habits!');
-      setSosSent(true);
-      setTimeout(() => setSosSent(false), 4000);
-    } catch (err) {
-      setSosError(err.response?.data?.message || 'Failed to send SOS notification.');
-    } finally {
-      setSendingSOS(false);
-    }
+    openNudgeAction('sos');
   };
 
   /* ── Notification state ─────────────────────────────────────────── */

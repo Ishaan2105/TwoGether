@@ -13,6 +13,14 @@ export function SidebarProvider({ children }) {
   const [activeNudgeId, setActiveNudgeId] = useState(null);
   const [activeNudgeDuration, setActiveNudgeDuration] = useState(null);
 
+  // Dynamic Nudge Dispatcher Modal (Hype, Nudge, SOS)
+  const [isNudgeActionOpen, setIsNudgeActionOpen] = useState(false);
+  const [nudgeActionType, setNudgeActionType] = useState('hype'); // 'hype' | 'nudge' | 'sos'
+
+  // Incoming Duo Alert Modal (When a user receives/opens Hype, Nudge, or SOS)
+  const [isIncomingAlertOpen, setIsIncomingAlertOpen] = useState(false);
+  const [incomingAlertData, setIncomingAlertData] = useState(null); // { type, fromUsername, message }
+
   // PWA beforeinstallprompt management
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -73,6 +81,26 @@ export function SidebarProvider({ children }) {
 
   const closeImageNudge = useCallback(() => setIsImageNudgeOpen(false), []);
 
+  const openNudgeAction = useCallback((type = 'hype') => {
+    setNudgeActionType(type);
+    setIsNudgeActionOpen(true);
+    setIsSidebarOpen(false);
+  }, []);
+
+  const closeNudgeAction = useCallback(() => {
+    setIsNudgeActionOpen(false);
+  }, []);
+
+  const openIncomingAlert = useCallback((data) => {
+    setIncomingAlertData(data);
+    setIsIncomingAlertOpen(true);
+  }, []);
+
+  const closeIncomingAlert = useCallback(() => {
+    setIsIncomingAlertOpen(false);
+    setIncomingAlertData(null);
+  }, []);
+
   const openNudgeViewer = useCallback((nudgeId, initialDuration = null) => {
     setActiveNudgeId(nudgeId);
     if (initialDuration) {
@@ -125,6 +153,14 @@ export function SidebarProvider({ children }) {
         isImageNudgeOpen,
         openImageNudge,
         closeImageNudge,
+        isNudgeActionOpen,
+        nudgeActionType,
+        openNudgeAction,
+        closeNudgeAction,
+        isIncomingAlertOpen,
+        incomingAlertData,
+        openIncomingAlert,
+        closeIncomingAlert,
         isNudgeViewerOpen,
         activeNudgeId,
         activeNudgeDuration,

@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useDuo } from '../context/DuoContext.jsx';
+import { useSidebar } from '../context/SidebarContext.jsx';
 
 export default function VaultPage() {
   const { user } = useAuth();
-  const { duo, partner, nudge } = useDuo();
+  const { duo, partner } = useDuo();
+  const { openNudgeAction } = useSidebar();
 
   const [sendingSOS, setSendingSOS] = useState(false);
   const [sosSent, setSosSent] = useState(false);
@@ -15,19 +17,9 @@ export default function VaultPage() {
   const duoShields = duo?.duoShields ?? 1;
   const totalShields = soloShields + (duo ? duoShields : 0);
 
-  const handleSendSOS = async () => {
+  const handleSendSOS = () => {
     if (!duo || !partner) return;
-    setSendingSOS(true);
-    setError('');
-    try {
-      await nudge('sos', '🚨 Emergency SOS! Midnight cutoff is approaching — please complete your daily habits!');
-      setSosSent(true);
-      setTimeout(() => setSosSent(false), 4000);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to send SOS notification.');
-    } finally {
-      setSendingSOS(false);
-    }
+    openNudgeAction('sos');
   };
 
   return (

@@ -17,33 +17,46 @@ import StreakShieldModal from './components/common/StreakShieldModal.jsx';
 import NotificationPermissionBanner from './components/common/NotificationPermissionBanner.jsx';
 import ImageNudgeModal from './components/common/ImageNudgeModal.jsx';
 import NudgeViewerModal from './components/common/NudgeViewerModal.jsx';
+import NudgeActionModal from './components/common/NudgeActionModal.jsx';
+import IncomingAlertModal from './components/common/IncomingAlertModal.jsx';
 import LandscapeOrientationPrompt from './components/common/LandscapeOrientationPrompt.jsx';
 import { useSidebar } from './context/SidebarContext.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 
 /**
- * NudgeWatcher — reads ?nudge=ID from the URL (set by the service worker
- * when a push notification is clicked) and opens the NudgeViewerModal.
+ * NudgeWatcher — reads ?nudge=ID and ?action=hype|nudge|sos from the URL
+ * and listens to background service worker alert messages.
  */
 function NudgeWatcher() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { openNudgeViewer } = useSidebar();
+  const { openNudgeViewer, openIncomingAlert } = useSidebar();
   const { user } = useAuth();
 
   useEffect(() => {
     const nudgeId = searchParams.get('nudge');
     const urlDuration = searchParams.get('d') || searchParams.get('duration');
+    const action = searchParams.get('action');
+    const fromUsername = searchParams.get('from');
+
     if (nudgeId && user) {
       const parsedDur = urlDuration ? parseInt(urlDuration, 10) : null;
       openNudgeViewer(nudgeId, parsedDur && !isNaN(parsedDur) ? parsedDur : null);
-      // Strip the param from the URL so it doesn't persist on refresh
       const next = new URLSearchParams(searchParams);
       next.delete('nudge');
       next.delete('d');
       next.delete('duration');
       setSearchParams(next, { replace: true });
+    } else if (action && user) {
+      openIncomingAlert({
+        type: action,
+        fromUsername: fromUsername || 'Partner',
+      });
+      const next = new URLSearchParams(searchParams);
+      next.delete('action');
+      next.delete('from');
+      setSearchParams(next, { replace: true });
     }
-  }, [searchParams, user, openNudgeViewer, setSearchParams]);
+  }, [searchParams, user, openNudgeViewer, openIncomingAlert, setSearchParams]);
 
   // Handle push notification click when PWA window is already active/open
   useEffect(() => {
@@ -52,11 +65,22 @@ function NudgeWatcher() {
       if (event.data?.type === 'OPEN_IMAGE_NUDGE' && event.data?.nudgeId) {
         const dur = event.data.duration ? parseInt(event.data.duration, 10) : null;
         openNudgeViewer(event.data.nudgeId, dur && !isNaN(dur) ? dur : null);
+      } else if (event.data?.type === 'INCOMING_DUO_ALERT' && event.data?.notifType) {
+        if (event.data.notifType === 'image-nudge' && event.data.nudgeId) {
+          const dur = event.data.duration ? parseInt(event.data.duration, 10) : null;
+          openNudgeViewer(event.data.nudgeId, dur && !isNaN(dur) ? dur : null);
+        } else {
+          openIncomingAlert({
+            type: event.data.notifType,
+            fromUsername: event.data.fromUsername || 'Partner',
+            message: event.data.message || '',
+          });
+        }
       }
     };
     navigator.serviceWorker.addEventListener('message', handleSwMessage);
     return () => navigator.serviceWorker.removeEventListener('message', handleSwMessage);
-  }, [user, openNudgeViewer]);
+  }, [user, openNudgeViewer, openIncomingAlert]);
 
   return null;
 }
@@ -104,6 +128,8 @@ export default function App() {
       <StreakShieldModal />
       <ImageNudgeModal />
       <NudgeViewerModal />
+      <NudgeActionModal />
+      <IncomingAlertModal />
       <NotificationPermissionBanner />
       <LandscapeOrientationPrompt />
 

@@ -26,9 +26,14 @@ async function sendPushToUser(userId, payload) {
     title: payload.title || 'TwoGether',
     body: payload.body || '',
     icon: payload.icon || '/pwa-192.png',
-    badge: '/favicon.png',
+    badge: payload.badge || '/favicon.png',
     image: payload.image || null,
     data: payload.data || {},
+    actions: payload.actions || [],
+    vibrate: payload.vibrate || [100, 50, 100],
+    requireInteraction: !!payload.requireInteraction,
+    tag: payload.tag || payload.data?.type || 'twogether-notification',
+    renotify: true,
     timestamp: Date.now(),
   });
 

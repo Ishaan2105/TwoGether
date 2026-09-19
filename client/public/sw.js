@@ -4,7 +4,7 @@
             basic offline caching.
 ───────────────────────────────────────────── */
 
-const CACHE_NAME = 'twogether-v6';
+const CACHE_NAME = 'twogether-v7';
 const OFFLINE_SHELL = ['/', '/manifest.json', '/pwa-192.png', '/pwa-512.png', '/favicon.png'];
 
 // ── Install: pre-cache the app shell ─────────
@@ -64,7 +64,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// ── Push: show notification ───────────────────
+// ── Push: show rich notification ───────────────────
 self.addEventListener('push', (event) => {
   let data = {};
   try {
@@ -74,29 +74,42 @@ self.addEventListener('push', (event) => {
   }
 
   const title = data.title || 'TwoGether';
+  const notifType = data.data?.type || 'general';
+
+  // Dynamic sound & vibration patterns based on urgency
+  let defaultVibrate = [100, 50, 100];
+  if (notifType === 'sos') {
+    defaultVibrate = [400, 100, 400, 100, 800, 100, 800, 100, 1200];
+  } else if (notifType === 'hype') {
+    defaultVibrate = [120, 60, 200, 60, 300, 100, 400];
+  } else if (notifType === 'nudge') {
+    defaultVibrate = [200, 100, 200, 100, 200];
+  }
+
   const options = {
     body: data.body || '',
     icon: data.icon || '/pwa-192.png',
     badge: data.badge || '/favicon.png',
     image: data.image || undefined,
-    vibrate: [100, 50, 100],
-    tag: data.data?.type || 'twogether-notification',
+    vibrate: data.vibrate || defaultVibrate,
+    requireInteraction: !!data.requireInteraction || notifType === 'sos',
+    tag: data.tag || `twogether-${notifType}-${Date.now()}`,
     renotify: true,
     data: {
-      url: data.data?.url || '/',
-      type: data.data?.type || 'general',
+      url: data.data?.url || (notifType === 'nudge' || notifType === 'sos' ? '/tasks' : '/dashboard'),
+      type: notifType,
       nudgeId: data.data?.nudgeId || null,
       duration: data.data?.duration || null,
-      fromUsername: data.data?.fromUsername || '',
+      fromUsername: data.data?.senderUsername || data.data?.fromUsername || '',
+      message: data.body || '',
       timestamp: data.timestamp || Date.now(),
     },
-    actions: [
-      { action: 'open', title: data.actions?.[0]?.title || '👀 Open App' },
+    actions: data.actions && data.actions.length > 0 ? data.actions : [
+      { action: 'open', title: '👀 Open Duo' },
       { action: 'dismiss', title: '✕ Dismiss' },
     ],
   };
 
-  // Remove undefined fields so Chrome doesn't complain
   if (!options.image) delete options.image;
 
   event.waitUntil(self.registration.showNotification(title, options));
@@ -111,10 +124,15 @@ self.addEventListener('notificationclick', (event) => {
   const notifData = event.notification.data || {};
   let targetUrl = '/dashboard';
 
-  // For image-nudge: deep-link directly to the nudge viewer with exact sender duration
   if (notifData.type === 'image-nudge' && notifData.nudgeId) {
     const durParam = notifData.duration ? `&d=${notifData.duration}` : '';
     targetUrl = `/?nudge=${notifData.nudgeId}${durParam}`;
+  } else if (event.action === 'tasks' || notifData.type === 'nudge') {
+    targetUrl = `/tasks?action=nudge&from=${encodeURIComponent(notifData.fromUsername || '')}`;
+  } else if (event.action === 'save-streak' || notifData.type === 'sos') {
+    targetUrl = `/tasks?action=sos&from=${encodeURIComponent(notifData.fromUsername || '')}`;
+  } else if (event.action === 'hype-back' || notifData.type === 'hype') {
+    targetUrl = `/dashboard?action=hype&from=${encodeURIComponent(notifData.fromUsername || '')}`;
   } else if (notifData.url) {
     targetUrl = notifData.url;
   }
@@ -127,13 +145,15 @@ self.addEventListener('notificationclick', (event) => {
         for (const client of clientList) {
           if ('focus' in client) {
             client.focus();
-            if (notifData.type === 'image-nudge' && notifData.nudgeId) {
-              client.postMessage({
-                type: 'OPEN_IMAGE_NUDGE',
-                nudgeId: notifData.nudgeId,
-                duration: notifData.duration,
-              });
-            }
+            client.postMessage({
+              type: 'INCOMING_DUO_ALERT',
+              notifType: notifData.type,
+              fromUsername: notifData.fromUsername,
+              message: notifData.message,
+              nudgeId: notifData.nudgeId,
+              duration: notifData.duration,
+              action: event.action,
+            });
             if (client.navigate) client.navigate(targetUrl);
             return;
           }

@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Habit = require('../models/Habit');
 const { clusterDuoHabitsIntoShells } = require('../utils/shellMatcher');
 const { sendPushToUser } = require('../utils/pushNotify');
+const { sendEmergencySOSEmail } = require('../services/emailService');
 const { generateUniqueDuoInviteCode } = require('../utils/generateCode');
 
 /**
@@ -260,7 +261,7 @@ async function sendNudge(req, res, next) {
 
     const populatedDuo = await Duo.findById(duo._id).populate(
       'users',
-      '_id username customTitle personalLevel personalXP soloStreak'
+      '_id username email customTitle personalLevel personalXP soloStreak'
     );
 
     // Identify partner to receive the push notification
@@ -268,32 +269,69 @@ async function sendNudge(req, res, next) {
       (u) => u._id.toString() !== req.user._id.toString()
     );
 
+    let emailResult = null;
+
     if (partner) {
       let pushTitle = '';
       let pushBody = '';
       let pushUrl = '/dashboard';
+      let vibratePattern = [100, 50, 100];
+      let actions = [];
+      let requireInteraction = false;
+      const tag = `twogether-${type}-${Date.now()}`;
 
       if (type === 'hype') {
-        pushTitle = `⚡ @${req.user.username} is hyping you up!`;
+        pushTitle = `⚡🔥 HYPE PULSE from @${req.user.username}!`;
         pushBody =
           message && message.trim()
             ? message.trim()
             : "You're crushing it! Keep the momentum going and lock in today's synergy! 🔥";
-        pushUrl = '/dashboard';
+        pushUrl = `/dashboard?action=hype&from=${encodeURIComponent(req.user.username)}`;
+        vibratePattern = [120, 60, 200, 60, 300, 100, 400];
+        actions = [
+          { action: 'hype-back', title: '🔥 Hype Back!' },
+          { action: 'open', title: '⚡ Open Duo' },
+        ];
       } else if (type === 'nudge') {
-        pushTitle = `🔔 @${req.user.username} sent you a habit nudge!`;
+        pushTitle = `🔔 Accountability Nudge from @${req.user.username}!`;
         pushBody =
           message && message.trim()
             ? message.trim()
             : "Hey! Don't forget to complete your daily habits and synergy shells today! 🎯";
-        pushUrl = '/tasks';
+        pushUrl = `/tasks?action=nudge&from=${encodeURIComponent(req.user.username)}`;
+        vibratePattern = [200, 100, 200, 100, 200];
+        actions = [
+          { action: 'tasks', title: '✅ Check-off Habits' },
+          { action: 'open', title: '👀 View Dashboard' },
+        ];
       } else if (type === 'sos') {
         pushTitle = `🚨 EMERGENCY STREAK ALERT from @${req.user.username}!`;
         pushBody =
           message && message.trim()
             ? message.trim()
-            : 'Our joint streak is on the line! Jump in now to save our streak shield! 🛡️';
-        pushUrl = '/dashboard';
+            : '⚠️ CODE RED: Midnight cutoff is approaching! Our joint streak is on the line. Complete habits now to save our shield! 🛡️';
+        pushUrl = `/tasks?action=sos&from=${encodeURIComponent(req.user.username)}`;
+        requireInteraction = true;
+        vibratePattern = [400, 100, 400, 100, 800, 100, 800, 100, 1200];
+        actions = [
+          { action: 'save-streak', title: '🛡️ SAVE STREAK NOW' },
+          { action: 'open', title: '🚨 Open App' },
+        ];
+
+        // Send high-priority Emergency SOS email to partner
+        if (partner.email) {
+          try {
+            emailResult = await sendEmergencySOSEmail({
+              toEmail: partner.email,
+              partnerUsername: partner.username,
+              senderUsername: req.user.username,
+              customMessage: message && message.trim() ? message.trim() : null,
+              streakCount: duo.duoStreak,
+            });
+          } catch (emailErr) {
+            console.warn('[Nudge SOS Email Error]:', emailErr.message);
+          }
+        }
       }
 
       try {
@@ -301,9 +339,16 @@ async function sendNudge(req, res, next) {
           title: pushTitle,
           body: pushBody,
           icon: '/pwa-192.png',
+          badge: '/favicon.png',
+          vibrate: vibratePattern,
+          requireInteraction,
+          tag,
+          actions,
           data: {
             type,
             senderUsername: req.user.username,
+            fromUsername: req.user.username,
+            message: pushBody,
             url: pushUrl,
           },
         });
@@ -313,9 +358,9 @@ async function sendNudge(req, res, next) {
     }
 
     const roleActionMessages = {
-      hype: `⚡ Hype sent to @${partner ? partner.username : 'partner'}!`,
-      nudge: `🔔 Habit nudge sent to @${partner ? partner.username : 'partner'}!`,
-      sos: `🚨 Emergency SOS alert sent to @${partner ? partner.username : 'partner'}!`,
+      hype: `⚡ Hype pulse fired to @${partner ? partner.username : 'partner'}!`,
+      nudge: `🔔 Habit reminder dispatched to @${partner ? partner.username : 'partner'}!`,
+      sos: `🚨 EMERGENCY SOS ALARM & RESCUE EMAIL dispatched to @${partner ? partner.username : 'partner'}!`,
     };
 
     res.json({
@@ -324,6 +369,8 @@ async function sendNudge(req, res, next) {
         duo: populatedDuo,
         type,
         message: roleActionMessages[type] || `Successfully sent ${type.toUpperCase()}!`,
+        emailSent: !!(emailResult && emailResult.delivered),
+        partnerUsername: partner ? partner.username : 'partner',
       },
     });
   } catch (err) {
