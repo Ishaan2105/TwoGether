@@ -76,7 +76,7 @@ export default function LandscapeOrientationPrompt() {
     };
   }, [checkOrientation]);
 
-  // Option 1: Rotate to view the site in landscape mode
+  // Action: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
     // 1. Android Chrome strictly requires a fullscreen context before allowing screen.orientation.lock()
     try {
@@ -116,26 +116,6 @@ export default function LandscapeOrientationPrompt() {
     setDismissed(true);
   };
 
-  // Option 2: Preview as it is (stay in portrait mode)
-  const handlePreviewAsItIs = () => {
-    const vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
-    if (vp) {
-      vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
-    }
-    document.documentElement.classList.remove('landscape-mode');
-    document.body.classList.remove('landscape-mode');
-    document.documentElement.classList.remove('desktop-site-view');
-    document.documentElement.classList.remove('app-forced-landscape');
-    document.body.classList.remove('app-forced-landscape');
-
-    setDismissed(true);
-  };
-
-  // Allow re-opening from quick toggle FAB
-  const handleOpenPrompt = () => {
-    setDismissed(false);
-  };
-
   // The modal MUST be seen whenever the site is in portrait mode on mobile/touch screen
   const showModal = isPortrait && isMobileDevice && !dismissed;
 
@@ -173,32 +153,9 @@ export default function LandscapeOrientationPrompt() {
               >
                 🔄 Rotate to view the site in landscape mode
               </button>
-              <button
-                type="button"
-                className="btn btn--ghost landscape-btn-ghost"
-                onClick={handlePreviewAsItIs}
-                id="btn-preview-portrait"
-              >
-                Preview as it is
-              </button>
             </div>
           </div>
         </div>
-      )}
-
-      {/* Floating Orientation Quick-Toggle (visible on mobile after modal is dismissed in portrait) */}
-      {isMobileDevice && isPortrait && dismissed && (
-        <button
-          type="button"
-          className="orientation-toggle-fab"
-          onClick={handleOpenPrompt}
-          title="Change screen orientation"
-          aria-label="Change screen orientation"
-          id="btn-orientation-toggle-fab"
-        >
-          <span className="orientation-toggle-fab__icon">🔄</span>
-          <span className="orientation-toggle-fab__text">Rotate</span>
-        </button>
       )}
     </>
   );
