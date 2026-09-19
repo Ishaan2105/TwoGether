@@ -1166,27 +1166,36 @@ button {
 /* ---------- Persistent Desktop Sidebar & Responsive Mobile Drawer ---------- */
 
 /* Mobile Top Header (< 900px only) */
-.mobile-topbar {
+.mobile-topbar,
+.portrait-topbar {
   display: none;
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
+  width: 100%;
   height: 56px;
-  background: var(--bg-card-solid);
-  border-bottom: 1px solid var(--border);
-  z-index: 80;
-  padding: 0 1rem;
+  background: var(--bg-card, #ffffff);
+  border-bottom: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  z-index: 1000;
+  padding: 0 0.85rem;
   align-items: center;
   justify-content: space-between;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-sizing: border-box;
+  margin: 0 !important;
+  border-radius: 0 !important;
 }
 
-.mobile-topbar__left {
+.mobile-topbar__left,
+.portrait-topbar__left {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 36px;
 }
 
 .mobile-topbar__toggle {
@@ -1198,8 +1207,8 @@ button {
   width: 36px;
   height: 36px;
   border-radius: 9px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
+  background: var(--bg-input, rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.1));
   color: var(--text);
   cursor: pointer;
   padding: 0;
@@ -1207,8 +1216,8 @@ button {
 }
 
 .mobile-topbar__toggle:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--cyan);
+  background: var(--bg-card-hover, rgba(0, 0, 0, 0.08));
+  border-color: var(--btn-primary-bg, var(--cyan));
 }
 
 .mobile-topbar__hamburger-line {
@@ -1219,59 +1228,281 @@ button {
   transition: background 0.2s ease;
 }
 
-.mobile-topbar__brand {
+.mobile-topbar__brand,
+.portrait-topbar__center {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   font-weight: 900;
-  font-size: 1.08rem;
-  letter-spacing: 0.03em;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
   color: var(--text);
   text-decoration: none;
+  flex: 2;
+  text-align: center;
 }
 
-.mobile-topbar__logo {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: var(--gradient-primary);
-  color: var(--btn-primary-text);
-  font-weight: 900;
-  font-size: 0.95rem;
-}
-
-.mobile-topbar__logo-img {
+.mobile-topbar__logo-img,
+.portrait-topbar__logo {
   width: 28px;
   height: 28px;
   border-radius: 7px;
   object-fit: cover;
-  border: 1px solid rgba(var(--cyan-rgb), 0.35);
-  box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.2);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.1));
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
   background: #ffffff;
   flex-shrink: 0;
 }
 
-.mobile-topbar__avatar {
+.mobile-topbar__right,
+.portrait-topbar__right {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  flex: 1;
+  min-width: 36px;
+}
+
+.portrait-topbar__account-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.6rem;
+  border-radius: 999px;
+  background: var(--bg-input, rgba(0, 0, 0, 0.05));
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 100%;
+}
+
+.portrait-topbar__account-btn:hover,
+.portrait-topbar__account-btn--open {
+  background: var(--bg-card-hover, rgba(0, 0, 0, 0.09));
+  border-color: var(--btn-primary-bg, var(--cyan));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.portrait-topbar__avatar-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--btn-primary-bg, var(--gradient-primary));
+  color: var(--btn-primary-text, #ffffff);
+  font-size: 0.75rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
-  color: var(--btn-primary-text);
-  font-weight: 800;
-  font-size: 0.9rem;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(var(--cyan-rgb), 0.35);
-  transition: transform 0.18s ease;
+  flex-shrink: 0;
 }
 
-.mobile-topbar__avatar:hover {
-  transform: scale(1.06);
+.portrait-topbar__account-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portrait-topbar__chevron {
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.portrait-topbar__chevron--open {
+  transform: rotate(180deg);
+  color: var(--btn-primary-bg, var(--cyan));
+}
+
+/* Account Dropdown Modal / Popover */
+.portrait-topbar__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25), 0 0 18px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 0.85rem;
+  z-index: 1001;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.portrait-topbar__dropdown-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.portrait-topbar__dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--btn-primary-bg, var(--gradient-primary));
+  color: var(--btn-primary-text, #ffffff);
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.portrait-topbar__dropdown-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.portrait-topbar__dropdown-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portrait-topbar__dropdown-email {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portrait-topbar__dropdown-divider {
+  height: 1px;
+  background: var(--border, rgba(0, 0, 0, 0.1));
+  margin: 0.5rem 0 0.65rem 0;
+}
+
+.portrait-topbar__logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.portrait-topbar__logout-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+/* ── Portrait Bottom Tab Bar ── */
+.portrait-bottom-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
+  background: var(--bg-card, #ffffff);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border, rgba(0, 0, 0, 0.1));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+  margin: 0 !important;
+}
+
+.portrait-tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  padding: 0.25rem 0.1rem;
+  text-decoration: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.portrait-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  transition: transform 0.18s ease, color 0.18s ease;
+  color: inherit;
+}
+
+.portrait-tab-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.15;
+}
+
+.portrait-tab-item:active {
+  transform: scale(0.92);
+}
+
+/* Active Tab Item */
+.portrait-tab-item--active {
+  color: var(--btn-primary-bg, var(--cyan, #06b6d4)) !important;
+  font-weight: 800;
+}
+
+.portrait-tab-item--active .portrait-tab-icon {
+  color: var(--btn-primary-bg, var(--cyan, #06b6d4)) !important;
+  transform: translateY(-1px);
+}
+
+.portrait-tab-item--active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2.5px;
+  background: var(--btn-primary-bg, var(--cyan, #06b6d4));
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(var(--cyan-rgb, 6, 182, 212), 0.4);
+}
+
+/* PWA App Tab Item */
+.portrait-tab-item--pwa .portrait-tab-icon {
+  color: #f59e0b;
+}
+
+.portrait-tab-item--pwa:hover .portrait-tab-icon,
+.portrait-tab-item--pwa:active .portrait-tab-icon {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.7));
 }
 
 /* Sidebar Drawer Shell */
@@ -2753,9 +2984,11 @@ button {
 
 /* Desktop & Landscape Layout (>= 900px OR orientation: landscape OR .landscape-mode) */
 @media (min-width: 900px), (orientation: landscape) {
-  /* Complete removal of Topbar in Desktop & Landscape */
+  /* Complete removal of Topbar and Bottom Bar in Desktop & Landscape */
   .navbar,
-  .mobile-topbar {
+  .mobile-topbar,
+  .portrait-topbar,
+  .portrait-bottom-bar {
     display: none !important;
   }
 
@@ -2817,7 +3050,9 @@ button {
 
 /* Explicit class-based landscape mode activation */
 html.landscape-mode .navbar,
-html.landscape-mode .mobile-topbar {
+html.landscape-mode .mobile-topbar,
+html.landscape-mode .portrait-topbar,
+html.landscape-mode .portrait-bottom-bar {
   display: none !important;
 }
 
@@ -2848,7 +3083,12 @@ html.landscape-mode .app-shell {
     display: none !important;
   }
 
-  html:not(.landscape-mode) .mobile-topbar {
+  html:not(.landscape-mode) .mobile-topbar,
+  html:not(.landscape-mode) .portrait-topbar {
+    display: flex !important;
+  }
+
+  html:not(.landscape-mode) .portrait-bottom-bar {
     display: flex !important;
   }
 
@@ -2874,7 +3114,14 @@ html.landscape-mode .app-shell {
     animation: sidebarBackdropFade 0.22s ease forwards;
   }
 
-  html:not(.landscape-mode) .app-shell,
+  html:not(.landscape-mode) .app-shell {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding-top: 58px !important;
+    padding-bottom: 76px !important;
+    box-sizing: border-box !important;
+  }
+
   html:not(.landscape-mode) .landing,
   html:not(.landscape-mode) .auth-page,
   html:not(.landscape-mode) .dashboard,
@@ -2887,9 +3134,125 @@ html.landscape-mode .app-shell {
   html:not(.landscape-mode) .container.tasks-page,
   html:not(.landscape-mode) .landing .container {
     margin: 0 auto !important;
-    padding: 1rem 1.15rem !important;
+    padding: 0.85rem 1rem !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+  }
+}
+
+/* ---------- Mobile Portrait Proper Alignment for Duo Cards & Bridge ---------- */
+@media (max-width: 768px), (orientation: portrait) {
+  /* Prevent horizontal text overlap inside duo member bridge */
+  .duo-bridge,
+  [data-theme="dark"] .duo-bridge,
+  [data-theme="solaris"] .duo-bridge,
+  [data-theme="botanica"] .duo-bridge,
+  [data-theme="pearl"] .duo-bridge {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+    padding: 1rem 1.15rem !important;
+    border-radius: 16px !important;
+    grid-template-columns: none !important;
+  }
+
+  .duo-bridge__link {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 0.15rem 0 !important;
+    padding: 0 !important;
+  }
+
+  .duo-member {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.85rem !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .duo-member--user {
+    justify-content: flex-start !important;
+  }
+
+  .duo-member--partner {
+    justify-content: flex-start !important;
+    flex-direction: row !important;
+    margin-left: 0 !important;
+  }
+
+  .duo-member--partner .duo-member__info {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .duo-member__info {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    text-align: left !important;
+  }
+
+  .duo-member__info strong {
+    font-size: 0.95rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .duo-member__info span {
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Symmetrical 2x2 grid for Duo Streak, Synergy, Shields, Level */
+  .duo-stats-grid,
+  [data-theme="dark"] .duo-stats-grid,
+  [data-theme="solaris"] .duo-stats-grid,
+  [data-theme="botanica"] .duo-stats-grid,
+  [data-theme="pearl"] .duo-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
+    margin-top: 0.85rem !important;
+  }
+
+  .duo-stat-card,
+  [data-theme="dark"] .duo-stat-card,
+  [data-theme="solaris"] .duo-stat-card,
+  [data-theme="botanica"] .duo-stat-card,
+  [data-theme="pearl"] .duo-stat-card {
+    padding: 0.8rem 0.9rem !important;
+    border-radius: 14px !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  .duo-stat-card__icon {
+    font-size: 1.35rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .duo-stat-card__label {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .duo-stat-card__value {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    margin: 0.15rem 0 !important;
+  }
+
+  .duo-stat-card__sub {
+    font-size: 0.72rem !important;
   }
 }
 
