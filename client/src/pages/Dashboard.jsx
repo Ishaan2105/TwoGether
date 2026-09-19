@@ -457,7 +457,7 @@ export default function Dashboard() {
                 </button>
                 <button
                   type="button"
-                  className="btn btn--ghost btn--warning-hover"
+                  className="btn btn--secondary"
                   onClick={() => handleSendNudge('sos')}
                   disabled={sendingNudge}
                 >
