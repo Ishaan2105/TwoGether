@@ -8,29 +8,29 @@
 :root,
 [data-theme="dark"],
 [data-theme="solaris"] {
-  /* ── 1. Base Black Forest Atmosphere & Surface Hierarchy ── */
-  --bg-primary: #101509; /* black_forest-200 */
-  --bg-secondary: #18200e; /* black_forest-300 */
-  --bg-card: rgba(31, 42, 19, 0.90); /* black_forest-400 with 90% alpha */
-  --bg-card-hover: rgba(40, 54, 24, 0.96); /* black_forest-500 */
-  --bg-card-solid: #1f2a13; /* black_forest-400 */
-  --bg-surface: #283618; /* black_forest-500 */
-  --bg-input: rgba(16, 21, 9, 0.85); /* black_forest-200 */
-  --bg-overlay: rgba(16, 21, 9, 0.96);
-  --navbar-bg: rgba(16, 21, 9, 0.94);
-  --modal-bg: linear-gradient(150deg, #283618 0%, #18200e 55%, #080b05 100%);
-  --canvas-bg: #080b05; /* black_forest-100 */
+  /* ── 1. Base Cornsilk Canvas & Earthy Botanical Surface Hierarchy ── */
+  --bg-primary: #fefae0; /* cornsilk DEFAULT */
+  --bg-secondary: #fefbe7; /* cornsilk-600 */
+  --bg-card: rgba(255, 255, 255, 0.92); /* crisp white on cornsilk for max clarity */
+  --bg-card-hover: #ffffff;
+  --bg-card-solid: #ffffff;
+  --bg-surface: #fefced; /* cornsilk-700 */
+  --bg-input: #ffffff;
+  --bg-overlay: rgba(40, 54, 24, 0.65); /* dark forest backdrop overlay */
+  --navbar-bg: rgba(254, 250, 224, 0.94); /* cornsilk glass */
+  --modal-bg: linear-gradient(150deg, #ffffff 0%, #fefbe7 55%, #fefae0 100%);
+  --canvas-bg: #fefae0;
   
   /* ── 2. Subtle & Focus Borders ── */
-  --border: rgba(169, 184, 118, 0.22); /* olive_leaf-700 alpha */
-  --border-subtle: rgba(169, 184, 118, 0.10);
-  --border-focus: #dda15e; /* sunlit_clay */
+  --border: rgba(96, 108, 56, 0.24); /* olive_leaf-500 alpha */
+  --border-subtle: rgba(96, 108, 56, 0.12);
+  --border-focus: #bc6c25; /* copperwood */
   
   /* ── 3. The 5 Palette Color Tokens (Olive Leaf, Black Forest, Cornsilk, Sunlit Clay, Copperwood) ── */
   --olive-leaf: #606c38;
   --olive-leaf-rgb: 96, 108, 56;
-  --olive-leaf-light: #a9b876;
-  --olive-leaf-vibrant: #88994f;
+  --olive-leaf-light: #88994f;
+  --olive-leaf-vibrant: #606c38;
   
   --black-forest: #283618;
   --black-forest-rgb: 40, 54, 24;
@@ -48,55 +48,50 @@
   --copperwood-light: #d98840;
 
   /* Universal component aliases */
-  --cyan: #88994f; /* olive_leaf-600 */
-  --cyan-rgb: 136, 153, 79;
-  --teal: #a9b876; /* olive_leaf-700 */
-  --teal-rgb: 169, 184, 118;
+  --cyan: #606c38; /* olive_leaf-500 */
+  --cyan-rgb: 96, 108, 56;
+  --teal: #88994f; /* olive_leaf-600 */
+  --teal-rgb: 136, 153, 79;
   --amber: #dda15e; /* sunlit_clay-500 */
   --amber-rgb: 221, 161, 94;
   --orange: #bc6c25; /* copperwood-500 */
   --orange-rgb: 188, 108, 37;
-  --abyss: #101509; /* black_forest-200 */
-  --abyss-rgb: 16, 21, 9;
+  --abyss: #283618; /* black_forest-500 */
+  --abyss-rgb: 40, 54, 24;
   
-  --violet: #dda15e;
-  --success: #88994f;
+  --violet: #bc6c25;
+  --success: #606c38;
   --danger: #bc6c25;
   
-  /* ── 4. Typography & Readability (Cornsilk on Black Forest: WCAG AAA > 14:1) ── */
-  --text: #fefae0; /* cornsilk DEFAULT */
-  --text-main: #fefae0;
-  --text-muted: #c5d0a3; /* olive_leaf-800 */
-  --text-dim: #a9b876; /* olive_leaf-700 */
-  --text-inverse: #101509; /* black_forest-200 */
-  --btn-primary-text: #101509;
+  /* ── 4. Typography & Readability (Black Forest on Cornsilk: WCAG AAA > 14:1) ── */
+  --text: #283618; /* black_forest DEFAULT */
+  --text-main: #283618;
+  --text-muted: #606c38; /* olive_leaf DEFAULT */
+  --text-dim: #4c562c; /* olive_leaf-400 */
+  --text-inverse: #fefae0; /* cornsilk DEFAULT */
+  --btn-primary-text: #fefae0;
   
   /* ── 5. Radii, Transitions, Shadows ── */
   --radius: 14px;
   --radius-sm: 10px;
   --transition: 0.2s ease;
-  --shadow: 0 10px 40px rgba(8, 11, 5, 0.65);
-  --shadow-card: 0 6px 24px rgba(8, 11, 5, 0.50);
-  --shadow-glow: 0 0 30px rgba(136, 153, 79, 0.35);
-  --shadow-amber: 0 0 25px rgba(221, 161, 94, 0.35);
-  --shadow-orange: 0 0 25px rgba(188, 108, 37, 0.35);
+  --shadow: 0 10px 40px rgba(40, 54, 24, 0.10);
+  --shadow-card: 0 6px 24px rgba(40, 54, 24, 0.08);
+  --shadow-glow: 0 0 30px rgba(96, 108, 56, 0.20);
+  --shadow-amber: 0 0 25px rgba(221, 161, 94, 0.25);
+  --shadow-orange: 0 0 25px rgba(188, 108, 37, 0.25);
   
   /* ── 6. Balanced Atmospheric Gradients (All 5 Colors in Harmony) ── */
-  --gradient-primary: linear-gradient(135deg, #606c38 0%, #a9b876 100%);
+  --gradient-primary: linear-gradient(135deg, #606c38 0%, #88994f 100%);
   --gradient-solar: linear-gradient(135deg, #bc6c25 0%, #dda15e 100%);
   --gradient-sunset: linear-gradient(135deg, #606c38 0%, #dda15e 55%, #bc6c25 100%);
-  --gradient-abyss: linear-gradient(180deg, #1f2a13 0%, #101509 100%);
+  --gradient-abyss: linear-gradient(180deg, #283618 0%, #101509 100%);
   
-  --body-bg:
-    radial-gradient(ellipse 75% 50% at 50% -5%, rgba(136, 153, 79, 0.24), transparent 65%),
-    radial-gradient(ellipse 60% 45% at 95% 15%, rgba(188, 108, 37, 0.20), transparent 60%),
-    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(221, 161, 94, 0.18), transparent 60%),
-    radial-gradient(ellipse 45% 40% at 85% 85%, rgba(254, 250, 224, 0.09), transparent 60%),
-    #101509;
+  --body-bg: #fefae0;
   --vignette-bg:
-    radial-gradient(ellipse at center, rgba(16, 21, 9, 0.05) 0%, rgba(8, 11, 5, 0.7) 75%, #080b05 100%),
-    linear-gradient(180deg, rgba(16, 21, 9, 0.7) 0%, transparent 15%, transparent 85%, #080b05 100%);
-  --canvas-bg: #080b05;
+    radial-gradient(ellipse at center, rgba(254, 250, 224, 0) 0%, rgba(254, 250, 224, 0.4) 75%, rgba(221, 161, 94, 0.15) 100%),
+    linear-gradient(180deg, rgba(254, 250, 224, 0.8) 0%, transparent 15%, transparent 85%, rgba(254, 250, 224, 0.8) 100%);
+  --canvas-bg: #fefae0;
 }
 
 /* ⚪ 2. PEARL (Luminous Light Theme) */
@@ -4860,14 +4855,14 @@ html.desktop-site-view .auth-card {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  background: linear-gradient(145deg, rgba(31, 42, 19, 0.92), rgba(16, 21, 9, 0.98));
-  border: 1px solid rgba(169, 184, 118, 0.26);
+  background: linear-gradient(145deg, #ffffff 0%, #fefbe7 100%);
+  border: 1px solid rgba(96, 108, 56, 0.22);
   border-radius: var(--radius);
   padding: 1.6rem 2rem;
   gap: 1.5rem;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(8, 11, 5, 0.6), inset 0 1px 0 rgba(254, 250, 224, 0.08);
+  box-shadow: 0 10px 30px rgba(40, 54, 24, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .duo-bridge::before {
@@ -4877,7 +4872,7 @@ html.desktop-site-view .auth-card {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #606c38 0%, #a9b876 25%, #fefae0 50%, #dda15e 75%, #bc6c25 100%);
+  background: linear-gradient(90deg, #606c38 0%, #88994f 25%, #dda15e 50%, #bc6c25 75%, #283618 100%);
   border-radius: var(--radius) var(--radius) 0 0;
 }
 
@@ -4914,18 +4909,18 @@ html.desktop-site-view .auth-card {
   border-radius: 16px;
   background: linear-gradient(135deg, #606c38, #88994f);
   color: #fefae0;
-  border: 2px solid #a9b876;
+  border: 2px solid #606c38;
   display: grid;
   place-items: center;
-  box-shadow: 0 4px 20px rgba(136, 153, 79, 0.45);
+  box-shadow: 0 4px 18px rgba(96, 108, 56, 0.35);
   flex-shrink: 0;
 }
 
 .duo-member--partner .duo-member__avatar {
   background: linear-gradient(135deg, #bc6c25, #dda15e);
   color: #fefae0;
-  border: 2px solid #dda15e;
-  box-shadow: 0 4px 20px rgba(188, 108, 37, 0.45);
+  border: 2px solid #bc6c25;
+  box-shadow: 0 4px 18px rgba(188, 108, 37, 0.35);
 }
 
 .duo-member__info {
@@ -4937,13 +4932,13 @@ html.desktop-site-view .auth-card {
 .duo-member__info strong {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #fefae0;
+  color: #283618;
 }
 
 .duo-member__info span {
-  color: #c5d0a3;
+  color: #606c38;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .duo-bridge__link {
@@ -4963,11 +4958,11 @@ html.desktop-site-view .auth-card {
 @keyframes pulseGlow {
   0%, 100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 6px rgba(221, 161, 94, 0.6));
+    filter: drop-shadow(0 0 6px rgba(221, 161, 94, 0.5));
   }
   50% {
     transform: scale(1.2);
-    filter: drop-shadow(0 0 16px rgba(188, 108, 37, 0.9));
+    filter: drop-shadow(0 0 16px rgba(188, 108, 37, 0.75));
   }
 }
 
@@ -4975,12 +4970,12 @@ html.desktop-site-view .auth-card {
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.15em;
-  color: #dda15e;
-  background: rgba(221, 161, 94, 0.16);
-  border: 1px solid rgba(221, 161, 94, 0.45);
+  color: #bc6c25;
+  background: rgba(188, 108, 37, 0.12);
+  border: 1px solid rgba(188, 108, 37, 0.35);
   padding: 0.25rem 0.65rem;
   border-radius: 9999px;
-  box-shadow: 0 0 14px rgba(221, 161, 94, 0.25);
+  box-shadow: 0 0 14px rgba(188, 108, 37, 0.15);
   white-space: nowrap;
 }
 
@@ -4989,9 +4984,9 @@ html.desktop-site-view .auth-card {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  background: rgba(96, 108, 56, 0.25);
-  border: 1px solid #88994f;
-  color: #fefae0;
+  background: rgba(96, 108, 56, 0.15);
+  border: 1px solid #606c38;
+  color: #283618;
   border-radius: 9999px;
   padding: 0.35rem 0.85rem;
   font-size: 0.72rem;
@@ -5006,14 +5001,14 @@ html.desktop-site-view .auth-card {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #88994f;
-  box-shadow: 0 0 8px #88994f;
+  background: #606c38;
+  box-shadow: 0 0 8px #606c38;
 }
 
 .btn--unlink-duo {
-  background: rgba(31, 42, 19, 0.8) !important;
-  border: 1px solid rgba(169, 184, 118, 0.25) !important;
-  color: #c5d0a3 !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(96, 108, 56, 0.25) !important;
+  color: #606c38 !important;
   border-radius: 9999px !important;
   font-weight: 700 !important;
   transition: all 0.2s ease !important;
@@ -5022,8 +5017,8 @@ html.desktop-site-view .auth-card {
 .btn--unlink-duo:hover {
   border-color: #bc6c25 !important;
   color: #bc6c25 !important;
-  background: rgba(188, 108, 37, 0.15) !important;
-  box-shadow: 0 0 14px rgba(188, 108, 37, 0.25) !important;
+  background: rgba(188, 108, 37, 0.1) !important;
+  box-shadow: 0 0 14px rgba(188, 108, 37, 0.2) !important;
 }
 
 .btn--solaris-cta {
@@ -5031,20 +5026,20 @@ html.desktop-site-view .auth-card {
   align-items: center !important;
   justify-content: center !important;
   gap: 0.5rem !important;
-  background: linear-gradient(135deg, #dda15e 0%, #fefae0 100%) !important;
-  color: #101509 !important;
+  background: linear-gradient(135deg, #283618 0%, #606c38 100%) !important;
+  color: #fefae0 !important;
   font-weight: 800 !important;
   border-radius: 9999px !important;
   border: none !important;
   padding: 0.55rem 1.35rem !important;
-  box-shadow: 0 4px 16px rgba(221, 161, 94, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(40, 54, 24, 0.25) !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   text-decoration: none !important;
 }
 
 .btn--solaris-cta:hover {
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(221, 161, 94, 0.6) !important;
+  box-shadow: 0 8px 24px rgba(40, 54, 24, 0.35) !important;
   filter: brightness(1.08) !important;
 }
 
@@ -5060,13 +5055,13 @@ html.desktop-site-view .auth-card {
   display: flex;
   align-items: center;
   gap: 1.15rem;
-  background: linear-gradient(145deg, rgba(31, 42, 19, 0.92), rgba(16, 21, 9, 0.98));
-  border: 1px solid rgba(169, 184, 118, 0.22);
+  background: linear-gradient(145deg, #ffffff 0%, #fefbe7 100%);
+  border: 1px solid rgba(96, 108, 56, 0.20);
   border-radius: var(--radius);
   padding: 1.35rem 1.45rem;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(8, 11, 5, 0.5);
+  box-shadow: 0 6px 20px rgba(40, 54, 24, 0.08);
   transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -5105,6 +5100,7 @@ html.desktop-site-view .auth-card {
   font-weight: 900;
   margin: 0.2rem 0;
   letter-spacing: -0.02em;
+  color: #283618;
 }
 
 .duo-stat-card__sub {
@@ -5117,22 +5113,22 @@ html.desktop-site-view .auth-card {
   background: linear-gradient(90deg, #bc6c25, #dda15e);
 }
 .duo-stat-card--streak .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(188, 108, 37, 0.65));
+  filter: drop-shadow(0 0 10px rgba(188, 108, 37, 0.5));
 }
 .duo-stat-card--streak .duo-stat-card__label {
-  color: #dda15e;
+  color: #bc6c25;
 }
 .duo-stat-card--streak .duo-stat-card__value {
-  color: #fefae0;
+  color: #283618;
 }
 .duo-stat-card--streak .duo-stat-card__sub {
-  color: #ebc79f;
+  color: #bc6c25;
   opacity: 0.95;
 }
 .duo-stat-card--streak:hover {
-  border-color: #dda15e;
+  border-color: #bc6c25;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(188, 108, 37, 0.35);
+  box-shadow: 0 12px 30px rgba(188, 108, 37, 0.2);
 }
 
 /* Card 2: SYNERGY SCORE (Olive Leaf #606c38 & #88994f) */
@@ -5140,16 +5136,16 @@ html.desktop-site-view .auth-card {
   background: linear-gradient(90deg, #606c38, #88994f);
 }
 .duo-stat-card--synergy .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(136, 153, 79, 0.65));
+  filter: drop-shadow(0 0 10px rgba(96, 108, 56, 0.5));
 }
 .duo-stat-card--synergy .duo-stat-card__label {
-  color: #a9b876;
+  color: #606c38;
 }
 .duo-stat-card--synergy .duo-stat-card__value {
-  color: #fefae0;
+  color: #283618;
 }
 .duo-stat-card--synergy .progress-bar {
-  background: rgba(8, 11, 5, 0.75);
+  background: rgba(96, 108, 56, 0.15);
   height: 7px;
   border-radius: 9999px;
   overflow: hidden;
@@ -5157,38 +5153,38 @@ html.desktop-site-view .auth-card {
 }
 .duo-stat-card--synergy .progress-bar__fill {
   height: 100%;
-  background: linear-gradient(90deg, #606c38, #88994f, #a9b876);
+  background: linear-gradient(90deg, #606c38, #88994f);
   border-radius: 9999px;
-  box-shadow: 0 0 12px rgba(136, 153, 79, 0.7);
+  box-shadow: 0 0 12px rgba(96, 108, 56, 0.45);
   transition: width 0.4s ease;
 }
 .duo-stat-card--synergy:hover {
-  border-color: #88994f;
+  border-color: #606c38;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(136, 153, 79, 0.35);
+  box-shadow: 0 12px 30px rgba(96, 108, 56, 0.2);
 }
 
-/* Card 3: DUO SHIELDS (Cornsilk #fefae0 & Olive Leaf Light #a9b876) */
+/* Card 3: DUO SHIELDS (Olive Leaf Light #88994f & Sunlit Clay #dda15e) */
 .duo-stat-card--shields::before {
-  background: linear-gradient(90deg, #a9b876, #fefae0);
+  background: linear-gradient(90deg, #88994f, #dda15e);
 }
 .duo-stat-card--shields .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(169, 184, 118, 0.65));
+  filter: drop-shadow(0 0 10px rgba(96, 108, 56, 0.5));
 }
 .duo-stat-card--shields .duo-stat-card__label {
-  color: #c5d0a3;
+  color: #606c38;
 }
 .duo-stat-card--shields .duo-stat-card__value {
-  color: #fefae0;
+  color: #283618;
 }
 .duo-stat-card--shields .duo-stat-card__sub {
-  color: #c5d0a3;
+  color: #606c38;
   opacity: 0.95;
 }
 .duo-stat-card--shields:hover {
-  border-color: #a9b876;
+  border-color: #606c38;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(169, 184, 118, 0.35);
+  box-shadow: 0 12px 30px rgba(96, 108, 56, 0.2);
 }
 
 /* Card 4: DUO LEVEL (Sunlit Clay #dda15e & Copperwood #bc6c25) */
@@ -5196,22 +5192,22 @@ html.desktop-site-view .auth-card {
   background: linear-gradient(90deg, #dda15e, #bc6c25);
 }
 .duo-stat-card--level .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(221, 161, 94, 0.65));
+  filter: drop-shadow(0 0 10px rgba(221, 161, 94, 0.5));
 }
 .duo-stat-card--level .duo-stat-card__label {
   color: #dda15e;
 }
 .duo-stat-card--level .duo-stat-card__value {
-  color: #fefae0;
+  color: #283618;
 }
 .duo-stat-card--level .duo-stat-card__sub {
-  color: #e3a570;
+  color: #bc6c25;
   opacity: 0.95;
 }
 .duo-stat-card--level:hover {
   border-color: #dda15e;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(221, 161, 94, 0.35);
+  box-shadow: 0 12px 30px rgba(221, 161, 94, 0.2);
 }
 
 /* ---------- Shared Duo Synergy Shells ---------- */
@@ -6705,7 +6701,6 @@ html.desktop-site-view .auth-card {
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 0 30px rgba(var(--cyan-rgb), 0.2);
 }
 
-[data-theme="dark"] .scene-card h2,
 [data-theme="emerald"] .scene-card h2,
 [data-theme="ruby"] .scene-card h2 {
   color: #ffffff;
@@ -6720,7 +6715,6 @@ html.desktop-site-view .auth-card {
   max-width: 640px;
 }
 
-[data-theme="dark"] .scene-card p,
 [data-theme="emerald"] .scene-card p,
 [data-theme="ruby"] .scene-card p {
   color: #e2e8f0;
@@ -6731,7 +6725,6 @@ html.desktop-site-view .auth-card {
   color: var(--text);
 }
 
-[data-theme="dark"] .scene-card p strong,
 [data-theme="emerald"] .scene-card p strong,
 [data-theme="ruby"] .scene-card p strong {
   color: #ffffff;
@@ -6764,7 +6757,6 @@ html.desktop-site-view .auth-card {
   filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.15));
 }
 
-[data-theme="dark"] .scene-stat-item strong,
 [data-theme="emerald"] .scene-stat-item strong,
 [data-theme="ruby"] .scene-stat-item strong {
   filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.8));
@@ -6797,7 +6789,6 @@ html.desktop-site-view .auth-card {
   box-shadow: var(--shadow-card);
 }
 
-[data-theme="dark"] .scene-shell-preview,
 [data-theme="emerald"] .scene-shell-preview,
 [data-theme="ruby"] .scene-shell-preview {
   color: #ffffff;

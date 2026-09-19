@@ -4,9 +4,9 @@ export const THEMES = [
   {
     id: 'dark',
     name: 'Solaris',
-    title: 'Solaris (Earth & Sunlit Clay)',
-    icon: '🍂',
-    previewColor: '#283618',
+    title: 'Solaris (Cornsilk & Earth)',
+    icon: '🌾',
+    previewColor: '#fefae0',
     accentColor: '#606c38',
     secondaryColor: '#dda15e',
     highlightColor: '#bc6c25',
