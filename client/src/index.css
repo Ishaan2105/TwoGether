@@ -1,58 +1,62 @@
 /* ============================================================
    TwoGether Multi-Theme System
-   Themes: Dark (Obsidian Default), Pearl (Light), Emerald (Jade), Ruby (Crimson)
+   Themes: Solaris (Deep Abyss & Sunset Default), Pearl (Light), Emerald (Jade), Ruby (Crimson)
    ============================================================ */
 
-/* 🌙 1. DARK (Default Midnight Obsidian) */
+/* 🌅 1. SOLARIS (Deep Oceanic Abyss & Solar Sunset)
+   Palette: ["#8ecae6", "#219ebc", "#023047", "#ffb703", "#fb8500"] */
 :root,
-[data-theme="dark"] {
-  --bg-primary: #0a0e17;
-  --bg-secondary: #111827;
-  --bg-card: rgba(17, 24, 39, 0.72);
-  --bg-card-hover: rgba(30, 41, 59, 0.8);
-  --bg-card-solid: #111827;
-  --bg-surface: #111827;
-  --bg-input: rgba(0, 0, 0, 0.35);
-  --bg-overlay: rgba(10, 14, 23, 0.85);
-  --navbar-bg: rgba(10, 14, 23, 0.8);
-  --modal-bg: linear-gradient(145deg, #091e32, #04121f);
+[data-theme="dark"],
+[data-theme="solaris"] {
+  --bg-primary: #023047;
+  --bg-secondary: #053b56;
+  --bg-card: rgba(2, 48, 71, 0.78);
+  --bg-card-hover: rgba(5, 59, 86, 0.90);
+  --bg-card-solid: #033852;
+  --bg-surface: #042e44;
+  --bg-input: rgba(1, 24, 36, 0.65);
+  --bg-overlay: rgba(2, 48, 71, 0.92);
+  --navbar-bg: rgba(2, 48, 71, 0.88);
+  --modal-bg: linear-gradient(145deg, #053d5a, #011d2b);
   
-  --border: rgba(148, 163, 184, 0.14);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-focus: #00f2fe;
+  --border: rgba(142, 202, 230, 0.18);
+  --border-subtle: rgba(142, 202, 230, 0.08);
+  --border-focus: #219ebc;
   
-  --cyan: #00f2fe;
-  --cyan-rgb: 0, 242, 254;
-  --teal: #4facfe;
-  --amber: #f59e0b;
-  --orange: #ff6b6b;
-  --violet: #a855f7;
+  --cyan: #219ebc;
+  --cyan-rgb: 33, 158, 188;
+  --teal: #8ecae6;
+  --teal-rgb: 142, 202, 230;
+  --amber: #ffb703;
+  --orange: #fb8500;
+  --violet: #8ecae6;
   --success: #10b981;
   
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --text-main: #e2e8f0;
-  --text-dim: #64748b;
-  --text-inverse: #04121f;
-  --btn-primary-text: #04121f;
+  --text: #f0f9ff;
+  --text-muted: #8ecae6;
+  --text-main: #f0f9ff;
+  --text-dim: #60a5c7;
+  --text-inverse: #023047;
+  --btn-primary-text: #023047;
   
   --radius: 14px;
   --radius-sm: 10px;
   --transition: 0.2s ease;
-  --shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
-  --shadow-card: 0 6px 24px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 30px rgba(0, 242, 254, 0.3);
+  --shadow: 0 10px 40px rgba(1, 24, 36, 0.55);
+  --shadow-card: 0 6px 24px rgba(1, 24, 36, 0.4);
+  --shadow-glow: 0 0 30px rgba(33, 158, 188, 0.35);
   
-  --gradient-primary: linear-gradient(135deg, #00f2fe, #4facfe);
+  --gradient-primary: linear-gradient(135deg, #219ebc, #8ecae6);
+  --gradient-solar: linear-gradient(135deg, #fb8500, #ffb703);
   --body-bg:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 242, 254, 0.09), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(168, 85, 247, 0.08), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 0% 90%, rgba(79, 172, 254, 0.07), transparent 60%),
-    var(--bg-primary);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(33, 158, 188, 0.22), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(251, 133, 0, 0.14), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 0% 90%, rgba(255, 183, 3, 0.12), transparent 60%),
+    #023047;
   --vignette-bg:
-    radial-gradient(ellipse at center, rgba(4, 18, 31, 0.05) 0%, rgba(4, 18, 31, 0.6) 75%, #04121f 100%),
-    linear-gradient(180deg, rgba(4, 18, 31, 0.7) 0%, transparent 15%, transparent 85%, #04121f 100%);
-  --canvas-bg: #04121f;
+    radial-gradient(ellipse at center, rgba(2, 48, 71, 0.05) 0%, rgba(1, 24, 36, 0.65) 75%, #011d2b 100%),
+    linear-gradient(180deg, rgba(2, 48, 71, 0.7) 0%, transparent 15%, transparent 85%, #011d2b 100%);
+  --canvas-bg: #011d2b;
 }
 
 /* ⚪ 2. PEARL (Luminous Light Theme) */

@@ -3,12 +3,14 @@ import { createContext, useContext, useState, useEffect } from 'react';
 export const THEMES = [
   {
     id: 'dark',
-    name: 'Dark',
-    title: 'Obsidian (Dark)',
-    icon: '🌙',
-    previewColor: '#0a0e17',
-    accentColor: '#00f2fe',
-    desc: 'Midnight cyber glow',
+    name: 'Solaris',
+    title: 'Solaris (Sunset Abyss)',
+    icon: '🌅',
+    previewColor: '#023047',
+    accentColor: '#219ebc',
+    secondaryColor: '#ffb703',
+    highlightColor: '#fb8500',
+    desc: 'Deep oceanic abyss & amber sunset',
   },
   {
     id: 'pearl',
@@ -51,7 +53,7 @@ export function ThemeProvider({ children }) {
     } catch (e) {
       console.warn('Unable to read localStorage theme', e);
     }
-    return 'dark'; // Default is Dark / Obsidian
+    return 'dark'; // Default is Solaris (Deep Abyss)
   });
 
   useEffect(() => {
