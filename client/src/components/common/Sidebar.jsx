@@ -147,8 +147,6 @@ export default function Sidebar() {
               </NavLink>
             </div>
 
-            <div className="sidebar-nav-divider" />
-
             {/* Leaderboard Rankings */}
             <div className="sidebar-section">
               <NavLink
@@ -180,8 +178,6 @@ export default function Sidebar() {
                 <span className="sidebar-nav-label">Duo Leaderboard</span>
               </NavLink>
             </div>
-
-            <div className="sidebar-nav-divider" />
 
             {/* Settings & App */}
             <div className="sidebar-section">
