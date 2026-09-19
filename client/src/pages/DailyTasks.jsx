@@ -624,9 +624,9 @@ export default function DailyTasks() {
             />
           </>
         ) : (
-          <div className="daily-cards-wrapper">
+          <>
             {/* Categories & Filter Controls for Daily Cards View */}
-            <div className="daily-cards-toolbar">
+            <div className="tasks-controls">
               <div className="category-pills">
                 {CATEGORIES.map((cat) => (
                   <button
@@ -671,7 +671,7 @@ export default function DailyTasks() {
               if (habitStatusTab === 'completed') return h.status === 'completed';
               return true;
             }).length > 0 ? (
-              <div className="daily-cards-list">
+              <div className="task-list">
                 {filteredHabits
                   .filter((h) => {
                     if (habitStatusTab === 'active') return h.status !== 'completed';
@@ -704,19 +704,8 @@ export default function DailyTasks() {
                           }
                         >
                           {habit.isCompletedToday && (
-                            <svg
-                              className="spreadsheet-check-svg"
-                              viewBox="0 0 12 12"
-                              width="11"
-                              height="11"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <polyline points="2.5 6.5 5 9 9.5 3.5" />
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M5 13l4 4L19 7" />
                             </svg>
                           )}
                         </button>
@@ -839,7 +828,7 @@ export default function DailyTasks() {
                   })}
               </div>
             ) : (
-              <div className="tasks-empty-state" style={{ padding: '2.5rem 1.5rem', textAlign: 'center' }}>
+              <div className="card tasks-empty-state">
                 <div className="tasks-empty-state__icon" aria-hidden="true" style={{ fontSize: '2rem', color: 'var(--text-muted)' }}>
                   —
                 </div>
@@ -870,7 +859,7 @@ export default function DailyTasks() {
                 )}
               </div>
             )}
-          </div>
+          </>
         )}
 
         {/* Quick Link Banner to Duo Section */}
