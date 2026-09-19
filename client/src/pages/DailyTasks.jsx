@@ -124,12 +124,6 @@ export default function DailyTasks() {
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
 
-  // View Mode: 'matrix' (Monthly Habit Matrix Grid) | 'focus' (Daily Cards)
-  const [viewMode, setViewMode] = useState('matrix');
-
-  // Filtering for focus view
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('all'); // 'all' | 'pending' | 'completed'
 
   // Loading indicator for toggled cell
   const [togglingHabitId, setTogglingHabitId] = useState(null);
@@ -398,17 +392,6 @@ export default function DailyTasks() {
     }
   };
 
-  // Filter habits for Focus Card View
-  const filteredHabits = habits.filter((h) => {
-    const matchesCategory = selectedCategory === 'All' || h.category === selectedCategory;
-    const matchesStatus =
-      statusFilter === 'all'
-        ? true
-        : statusFilter === 'completed'
-        ? h.isCompletedToday
-        : !h.isCompletedToday;
-    return matchesCategory && matchesStatus;
-  });
 
   const todayDateFormatted = new Date().toLocaleDateString(undefined, {
     weekday: 'long',
@@ -561,36 +544,16 @@ export default function DailyTasks() {
               All ({habits.length})
             </button>
           </div>
-
-          {/* View Mode Switcher */}
-          <div className="view-mode-switcher">
-            <button
-              type="button"
-              className={`view-mode-btn ${viewMode === 'matrix' ? 'view-mode-btn--active' : ''}`}
-              onClick={() => setViewMode('matrix')}
-              title="Monthly Habit Matrix Grid"
-            >
-              Monthly Matrix
-            </button>
-            <button
-              type="button"
-              className={`view-mode-btn ${viewMode === 'focus' ? 'view-mode-btn--active' : ''}`}
-              onClick={() => setViewMode('focus')}
-              title="Today's Focus Cards"
-            >
-              Daily Cards
-            </button>
-          </div>
         </section>
 
         {/* ======================================================== */}
-        {/* PRIMARY VIEW: MONTHLY MATRIX GRID OR FOCUS LIST          */}
+        {/* PRIMARY VIEW: MONTHLY HABIT MATRIX GRID                  */}
         {/* ======================================================== */}
         {loading ? (
           <div className="spinner-wrap" style={{ padding: '3rem 0', textAlign: 'center' }}>
             <div className="spinner" style={{ margin: '0 auto' }} />
           </div>
-        ) : viewMode === 'matrix' ? (
+        ) : (
           <>
             {/* 1. The Excel-Style Monthly Habit Tracker Spreadsheet */}
             <HabitMatrixGrid
@@ -622,243 +585,6 @@ export default function DailyTasks() {
               todayStr={summary.todayStr || new Date().toISOString().slice(0, 10)}
               joinDateStr={summary.joinDateStr || user?.createdAt?.slice(0, 10)}
             />
-          </>
-        ) : (
-          <>
-            {/* Categories & Filter Controls for Daily Cards View */}
-            <div className="tasks-controls">
-              <div className="category-pills">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    className={`category-pill ${selectedCategory === cat.id ? 'category-pill--active' : ''}`}
-                    onClick={() => setSelectedCategory(cat.id)}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="status-filter-group">
-                <button
-                  type="button"
-                  className={`status-btn ${statusFilter === 'all' ? 'status-btn--active' : ''}`}
-                  onClick={() => setStatusFilter('all')}
-                >
-                  All ({habits.length})
-                </button>
-                <button
-                  type="button"
-                  className={`status-btn ${statusFilter === 'pending' ? 'status-btn--active' : ''}`}
-                  onClick={() => setStatusFilter('pending')}
-                >
-                  Pending ({habits.filter((h) => !h.isCompletedToday).length})
-                </button>
-                <button
-                  type="button"
-                  className={`status-btn ${statusFilter === 'completed' ? 'status-btn--active' : ''}`}
-                  onClick={() => setStatusFilter('completed')}
-                >
-                  Done ({habits.filter((h) => h.isCompletedToday).length})
-                </button>
-              </div>
-            </div>
-
-            {/* Daily Task Card List */}
-            {filteredHabits.filter((h) => {
-              if (habitStatusTab === 'active') return h.status !== 'completed';
-              if (habitStatusTab === 'completed') return h.status === 'completed';
-              return true;
-            }).length > 0 ? (
-              <div className="task-list">
-                {filteredHabits
-                  .filter((h) => {
-                    if (habitStatusTab === 'active') return h.status !== 'completed';
-                    if (habitStatusTab === 'completed') return h.status === 'completed';
-                    return true;
-                  })
-                  .map((habit) => {
-                    const isSprint = habit.habitType === 'sprint';
-                    const isConcluded = habit.status === 'completed';
-
-                    return (
-                      <div
-                        key={habit._id}
-                        className={`task-card ${
-                          habit.isCompletedToday ? 'task-card--completed' : ''
-                        } ${isSprint ? 'task-card--sprint' : ''} ${
-                          isConcluded ? 'task-card--concluded' : ''
-                        }`}
-                      >
-                        {/* Checkbox */}
-                        <button
-                          type="button"
-                          className={`task-checkbox ${
-                            habit.isCompletedToday ? 'task-checkbox--checked' : ''
-                          }`}
-                          onClick={() => handleToggle(habit)}
-                          disabled={isConcluded}
-                          aria-label={
-                            habit.isCompletedToday ? 'Mark incomplete' : 'Mark complete'
-                          }
-                        >
-                          {habit.isCompletedToday && (
-                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                              <path d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
-                        </button>
-
-                        {/* Details */}
-                        <div className="task-card__content">
-                          <div className="task-card__title-row">
-                            <h3 className="task-card__title">{habit.title}</h3>
-                            {isSprint ? (
-                              <span
-                                className={`task-card__sprint-badge ${
-                                  isConcluded ? 'task-card__sprint-badge--done' : ''
-                                }`}
-                              >
-                                {isConcluded
-                                  ? `Goal Met (${habit.finalAccuracy ?? 100}%)`
-                                  : `Sprint · ${habit.targetDays || 5}d`}
-                              </span>
-                            ) : (
-                              habit.currentStreak > 0 && (
-                                <span className="task-card__streak" title="Current Daily Streak">
-                                  {habit.currentStreak || 0}d streak
-                                </span>
-                              )
-                            )}
-                          </div>
-
-                          {habit.description && (
-                            <p className="task-card__desc">{habit.description}</p>
-                          )}
-
-                          {habit.objectiveNote && (
-                            <p className="task-card__objective-note">
-                              <strong>Objective:</strong> {habit.objectiveNote}
-                            </p>
-                          )}
-
-                          <div className="task-card__tags">
-                            <span className="task-tag task-tag--category">{habit.category}</span>
-                            {isSprint && habit.startDate && (
-                              <span className="task-tag task-tag--time">
-                                {habit.startDate} → {habit.endDate || 'Ongoing'}
-                              </span>
-                            )}
-                            {(() => {
-                              const text = `${habit.title || ''} ${habit.description || ''}`.toLowerCase();
-                              let shellLabel = null;
-                              if (/(gym|calisthenics|workout|run|jog|pushup|squat|lift|weight|yoga|cardio|swim|cycle|walk|fitness|training)/i.test(text) || habit.category === 'Fitness') {
-                                shellLabel = 'Exercise Shell';
-                              } else if (/(water|drink|hydration|diet|salad|protein|vitamin|supplement|meal|eating|healthy)/i.test(text) || habit.category === 'Health') {
-                                shellLabel = 'Nutrition Shell';
-                              } else if (/(read|book|page|study|learn|course|audiobook|podcast|research|vocab)/i.test(text) || habit.category === 'Focus') {
-                                shellLabel = 'Learning Shell';
-                              } else if (/(meditat|journal|diary|gratitude|reflect|breathe|mindful|calm|peace)/i.test(text) || habit.category === 'Mindset') {
-                                shellLabel = 'Mindfulness Shell';
-                              } else if (/(code|program|dev|deep work|project|write|task|pomodoro|build|ship)/i.test(text) || habit.category === 'Productivity') {
-                                shellLabel = 'Deep Work Shell';
-                              }
-                              return shellLabel ? (
-                                <span className="task-tag task-tag--shell" title="Maps to this Shared Duo Shell">
-                                  {shellLabel}
-                                </span>
-                              ) : null;
-                            })()}
-                            {habit.timeOfDay && habit.timeOfDay !== 'anytime' && (
-                              <span className="task-tag task-tag--time">{habit.timeOfDay}</span>
-                            )}
-                            {habit.priority && habit.priority !== 'medium' && (
-                              <span className={`task-tag task-tag--priority-${habit.priority}`}>
-                                {habit.priority.toUpperCase()}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="task-card__actions">
-                          {isSprint && !isConcluded && (
-                            <button
-                              type="button"
-                              className="btn btn--ghost btn--xs"
-                              onClick={() => handleOpenCloseGoal(habit)}
-                              title="Conclude goal and freeze accuracy"
-                              style={{ color: 'var(--cyan)' }}
-                            >
-                              Finish Goal
-                            </button>
-                          )}
-                          {isConcluded && (
-                            <button
-                              type="button"
-                              className="btn btn--ghost btn--xs"
-                              onClick={() => handleReopenGoal(habit)}
-                              title="Reopen goal"
-                            >
-                              Reopen
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            className="btn-icon"
-                            onClick={() => handleOpenEdit(habit)}
-                            title="Edit task"
-                            aria-label="Edit task"
-                          >
-                            ✎
-                          </button>
-                          <button
-                            type="button"
-                            className="btn-icon btn-icon--danger"
-                            onClick={() => handleDelete(habit._id)}
-                            title="Delete task"
-                            aria-label="Delete task"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            ) : (
-              <div className="card tasks-empty-state">
-                <div className="tasks-empty-state__icon" aria-hidden="true" style={{ fontSize: '2rem', color: 'var(--text-muted)' }}>
-                  —
-                </div>
-                <h3>No tasks in this view</h3>
-                <p className="muted">
-                  {habits.length === 0
-                    ? 'Get started by creating your first daily habit, or start a sprint goal for an upcoming exam or challenge!'
-                    : 'No tasks match the selected filter.'}
-                </p>
-
-                {habits.length === 0 && (
-                  <div className="quick-suggestions">
-                    <h4>Quick Add Suggestions:</h4>
-                    <div className="quick-suggestions__grid">
-                      {QUICK_SUGGESTIONS.map((item, idx) => (
-                        <button
-                          key={idx}
-                          type="button"
-                          className="quick-suggestion-btn"
-                          onClick={() => handleAddSuggestion(item)}
-                        >
-                          <strong>{item.title}</strong>
-                          <span className="quick-suggestion-tag">{item.category}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
           </>
         )}
 
