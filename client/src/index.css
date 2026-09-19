@@ -2852,6 +2852,11 @@ button {
     width: 100% !important;
   }
 
+  /* Push content below the 56px sticky mobile topbar */
+  .app-shell {
+    padding-top: 56px !important;
+  }
+
   .container.dashboard,
   .container.tasks-page {
     margin: 0 auto !important;
@@ -2859,21 +2864,11 @@ button {
   }
 }
 
-/* ---------- Forced Desktop Site View for Landing & Login Pages on Mobile ---------- */
+/* ---------- Desktop Site View (only used when explicitly set) ---------- */
 html.desktop-site-view,
 html.desktop-site-view body {
-  min-width: 1200px !important;
-  width: 100% !important;
   -webkit-text-size-adjust: 100% !important;
   text-size-adjust: 100% !important;
-}
-
-html.desktop-site-view .landing,
-html.desktop-site-view .auth-page {
-  min-width: 1200px !important;
-  width: 100% !important;
-  margin-left: 0 !important;
-  box-sizing: border-box !important;
 }
 
 html.desktop-site-view .landing .container {
@@ -14770,4 +14765,95 @@ html:has(.landing) .scroll-sequence-vignette {
 
 .incoming-alert-btn-ghost:hover {
   color: var(--text-main, #fff);
+}
+
+/* ============================================================
+   PORTRAIT MOBILE — RESPONSIVE VERTICAL LAYOUT
+   Ensures TwoGether works naturally on Android phones in portrait
+   ============================================================ */
+
+@media (max-width: 899px) and (orientation: portrait),
+@media (max-width: 899px) {
+
+  /* Tight horizontal padding on all page containers */
+  .container,
+  .container.dashboard,
+  .container.tasks-page {
+    padding: 0.85rem 0.9rem !important;
+  }
+
+  /* Auth card: full-width with snug padding on small screens */
+  .auth-card {
+    padding: 1.6rem 1.25rem !important;
+    border-radius: 14px !important;
+    max-width: 100% !important;
+  }
+
+  /* Auth page: less padding so card has breathing room */
+  .auth-page {
+    padding: 1.25rem 1rem !important;
+    align-items: flex-start !important;
+    padding-top: 2rem !important;
+  }
+
+  /* Dashboard header — stack vertically */
+  .dashboard-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Grids: single column on phones */
+  .stats-grid,
+  .xp-cards-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.65rem !important;
+  }
+
+  /* Matrix: allow horizontal scroll rather than overflow clipping */
+  .habit-matrix-wrap,
+  .cohort-matrix-wrap,
+  .matrix-scroll-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Modals: full-width bottom sheet style */
+  .modal-content,
+  .modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+  /* Cards: snug padding */
+  .card,
+  .dashboard-card,
+  .task-card,
+  .leaderboard-card,
+  .settings-card {
+    padding: 1rem !important;
+    border-radius: 14px !important;
+  }
+
+  /* Leaderboard table: horizontal scroll */
+  .leaderboard-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Settings tabs: wrapping flex */
+  .settings-tabs {
+    flex-wrap: wrap !important;
+    gap: 0.4rem !important;
+  }
+
+  /* Typography scale-down for tight screens */
+  h1 { font-size: 1.5rem !important; }
+  h2 { font-size: 1.25rem !important; }
 }

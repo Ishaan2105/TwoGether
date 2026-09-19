@@ -23,17 +23,6 @@
         try {
           var saved = localStorage.getItem('twogether_theme') || localStorage.getItem('duohabit_theme') || 'dark';
           document.documentElement.setAttribute('data-theme', saved);
-
-          // Force Desktop Site View for Landing ('/') and Login ('/login') on mobile devices
-          var path = window.location.pathname;
-          var isDesktopPage = path === '/' || path === '/login' || path === '/register';
-          if (isDesktopPage) {
-            var vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
-            if (vp) {
-              vp.setAttribute('content', 'width=1200, user-scalable=yes');
-            }
-            document.documentElement.classList.add('desktop-site-view');
-          }
         } catch (e) {}
       })();
     </script>
