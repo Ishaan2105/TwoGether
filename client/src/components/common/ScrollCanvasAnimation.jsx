@@ -175,26 +175,38 @@ export default function ScrollCanvasAnimation() {
 
       // 3. Expansion Clip-Path during initial 0.0 -> 0.15 progress
       if (fixedWrap) {
-        const expansionProgress = smoothstep(0, 0.15, progress);
-        const startWidth = 52;
-        const startHeight = 64;
-        const startRadius = 26;
-        const endRadius = 0;
+        // On mobile phones (especially short landscape viewports <= 560px or small mobile width <= 768px):
+        // Do NOT clip the canvas into a small 52%x64% box where text overflows.
+        // Instead, full-bleed 100% canvas fills the screen immersively!
+        const isMobileLandscape = window.innerHeight <= 560 && window.innerWidth > window.innerHeight;
+        const isMobileScreen = window.innerWidth <= 768;
 
-        if (expansionProgress < 0.999) {
-          const w = startWidth + (100 - startWidth) * expansionProgress;
-          const h = startHeight + (100 - startHeight) * expansionProgress;
-          const ix = Math.max(0, (100 - w) / 2);
-          const iy = Math.max(0, (100 - h) / 2);
-          const r = startRadius + (endRadius - startRadius) * expansionProgress;
-          fixedWrap.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
-          fixedWrap.style.border = '1px solid rgba(var(--cyan-rgb), 0.3)';
-          fixedWrap.style.boxShadow =
-            '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--cyan-rgb), 0.2)';
-        } else {
+        if (isMobileLandscape || isMobileScreen) {
           fixedWrap.style.clipPath = 'none';
           fixedWrap.style.border = 'none';
           fixedWrap.style.boxShadow = 'none';
+        } else {
+          const expansionProgress = smoothstep(0, 0.15, progress);
+          const startWidth = 52;
+          const startHeight = 64;
+          const startRadius = 26;
+          const endRadius = 0;
+
+          if (expansionProgress < 0.999) {
+            const w = startWidth + (100 - startWidth) * expansionProgress;
+            const h = startHeight + (100 - startHeight) * expansionProgress;
+            const ix = Math.max(0, (100 - w) / 2);
+            const iy = Math.max(0, (100 - h) / 2);
+            const r = startRadius + (endRadius - startRadius) * expansionProgress;
+            fixedWrap.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
+            fixedWrap.style.border = '1px solid rgba(var(--cyan-rgb), 0.3)';
+            fixedWrap.style.boxShadow =
+              '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--cyan-rgb), 0.2)';
+          } else {
+            fixedWrap.style.clipPath = 'none';
+            fixedWrap.style.border = 'none';
+            fixedWrap.style.boxShadow = 'none';
+          }
         }
 
         // 4. Smooth Fade-Out as user scrolls PAST the hero sequence into the rest of the page:
@@ -220,12 +232,14 @@ export default function ScrollCanvasAnimation() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
+    window.addEventListener('orientationchange', handleScroll, { passive: true });
 
     handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
+      window.removeEventListener('orientationchange', handleScroll);
       cancelAnimationFrame(animationFrameId);
     };
   }, [images, imagesLoaded, renderFrame]);
