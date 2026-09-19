@@ -23,6 +23,16 @@
         try {
           var saved = localStorage.getItem('twogether_theme') || localStorage.getItem('duohabit_theme') || 'dark';
           document.documentElement.setAttribute('data-theme', saved);
+
+          // Respect mobile portrait orientation by default; only apply desktop/landscape if explicitly chosen
+          var orientationChoice = sessionStorage.getItem('tg_orientation_choice');
+          if (orientationChoice === 'landscape') {
+            var vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
+            if (vp) {
+              vp.setAttribute('content', 'width=1200, user-scalable=yes');
+            }
+            document.documentElement.classList.add('desktop-site-view');
+          }
         } catch (e) {}
       })();
     </script>

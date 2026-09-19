@@ -19,6 +19,7 @@ import ImageNudgeModal from './components/common/ImageNudgeModal.jsx';
 import NudgeViewerModal from './components/common/NudgeViewerModal.jsx';
 import NudgeActionModal from './components/common/NudgeActionModal.jsx';
 import IncomingAlertModal from './components/common/IncomingAlertModal.jsx';
+import LandscapeOrientationPrompt from './components/common/LandscapeOrientationPrompt.jsx';
 import { useSidebar } from './context/SidebarContext.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 
@@ -102,9 +103,10 @@ export default function App() {
       document.head.appendChild(vp);
     }
 
-    if (isPublicPage) {
-      vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
-      document.documentElement.classList.remove('desktop-site-view');
+    const orientationChoice = sessionStorage.getItem('tg_orientation_choice');
+    if (orientationChoice === 'landscape') {
+      vp.setAttribute('content', 'width=1200, user-scalable=yes');
+      document.documentElement.classList.add('desktop-site-view');
     } else {
       vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
       document.documentElement.classList.remove('desktop-site-view');
@@ -148,6 +150,7 @@ export default function App() {
       <NudgeActionModal />
       <IncomingAlertModal />
       <NotificationPermissionBanner />
+      <LandscapeOrientationPrompt />
 
       {/* Deep-link notification watcher */}
       <NudgeWatcher />

@@ -2852,23 +2852,31 @@ button {
     width: 100% !important;
   }
 
-  /* Push content below the 56px sticky mobile topbar */
-  .app-shell {
-    padding-top: 56px !important;
-  }
-
   .container.dashboard,
-  .container.tasks-page {
+  .container.tasks-page,
+  .landing .container {
     margin: 0 auto !important;
     padding: 1rem 1.15rem !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }
 
-/* ---------- Desktop Site View (only used when explicitly set) ---------- */
+/* ---------- Forced Desktop Site View for Landing & Login Pages on Mobile ---------- */
 html.desktop-site-view,
 html.desktop-site-view body {
+  min-width: 1200px !important;
+  width: 100% !important;
   -webkit-text-size-adjust: 100% !important;
   text-size-adjust: 100% !important;
+}
+
+html.desktop-site-view .landing,
+html.desktop-site-view .auth-page {
+  min-width: 1200px !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  box-sizing: border-box !important;
 }
 
 html.desktop-site-view .landing .container {
@@ -14140,13 +14148,144 @@ html:has(.landing) .scroll-sequence-vignette {
 
 .landscape-prompt-actions {
   display: flex;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.85rem;
   width: 100%;
-  justify-content: center;
 }
 
-.landscape-prompt-actions button {
-  flex: 1;
+.landscape-btn-primary {
+  width: 100%;
+  padding: 0.85rem 1.15rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  background: var(--gradient-primary, linear-gradient(135deg, #06b6d4, #3b82f6));
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1.35;
+}
+
+.landscape-btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 24px rgba(6, 182, 212, 0.55);
+}
+
+.landscape-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.landscape-btn-ghost {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--text-muted, #94a3b8);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.landscape-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.landscape-btn-ghost:active {
+  transform: scale(0.98);
+}
+
+/* Floating Orientation Toggle FAB for Mobile */
+.orientation-toggle-fab {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 9998;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.45);
+  color: var(--cyan, #06b6d4);
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 14px rgba(var(--cyan-rgb, 6, 182, 212), 0.25);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.orientation-toggle-fab:hover {
+  background: rgba(15, 23, 42, 0.98);
+  border-color: var(--cyan, #06b6d4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(var(--cyan-rgb, 6, 182, 212), 0.4);
+  transform: translateY(-2px);
+}
+
+.orientation-toggle-fab:active {
+  transform: scale(0.95);
+}
+
+.orientation-toggle-fab__icon {
+  font-size: 1rem;
+}
+
+@media (min-width: 1025px) {
+  .orientation-toggle-fab {
+    display: none !important;
+  }
+}
+
+/* Simulated Landscape Mode on Portrait Screens when requested */
+@media (orientation: portrait) {
+  html.app-forced-landscape {
+    overflow: hidden !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+
+  html.app-forced-landscape body {
+    position: fixed !important;
+    top: 0 !important;
+    left: 100vw !important;
+    width: 100vh !important;
+    height: 100vw !important;
+    transform: rotate(90deg) !important;
+    transform-origin: top left !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+@media (orientation: landscape) {
+  html.app-forced-landscape {
+    overflow: auto;
+    width: auto;
+    height: auto;
+  }
+
+  html.app-forced-landscape body {
+    position: static;
+    width: auto;
+    height: auto;
+    transform: none;
+    overflow: visible;
+  }
 }
 
 /* ── Picture Attached Success Confirmation in Modal ── */
@@ -14769,12 +14908,10 @@ html:has(.landing) .scroll-sequence-vignette {
 
 /* ============================================================
    PORTRAIT MOBILE — RESPONSIVE VERTICAL LAYOUT
-   Ensures TwoGether works naturally on Android phones in portrait
+   Ensures TwoGether works naturally on phones in portrait
    ============================================================ */
 
-@media (max-width: 899px) and (orientation: portrait),
 @media (max-width: 899px) {
-
   /* Tight horizontal padding on all page containers */
   .container,
   .container.dashboard,
@@ -14803,7 +14940,7 @@ html:has(.landing) .scroll-sequence-vignette {
     gap: 0.5rem !important;
   }
 
-  /* Grids: single column on phones */
+  /* Grids: single column or 2 columns on phones */
   .stats-grid,
   .xp-cards-grid {
     grid-template-columns: 1fr 1fr !important;
@@ -14816,19 +14953,6 @@ html:has(.landing) .scroll-sequence-vignette {
   .matrix-scroll-container {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
-  }
-
-  /* Modals: full-width bottom sheet style */
-  .modal-content,
-  .modal-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    border-radius: 20px 20px 0 0 !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
   }
 
   /* Cards: snug padding */
