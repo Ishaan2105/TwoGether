@@ -434,36 +434,55 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  gap: 3.5px;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  opacity: 0.5;
+  background: rgba(30, 42, 20, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
   color: var(--text);
   cursor: pointer;
   padding: 0;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-card);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.navbar__sidebar-toggle:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--cyan);
-  box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.3);
-  transform: scale(1.04);
+.navbar__sidebar-toggle:hover,
+.navbar__sidebar-toggle:focus-visible {
+  opacity: 1 !important;
+  background: rgba(30, 42, 20, 0.8) !important;
+  border-color: rgba(221, 161, 94, 0.7);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 14px rgba(221, 161, 94, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: scale(1.06);
 }
 
 .navbar__hamburger-line {
-  width: 17px;
-  height: 2px;
+  width: 18px;
+  height: 2.2px;
   border-radius: 999px;
-  background-color: var(--text);
-  transition: all 0.2s ease;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: all 0.22s ease;
+}
+
+.navbar__hamburger-line:nth-child(2) {
+  width: 13px;
+  align-self: flex-start;
+  margin-left: 10px;
 }
 
 .navbar__sidebar-toggle:hover .navbar__hamburger-line {
-  background-color: var(--cyan);
+  width: 19px;
+  margin-left: 0;
+  align-self: center;
+  background-color: #ffffff;
+}
+
+.navbar__sidebar-toggle:hover .navbar__hamburger-line:nth-child(2) {
+  background-color: #dda15e;
 }
 
 .navbar__brand {
@@ -1203,29 +1222,56 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
-  background: var(--bg-input, rgba(0, 0, 0, 0.04));
-  border: 1px solid var(--border, rgba(0, 0, 0, 0.1));
+  gap: 3.5px;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  opacity: 0.5;
+  background: rgba(30, 42, 20, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
   color: var(--text);
   cursor: pointer;
   padding: 0;
-  transition: all 0.2s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.mobile-topbar__toggle:hover {
-  background: var(--bg-card-hover, rgba(0, 0, 0, 0.08));
-  border-color: var(--btn-primary-bg, var(--cyan));
+.mobile-topbar__toggle:hover,
+.mobile-topbar__toggle:active,
+.mobile-topbar__toggle:focus-visible {
+  opacity: 1 !important;
+  background: rgba(30, 42, 20, 0.8) !important;
+  border-color: rgba(221, 161, 94, 0.7);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 14px rgba(221, 161, 94, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
 }
 
 .mobile-topbar__hamburger-line {
-  width: 16px;
-  height: 2px;
+  width: 18px;
+  height: 2.2px;
   border-radius: 999px;
-  background: var(--text);
-  transition: background 0.2s ease;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: all 0.22s ease;
+}
+
+.mobile-topbar__hamburger-line:nth-child(2) {
+  width: 13px;
+  align-self: flex-start;
+  margin-left: 10px;
+}
+
+.mobile-topbar__toggle:hover .mobile-topbar__hamburger-line {
+  width: 19px;
+  margin-left: 0;
+  align-self: center;
+  background: #ffffff;
+}
+
+.mobile-topbar__toggle:hover .mobile-topbar__hamburger-line:nth-child(2) {
+  background: #dda15e;
 }
 
 .mobile-topbar__brand,
@@ -3000,7 +3046,7 @@ button {
   }
 }
 
-/* ── Fixed Accessible Edge Toggle Trigger ── */
+/* ── Fixed Accessible Edge Toggle Trigger (50% Transparent Frosted Glass) ── */
 .sidebar-edge-toggle {
   position: fixed;
   top: 14px;
@@ -3008,32 +3054,45 @@ button {
   z-index: 9999;
   width: 44px;
   height: 44px;
-  border-radius: 12px;
-  background: var(--bg-card, #121826);
-  border: 1.5px solid var(--border, rgba(255, 255, 255, 0.16));
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 14px rgba(var(--cyan-rgb, 6, 182, 212), 0.18);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border-radius: 13px;
+  /* 50% transparent frosted glassmorphic background & opacity */
+  opacity: 0.5;
+  background: rgba(30, 42, 20, 0.5) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4.5px;
+  gap: 4.2px;
   padding: 0;
   cursor: pointer;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease, box-shadow 0.22s ease;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.22s ease, 
+              background 0.22s ease, 
+              border-color 0.22s ease, 
+              box-shadow 0.22s ease;
   will-change: transform, opacity;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.sidebar-edge-toggle:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--cyan-rgb, 6, 182, 212), 0.3);
-  border-color: var(--btn-primary-bg, var(--cyan, #06b6d4));
+/* Full opacity, radiant glow, and expansion on hover / focus */
+.sidebar-edge-toggle:hover,
+.sidebar-edge-toggle:focus-visible {
+  opacity: 1 !important;
+  transform: scale(1.08) translateY(-1px);
+  background: rgba(30, 42, 20, 0.8) !important;
+  border-color: rgba(221, 161, 94, 0.75);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 
+              0 0 18px rgba(221, 161, 94, 0.4), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .sidebar-edge-toggle:active {
+  opacity: 1 !important;
   transform: scale(0.92);
 }
 
@@ -3043,16 +3102,40 @@ button {
   transform: translateX(-16px) scale(0.85) !important;
 }
 
+/* Sleek modern staggered 3-line bars */
 .sidebar-edge-toggle__bar {
+  height: 2.4px;
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-edge-toggle__bar--1 {
   width: 20px;
-  height: 2.2px;
-  background: var(--text, #ffffff);
-  border-radius: 2px;
-  transition: transform 0.22s ease, opacity 0.22s ease, background 0.22s ease;
+}
+
+.sidebar-edge-toggle__bar--2 {
+  width: 14px;
+  align-self: flex-start;
+  margin-left: 12px;
+}
+
+.sidebar-edge-toggle__bar--3 {
+  width: 18px;
+  align-self: flex-start;
+  margin-left: 12px;
 }
 
 .sidebar-edge-toggle:hover .sidebar-edge-toggle__bar {
-  background: var(--btn-primary-bg, var(--cyan, #06b6d4));
+  width: 22px;
+  margin-left: 0;
+  align-self: center;
+  background: #ffffff;
+}
+
+.sidebar-edge-toggle:hover .sidebar-edge-toggle__bar--2 {
+  background: linear-gradient(90deg, #dda15e, #bc6c25);
 }
 
 /* ── Landscape Mobile & PWA Mode Layout: Full-Width Content with Overlapping Drawer ── */
