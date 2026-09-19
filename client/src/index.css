@@ -14782,14 +14782,43 @@ html:has(.landing) .scroll-sequence-vignette {
 .nudge-action-modal {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 530px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
   background: var(--bg-card, #121526);
   border-radius: 24px;
   padding: 2rem 1.85rem;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  overflow: hidden;
   color: var(--text-main, #f8fafc);
   animation: slideUpScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Firefox sleek scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+/* Chrome, Edge, Safari sleek scrollbar */
+.nudge-action-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.nudge-action-modal::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 12px 0;
+}
+
+.nudge-action-modal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.nudge-action-modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 @keyframes slideUpScale {
@@ -14803,20 +14832,59 @@ html:has(.landing) .scroll-sequence-vignette {
   }
 }
 
+/* Hype Modal - Amber / Fire Sleek Scrollbar */
 .nudge-action-modal--hype {
   border-color: rgba(245, 158, 11, 0.4);
   box-shadow: 0 24px 70px rgba(245, 158, 11, 0.2), 0 0 40px rgba(245, 158, 11, 0.15);
+  scrollbar-color: rgba(245, 158, 11, 0.55) transparent;
 }
 
+.nudge-action-modal--hype::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f59e0b, #d97706);
+  border: none;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.45);
+}
+
+.nudge-action-modal--hype::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.7);
+}
+
+/* Nudge Modal - Cyan / Blue Sleek Scrollbar */
 .nudge-action-modal--nudge {
   border-color: rgba(6, 182, 212, 0.4);
   box-shadow: 0 24px 70px rgba(6, 182, 212, 0.2), 0 0 40px rgba(6, 182, 212, 0.15);
+  scrollbar-color: rgba(6, 182, 212, 0.55) transparent;
 }
 
+.nudge-action-modal--nudge::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #06b6d4, #0284c7);
+  border: none;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.45);
+}
+
+.nudge-action-modal--nudge::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #22d3ee, #06b6d4);
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.7);
+}
+
+/* SOS Modal - Red / Siren Sleek Scrollbar */
 .nudge-action-modal--sos {
   border-color: rgba(239, 68, 68, 0.6);
   box-shadow: 0 24px 80px rgba(239, 68, 68, 0.35), 0 0 50px rgba(239, 68, 68, 0.25);
   animation: sosSirenPulse 2s infinite ease-in-out, slideUpScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-color: rgba(239, 68, 68, 0.65) transparent;
+}
+
+.nudge-action-modal--sos::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ef4444, #dc2626);
+  border: none;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+}
+
+.nudge-action-modal--sos::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f87171, #ef4444);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.85);
 }
 
 @keyframes sosSirenPulse {
@@ -14934,6 +15002,42 @@ html:has(.landing) .scroll-sequence-vignette {
   grid-template-columns: 1fr;
   gap: 0.55rem;
   margin-bottom: 1.25rem;
+  max-height: 240px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+.nudge-presets-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.nudge-presets-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nudge-presets-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+.nudge-presets-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.nudge-action-modal--hype .nudge-presets-grid::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.45);
+}
+
+.nudge-action-modal--nudge .nudge-presets-grid::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.45);
+}
+
+.nudge-action-modal--sos .nudge-presets-grid::-webkit-scrollbar-thumb {
+  background: rgba(239, 68, 68, 0.5);
 }
 
 @media (min-width: 480px) {
@@ -15596,5 +15700,22 @@ html:has(.landing) .scroll-sequence-vignette {
   .duo-stats-grid {
     grid-template-columns: repeat(4, 1fr) !important;
     gap: 0.5rem !important;
+  }
+
+  /* Nudge Action Modal Sleek Compact Sizing for Short / Landscape Screens */
+  .nudge-action-modal {
+    max-height: 94vh !important;
+    max-height: 94dvh !important;
+    padding: 1.15rem 1.35rem !important;
+    max-width: 500px !important;
+  }
+
+  .nudge-presets-grid {
+    max-height: 125px !important;
+  }
+
+  .modal-description {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.65rem !important;
   }
 }
