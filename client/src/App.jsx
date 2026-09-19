@@ -104,7 +104,7 @@ export default function App() {
       document.head.appendChild(vp);
     }
 
-    vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
+    vp.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0, viewport-fit=cover');
 
     // Landing, Login, and Register pages color theme is always Dark Blue (#0a192f / #050f1d)
     if (isPublicPage) {

@@ -20,16 +20,22 @@ function getIsMobileDevice() {
 /**
  * LandscapeOrientationPrompt
  *
- * Immediately shows on initial load whenever viewing on mobile in portrait mode:
- * 1. "Rotate to view the site in landscape mode" -> switches to landscape mode
- * 2. "Preview as it is" -> allows the user to browse in portrait mode
- *
- * Whenever the device is in portrait mode or rotates back into portrait mode,
- * the prompt is shown.
+ * Shows when viewing on mobile in portrait mode:
+ * 1. "Rotate to view the site in landscape mode" -> Immediately opens back the site,
+ *    switches to landscape mode (via fullscreen/orientation lock or simulated CSS rotation),
+ *    and displays the entire site ZOOMED OUT.
  */
 export default function LandscapeOrientationPrompt() {
   const [isPortrait, setIsPortrait] = useState(getIsPortrait);
   const [isMobileDevice, setIsMobileDevice] = useState(getIsMobileDevice);
+  const [dismissed, setDismissed] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem('twogether_landscape_dismissed') === 'true';
+  });
+  const [forcedLandscape, setForcedLandscape] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem('twogether_forced_landscape') === 'true';
+  });
 
   const checkOrientation = useCallback(() => {
     const portrait = getIsPortrait();
@@ -38,17 +44,29 @@ export default function LandscapeOrientationPrompt() {
     setIsPortrait(portrait);
     setIsMobileDevice(mobile);
 
-    // If device is in landscape mode, ensure landscape classes are active
+    // If device is in native landscape mode, ensure landscape and zoomed-out classes are active
     if (!portrait) {
-      document.documentElement.classList.add('landscape-mode');
-      document.body.classList.add('landscape-mode');
+      document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
+      document.body.classList.add('landscape-mode', 'app-zoomed-out');
       document.documentElement.classList.remove('app-forced-landscape');
       document.body.classList.remove('app-forced-landscape');
+      setForcedLandscape(false);
+      try {
+        sessionStorage.removeItem('twogether_forced_landscape');
+      } catch (e) {}
+    } else {
+      // If portrait, check if forced landscape was already requested
+      const isSavedForced = sessionStorage.getItem('twogether_forced_landscape') === 'true';
+      if (isSavedForced) {
+        document.documentElement.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
+        document.body.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
+        setForcedLandscape(true);
+      }
     }
   }, []);
 
   useEffect(() => {
-    // Proactively lock orientation to landscape on load
+    // Proactively lock orientation to landscape on load if supported
     if (window.screen?.orientation?.lock) {
       window.screen.orientation.lock('landscape').catch(() => {});
     }
@@ -80,6 +98,22 @@ export default function LandscapeOrientationPrompt() {
 
   // Action: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
+    // 1. Immediately dismiss modal so site opens back up
+    setDismissed(true);
+    try {
+      sessionStorage.setItem('twogether_landscape_dismissed', 'true');
+    } catch (e) {}
+
+    // 2. Request fullscreen so screen.orientation.lock has permission to execute on mobile browsers
+    const docEl = document.documentElement;
+    const requestFS = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+    if (requestFS) {
+      try {
+        await requestFS.call(docEl).catch(() => {});
+      } catch (e) {}
+    }
+
+    // 3. Request native screen orientation lock
     try {
       if (window.screen?.orientation?.lock) {
         await window.screen.orientation.lock('landscape').catch(() => {});
@@ -94,14 +128,40 @@ export default function LandscapeOrientationPrompt() {
       console.warn('Orientation lock notice:', err);
     }
 
-    document.documentElement.classList.add('landscape-mode');
-    document.body.classList.add('landscape-mode');
-    document.documentElement.classList.remove('app-forced-landscape');
-    document.body.classList.remove('app-forced-landscape');
+    // 4. Always apply landscape-mode and app-zoomed-out
+    document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
+    document.body.classList.add('landscape-mode', 'app-zoomed-out');
+
+    // 5. If device is still physically held in portrait, activate CSS forced landscape rotation
+    const stillPortrait = getIsPortrait();
+    if (stillPortrait) {
+      document.documentElement.classList.add('app-forced-landscape');
+      document.body.classList.add('app-forced-landscape');
+      setForcedLandscape(true);
+      try {
+        sessionStorage.setItem('twogether_forced_landscape', 'true');
+      } catch (e) {}
+    } else {
+      document.documentElement.classList.remove('app-forced-landscape');
+      document.body.classList.remove('app-forced-landscape');
+      setForcedLandscape(false);
+      try {
+        sessionStorage.removeItem('twogether_forced_landscape');
+      } catch (e) {}
+    }
   };
 
-  // Strictly visible whenever viewed on mobile in portrait mode
-  const showModal = isPortrait && isMobileDevice;
+  const handleExitForcedLandscape = () => {
+    document.documentElement.classList.remove('app-forced-landscape');
+    document.body.classList.remove('app-forced-landscape');
+    setForcedLandscape(false);
+    try {
+      sessionStorage.removeItem('twogether_forced_landscape');
+    } catch (e) {}
+  };
+
+  // Strictly visible when in portrait on mobile and not yet dismissed / not forced
+  const showModal = isPortrait && isMobileDevice && !dismissed && !forcedLandscape;
 
   return (
     <>
@@ -140,6 +200,20 @@ export default function LandscapeOrientationPrompt() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Floating helper button to exit simulated rotation if active */}
+      {forcedLandscape && (
+        <button
+          type="button"
+          className="orientation-toggle-fab"
+          onClick={handleExitForcedLandscape}
+          title="Exit rotated landscape view"
+          id="btn-exit-forced-landscape"
+        >
+          <span className="orientation-toggle-fab__icon">📱</span>
+          <span>Exit Rotated View</span>
+        </button>
       )}
     </>
   );
