@@ -41,24 +41,6 @@ export const THEMES = [
     },
     desc: 'Pale apricot, rose sherbet, blush, deep rosewood & midnight plum',
   },
-  {
-    id: 'emerald',
-    name: 'Emerald',
-    title: 'Jade (Emerald)',
-    icon: '🌲',
-    previewColor: '#041c14',
-    accentColor: '#10b981',
-    desc: 'Deep botanical forest',
-  },
-  {
-    id: 'ruby',
-    name: 'Ruby',
-    title: 'Crimson (Ruby)',
-    icon: '💎',
-    previewColor: '#18040a',
-    accentColor: '#f43f5e',
-    desc: 'Velvet fire & ruby',
-  },
 ];
 
 const ThemeContext = createContext();
