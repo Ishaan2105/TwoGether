@@ -3722,16 +3722,27 @@ body:has(.auth-page),
   --canvas-bg: #050f1d !important;
 }
 
-html.landing-dark-theme body,
+html.landing-dark-theme:not(.auth-page-active):not(:has(.auth-page)) body,
 html:has(.landing) body,
-html:has(.auth-page) body,
-body.landing-dark-theme,
-body:has(.landing),
-body:has(.auth-page) {
+body.landing-dark-theme:not(.auth-page-active):not(:has(.auth-page)),
+body:has(.landing) {
   background:
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.18), transparent 60%),
     radial-gradient(ellipse 70% 60% at 50% 110%, rgba(30, 58, 138, 0.28), transparent 70%),
     #0a192f !important;
+  color: #f8fafc !important;
+}
+
+/* Auth pages (Login & Register) - Pure solid Navy Blue background */
+html:has(.auth-page),
+html:has(.auth-page) body,
+html.auth-page-active,
+html.auth-page-active body,
+body:has(.auth-page),
+body.auth-page-active,
+.auth-page {
+  background: #0a192f !important;
+  background-color: #0a192f !important;
   color: #f8fafc !important;
 }
 
@@ -4096,14 +4107,17 @@ html:has(.landing) .scroll-sequence-vignette {
    ============================================================ */
 
 .auth-page {
-  background: transparent !important;
+  background: #0a192f !important;
+  background-color: #0a192f !important;
+  min-height: 100vh;
+  width: 100%;
 }
 
 .auth-card {
-  background: rgba(13, 32, 59, 0.85) !important;
-  border: 1px solid rgba(56, 189, 248, 0.18) !important;
+  background: rgba(13, 32, 59, 0.92) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
   color: #f8fafc !important;
-  box-shadow: 0 10px 40px rgba(3, 10, 20, 0.65) !important;
+  box-shadow: 0 12px 45px rgba(3, 10, 20, 0.75) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
 }

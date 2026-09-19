@@ -37,11 +37,11 @@ export default function Login() {
     } catch {
       // Ignore
     }
-    document.documentElement.classList.add('landing-dark-theme');
-    document.body.classList.add('landing-dark-theme');
+    document.documentElement.classList.add('landing-dark-theme', 'auth-page-active');
+    document.body.classList.add('landing-dark-theme', 'auth-page-active');
     return () => {
-      document.documentElement.classList.remove('landing-dark-theme');
-      document.body.classList.remove('landing-dark-theme');
+      document.documentElement.classList.remove('landing-dark-theme', 'auth-page-active');
+      document.body.classList.remove('landing-dark-theme', 'auth-page-active');
     };
   }, []);
 

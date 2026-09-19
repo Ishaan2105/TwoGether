@@ -119,6 +119,15 @@ export default function App() {
       document.documentElement.classList.remove('landing-dark-theme');
       document.body.classList.remove('landing-dark-theme');
     }
+
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+    if (isAuthPage) {
+      document.documentElement.classList.add('auth-page-active');
+      document.body.classList.add('auth-page-active');
+    } else {
+      document.documentElement.classList.remove('auth-page-active');
+      document.body.classList.remove('auth-page-active');
+    }
   }, [isPublicPage, location.pathname]);
 
   return (
