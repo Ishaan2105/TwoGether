@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useDuo } from '../context/DuoContext.jsx';
 import { useSidebar } from '../context/SidebarContext.jsx';
+import { useInAppModal } from '../context/ModalContext.jsx';
 import * as duoService from '../services/duo.js';
 import WhatsAppShareModal from '../components/common/WhatsAppShareModal.jsx';
 
@@ -10,6 +11,7 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { duo, partner, loading, lookup, pair, nudge, unpair } = useDuo();
   const { openImageNudge, openNudgeAction } = useSidebar();
+  const { showConfirm } = useInAppModal();
   const navigate = useNavigate();
 
   const [partnerCode, setPartnerCode] = useState('');
@@ -124,7 +126,15 @@ export default function Dashboard() {
   };
 
   const handleUnpair = async () => {
-    if (!window.confirm('Are you sure you want to unlink from your Duo partner?')) return;
+    const confirmed = await showConfirm({
+      title: 'Unlink Duo Partner',
+      message: 'Are you sure you want to unlink from your Duo partner? Your joint streaks and shared duo history will be disconnected.',
+      confirmText: 'Unlink Duo',
+      cancelText: 'Stay Together',
+      variant: 'danger',
+      icon: '🤝',
+    });
+    if (!confirmed) return;
     setUnpairing(true);
     setError('');
     try {

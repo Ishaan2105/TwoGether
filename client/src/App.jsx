@@ -21,6 +21,7 @@ import NudgeViewerModal from './components/common/NudgeViewerModal.jsx';
 import NudgeActionModal from './components/common/NudgeActionModal.jsx';
 import IncomingAlertModal from './components/common/IncomingAlertModal.jsx';
 import LandscapeOrientationPrompt from './components/common/LandscapeOrientationPrompt.jsx';
+import InAppConfirmModal from './components/common/InAppConfirmModal.jsx';
 import { useSidebar } from './context/SidebarContext.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 
@@ -146,6 +147,7 @@ export default function App() {
       <IncomingAlertModal />
       <NotificationPermissionBanner />
       <LandscapeOrientationPrompt />
+      <InAppConfirmModal />
 
       {/* Deep-link notification watcher */}
       <NudgeWatcher />

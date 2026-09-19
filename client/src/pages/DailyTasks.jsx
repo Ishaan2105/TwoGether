@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useInAppModal } from '../context/ModalContext.jsx';
 import HabitMatrixGrid from '../components/habits/HabitMatrixGrid.jsx';
 import CohortRetentionMatrix from '../components/habits/CohortRetentionMatrix.jsx';
 import * as habitService from '../services/habits.js';
@@ -101,6 +102,7 @@ const SPRINT_PRESETS = [
 
 export default function DailyTasks() {
   const { user, refreshUser } = useAuth();
+  const { showConfirm } = useInAppModal();
   const navigate = useNavigate();
 
   const [habits, setHabits] = useState([]);
@@ -361,7 +363,15 @@ export default function DailyTasks() {
   // Delete
   const handleDelete = async (habitId) => {
     const habitObj = habits.find((h) => h._id === habitId);
-    if (!window.confirm(`Are you sure you want to delete "${habitObj?.title || 'this habit'}"?`)) {
+    const confirmed = await showConfirm({
+      title: 'Delete Habit',
+      message: `Are you sure you want to delete "${habitObj?.title || 'this habit'}"? All progress and check-in history for this task will be removed.`,
+      confirmText: 'Delete Habit',
+      cancelText: 'Keep Habit',
+      variant: 'danger',
+      icon: '🗑️',
+    });
+    if (!confirmed) {
       return;
     }
     try {
