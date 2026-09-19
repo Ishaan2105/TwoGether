@@ -433,35 +433,39 @@ export default function Dashboard() {
               <div className="duo-nudge-buttons">
                 <button
                   type="button"
-                  className="btn btn--secondary"
+                  className="duo-nudge-btn"
                   onClick={openImageNudge}
                   title="Capture camera photo or select gallery image"
                 >
-                  📸 Send Image Nudge
+                  <span className="duo-nudge-btn__icon">📸</span>
+                  <span className="duo-nudge-btn__label">Send Image Nudge</span>
                 </button>
                 <button
                   type="button"
-                  className="btn btn--secondary"
+                  className="duo-nudge-btn"
                   onClick={() => openNudgeAction('hype')}
                   title="Send energetic hype and celebration to partner"
                 >
-                  ⚡ Send Hype
+                  <span className="duo-nudge-btn__icon">⚡</span>
+                  <span className="duo-nudge-btn__label">Send Hype</span>
                 </button>
                 <button
                   type="button"
-                  className="btn btn--secondary"
+                  className="duo-nudge-btn"
                   onClick={() => openNudgeAction('nudge')}
                   title="Send accountability nudge and reminder"
                 >
-                  🔔 Nudge Partner
+                  <span className="duo-nudge-btn__icon">🔔</span>
+                  <span className="duo-nudge-btn__label">Nudge Partner</span>
                 </button>
                 <button
                   type="button"
-                  className="btn btn--secondary"
+                  className="duo-nudge-btn"
                   onClick={() => openNudgeAction('sos')}
                   title="Trigger high-urgency Emergency SOS alert & email"
                 >
-                  🚨 Emergency SOS
+                  <span className="duo-nudge-btn__icon">🚨</span>
+                  <span className="duo-nudge-btn__label">Emergency SOS</span>
                 </button>
               </div>
 
