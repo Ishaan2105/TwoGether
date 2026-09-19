@@ -3,10 +3,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 export const THEMES = [
   {
     id: 'dark',
-    name: 'Solaris',
-    title: 'Solaris (Cornsilk & Earth)',
-    icon: '🌾',
-    previewColor: '#fefae0',
+    name: 'Botanica',
+    title: 'Botanica (Olive Leaf & Black Forest)',
+    icon: '🌿',
+    previewColor: '#606c38',
     accentColor: '#606c38',
     secondaryColor: '#dda15e',
     highlightColor: '#bc6c25',
