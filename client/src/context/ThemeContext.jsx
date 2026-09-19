@@ -10,6 +10,8 @@ export const THEMES = [
     accentColor: '#219ebc',
     secondaryColor: '#ffb703',
     highlightColor: '#fb8500',
+    skyColor: '#8ecae6',
+    palette: ['#8ecae6', '#219ebc', '#023047', '#ffb703', '#fb8500'],
     desc: 'Deep oceanic abyss & amber sunset',
   },
   {
