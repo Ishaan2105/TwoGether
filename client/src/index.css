@@ -1670,7 +1670,11 @@ button {
 }
 
 .sidebar-nav-divider {
-  display: none;
+  display: block;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 0.35rem 0.5rem;
+  opacity: 0.5;
 }
 
 .sidebar-nav-item {
@@ -15917,67 +15921,102 @@ html:has(.landing) .scroll-sequence-vignette {
     margin-top: 0.2rem !important;
   }
 
-  /* Compact & Sleek Collapsible Overlapping Drawer on Mobile Landscape */
+  /* Enhanced Collapsible Overlapping Drawer on Mobile Landscape */
   .sidebar-drawer {
-    width: 250px !important;
-    max-width: 78vw !important;
+    width: 275px !important;
+    max-width: 84vw !important;
   }
 
   .sidebar-content {
     overflow-y: auto !important;
     scrollbar-width: thin;
+    padding: 0.75rem 0.85rem !important;
   }
 
+  /* Bigger Brand Header with Larger TwoGether Title & Logo */
   .sidebar-header {
-    padding: 0.55rem 0.75rem !important;
+    padding: 0.85rem 1.15rem !important;
+  }
+
+  .sidebar-brand {
+    gap: 0.85rem !important;
   }
 
   .sidebar-logo,
   .sidebar-brand-img {
-    width: 32px !important;
-    height: 32px !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 16px rgba(var(--cyan-rgb), 0.35) !important;
   }
 
   .sidebar-brand-name {
-    font-size: 1.05rem !important;
+    font-size: 1.35rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.02em !important;
   }
 
-  .sidebar-content {
-    padding: 0.35rem 0.55rem !important;
+  .sidebar-close-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.95rem !important;
+    border-radius: 9px !important;
   }
 
+  /* Increased Spacing & Gap Between Sidebar Sections */
   .sidebar-nav {
-    gap: 0.2rem !important;
+    gap: 0.65rem !important;
+  }
+
+  .sidebar-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.45rem !important;
+  }
+
+  .sidebar-nav-divider {
+    display: block !important;
+    height: 1px !important;
+    background: var(--border-subtle) !important;
+    margin: 0.35rem 0.4rem !important;
+    opacity: 0.55 !important;
   }
 
   .sidebar-nav-item {
-    padding: 0.35rem 0.6rem !important;
-    font-size: 0.8rem !important;
-    gap: 0.5rem !important;
-    border-radius: 8px !important;
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.88rem !important;
+    gap: 0.7rem !important;
+    border-radius: 10px !important;
   }
 
   .sidebar-nav-icon svg {
-    width: 16px !important;
-    height: 16px !important;
+    width: 18px !important;
+    height: 18px !important;
   }
 
   .sidebar-footer {
-    padding: 0.4rem 0.65rem !important;
+    padding: 0.65rem 0.85rem !important;
+    border-top: 1px solid var(--border-subtle) !important;
   }
 
   .sidebar-profile-trigger {
-    padding: 0.3rem 0.5rem !important;
+    padding: 0.45rem 0.65rem !important;
+    gap: 0.65rem !important;
   }
 
   .sidebar-profile-avatar {
-    width: 26px !important;
-    height: 26px !important;
-    font-size: 0.72rem !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.84rem !important;
   }
 
   .sidebar-profile-name {
-    font-size: 0.76rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+  }
+
+  .sidebar-profile-sub {
+    font-size: 0.72rem !important;
   }
 
   .container.dashboard,
