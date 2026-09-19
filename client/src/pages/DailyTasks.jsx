@@ -20,12 +20,12 @@ const CATEGORIES = [
 ];
 
 const CATEGORY_OPTIONS = [
-  { id: 'Productivity', label: 'Productivity', color: '#219ebc' },
-  { id: 'Fitness', label: 'Fitness', color: '#10b981' },
-  { id: 'Health', label: 'Health', color: '#8ecae6' },
-  { id: 'Focus', label: 'Focus', color: '#a855f7' },
-  { id: 'Mindset', label: 'Mindset', color: '#ffb703' },
-  { id: 'Custom', label: 'Custom', color: '#fb8500' },
+  { id: 'Productivity', label: 'Productivity', color: '#606c38' },
+  { id: 'Fitness', label: 'Fitness', color: '#88994f' },
+  { id: 'Health', label: 'Health', color: '#a9b876' },
+  { id: 'Focus', label: 'Focus', color: '#283618' },
+  { id: 'Mindset', label: 'Mindset', color: '#dda15e' },
+  { id: 'Custom', label: 'Custom', color: '#bc6c25' },
 ];
 
 const TIME_OPTIONS = [
@@ -36,9 +36,9 @@ const TIME_OPTIONS = [
 ];
 
 const PRIORITY_OPTIONS = [
-  { id: 'low', label: 'Low', xp: '+5 XP', color: '#10b981' },
-  { id: 'medium', label: 'Medium', xp: '+10 XP', color: '#ffb703' },
-  { id: 'high', label: 'High', xp: '+20 XP', color: '#fb8500' },
+  { id: 'low', label: 'Low', xp: '+5 XP', color: '#88994f' },
+  { id: 'medium', label: 'Medium', xp: '+10 XP', color: '#dda15e' },
+  { id: 'high', label: 'High', xp: '+20 XP', color: '#bc6c25' },
 ];
 
 const PRESET_TEMPLATES = [

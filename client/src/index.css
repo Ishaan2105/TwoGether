@@ -8,74 +8,95 @@
 :root,
 [data-theme="dark"],
 [data-theme="solaris"] {
-  /* ── 1. Base Prussian Abyss & Surface Hierarchy (#023047) ── */
-  --bg-primary: #023047;
-  --bg-secondary: #04273b;
-  --bg-card: rgba(4, 34, 53, 0.90);
-  --bg-card-hover: rgba(6, 48, 74, 0.96);
-  --bg-card-solid: #04263a;
-  --bg-surface: #05304a;
-  --bg-input: rgba(1, 20, 32, 0.85);
-  --bg-overlay: rgba(2, 48, 71, 0.95);
-  --navbar-bg: rgba(2, 48, 71, 0.94);
-  --modal-bg: linear-gradient(150deg, #05486c 0%, #023047 55%, #011d2b 100%);
-  --canvas-bg: #011d2b;
+  /* ── 1. Base Black Forest Atmosphere & Surface Hierarchy ── */
+  --bg-primary: #101509; /* black_forest-200 */
+  --bg-secondary: #18200e; /* black_forest-300 */
+  --bg-card: rgba(31, 42, 19, 0.90); /* black_forest-400 with 90% alpha */
+  --bg-card-hover: rgba(40, 54, 24, 0.96); /* black_forest-500 */
+  --bg-card-solid: #1f2a13; /* black_forest-400 */
+  --bg-surface: #283618; /* black_forest-500 */
+  --bg-input: rgba(16, 21, 9, 0.85); /* black_forest-200 */
+  --bg-overlay: rgba(16, 21, 9, 0.96);
+  --navbar-bg: rgba(16, 21, 9, 0.94);
+  --modal-bg: linear-gradient(150deg, #283618 0%, #18200e 55%, #080b05 100%);
+  --canvas-bg: #080b05; /* black_forest-100 */
   
   /* ── 2. Subtle & Focus Borders ── */
-  --border: rgba(142, 202, 230, 0.25);
-  --border-subtle: rgba(142, 202, 230, 0.12);
-  --border-focus: #219ebc;
+  --border: rgba(169, 184, 118, 0.22); /* olive_leaf-700 alpha */
+  --border-subtle: rgba(169, 184, 118, 0.10);
+  --border-focus: #dda15e; /* sunlit_clay */
   
-  /* ── 3. The 5 Palette Color Tokens ── */
-  --cyan: #219ebc;
-  --cyan-rgb: 33, 158, 188;
-  --teal: #8ecae6;
-  --teal-rgb: 142, 202, 230;
-  --amber: #ffb703;
-  --amber-rgb: 255, 183, 3;
-  --orange: #fb8500;
-  --orange-rgb: 251, 133, 0;
-  --abyss: #023047;
-  --abyss-rgb: 2, 48, 71;
+  /* ── 3. The 5 Palette Color Tokens (Olive Leaf, Black Forest, Cornsilk, Sunlit Clay, Copperwood) ── */
+  --olive-leaf: #606c38;
+  --olive-leaf-rgb: 96, 108, 56;
+  --olive-leaf-light: #a9b876;
+  --olive-leaf-vibrant: #88994f;
   
-  --violet: #8ecae6;
-  --success: #10b981;
-  --danger: #fb8500;
+  --black-forest: #283618;
+  --black-forest-rgb: 40, 54, 24;
+  --black-forest-deep: #101509;
   
-  /* ── 4. Typography & Readability (WCAG AAA Contrast > 8.5:1 on #023047) ── */
-  --text: #f8fafc;
-  --text-main: #f8fafc;
-  --text-muted: #8ecae6;
-  --text-dim: #70b4d4;
-  --text-inverse: #023047;
-  --btn-primary-text: #023047;
+  --cornsilk: #fefae0;
+  --cornsilk-rgb: 254, 250, 224;
+  
+  --sunlit-clay: #dda15e;
+  --sunlit-clay-rgb: 221, 161, 94;
+  --sunlit-clay-light: #e4b57f;
+  
+  --copperwood: #bc6c25;
+  --copperwood-rgb: 188, 108, 37;
+  --copperwood-light: #d98840;
+
+  /* Universal component aliases */
+  --cyan: #88994f; /* olive_leaf-600 */
+  --cyan-rgb: 136, 153, 79;
+  --teal: #a9b876; /* olive_leaf-700 */
+  --teal-rgb: 169, 184, 118;
+  --amber: #dda15e; /* sunlit_clay-500 */
+  --amber-rgb: 221, 161, 94;
+  --orange: #bc6c25; /* copperwood-500 */
+  --orange-rgb: 188, 108, 37;
+  --abyss: #101509; /* black_forest-200 */
+  --abyss-rgb: 16, 21, 9;
+  
+  --violet: #dda15e;
+  --success: #88994f;
+  --danger: #bc6c25;
+  
+  /* ── 4. Typography & Readability (Cornsilk on Black Forest: WCAG AAA > 14:1) ── */
+  --text: #fefae0; /* cornsilk DEFAULT */
+  --text-main: #fefae0;
+  --text-muted: #c5d0a3; /* olive_leaf-800 */
+  --text-dim: #a9b876; /* olive_leaf-700 */
+  --text-inverse: #101509; /* black_forest-200 */
+  --btn-primary-text: #101509;
   
   /* ── 5. Radii, Transitions, Shadows ── */
   --radius: 14px;
   --radius-sm: 10px;
   --transition: 0.2s ease;
-  --shadow: 0 10px 40px rgba(1, 24, 38, 0.60);
-  --shadow-card: 0 6px 24px rgba(1, 24, 38, 0.45);
-  --shadow-glow: 0 0 30px rgba(33, 158, 188, 0.38);
-  --shadow-amber: 0 0 25px rgba(255, 183, 3, 0.35);
-  --shadow-orange: 0 0 25px rgba(251, 133, 0, 0.35);
+  --shadow: 0 10px 40px rgba(8, 11, 5, 0.65);
+  --shadow-card: 0 6px 24px rgba(8, 11, 5, 0.50);
+  --shadow-glow: 0 0 30px rgba(136, 153, 79, 0.35);
+  --shadow-amber: 0 0 25px rgba(221, 161, 94, 0.35);
+  --shadow-orange: 0 0 25px rgba(188, 108, 37, 0.35);
   
   /* ── 6. Balanced Atmospheric Gradients (All 5 Colors in Harmony) ── */
-  --gradient-primary: linear-gradient(135deg, #219ebc 0%, #8ecae6 100%);
-  --gradient-solar: linear-gradient(135deg, #fb8500 0%, #ffb703 100%);
-  --gradient-sunset: linear-gradient(135deg, #219ebc 0%, #ffb703 55%, #fb8500 100%);
-  --gradient-abyss: linear-gradient(180deg, #043852 0%, #023047 100%);
+  --gradient-primary: linear-gradient(135deg, #606c38 0%, #a9b876 100%);
+  --gradient-solar: linear-gradient(135deg, #bc6c25 0%, #dda15e 100%);
+  --gradient-sunset: linear-gradient(135deg, #606c38 0%, #dda15e 55%, #bc6c25 100%);
+  --gradient-abyss: linear-gradient(180deg, #1f2a13 0%, #101509 100%);
   
   --body-bg:
-    radial-gradient(ellipse 75% 50% at 50% -5%, rgba(33, 158, 188, 0.28), transparent 65%),
-    radial-gradient(ellipse 60% 45% at 95% 15%, rgba(251, 133, 0, 0.20), transparent 60%),
-    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(255, 183, 3, 0.18), transparent 60%),
-    radial-gradient(ellipse 45% 40% at 85% 85%, rgba(142, 202, 230, 0.16), transparent 60%),
-    #023047;
+    radial-gradient(ellipse 75% 50% at 50% -5%, rgba(136, 153, 79, 0.24), transparent 65%),
+    radial-gradient(ellipse 60% 45% at 95% 15%, rgba(188, 108, 37, 0.20), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(221, 161, 94, 0.18), transparent 60%),
+    radial-gradient(ellipse 45% 40% at 85% 85%, rgba(254, 250, 224, 0.09), transparent 60%),
+    #101509;
   --vignette-bg:
-    radial-gradient(ellipse at center, rgba(2, 48, 71, 0.05) 0%, rgba(1, 24, 36, 0.65) 75%, #011d2b 100%),
-    linear-gradient(180deg, rgba(2, 48, 71, 0.7) 0%, transparent 15%, transparent 85%, #011d2b 100%);
-  --canvas-bg: #011d2b;
+    radial-gradient(ellipse at center, rgba(16, 21, 9, 0.05) 0%, rgba(8, 11, 5, 0.7) 75%, #080b05 100%),
+    linear-gradient(180deg, rgba(16, 21, 9, 0.7) 0%, transparent 15%, transparent 85%, #080b05 100%);
+  --canvas-bg: #080b05;
 }
 
 /* ⚪ 2. PEARL (Luminous Light Theme) */
@@ -4839,14 +4860,14 @@ html.desktop-site-view .auth-card {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  background: linear-gradient(145deg, rgba(3, 40, 62, 0.88), rgba(2, 48, 71, 0.95));
-  border: 1px solid rgba(142, 202, 230, 0.28);
+  background: linear-gradient(145deg, rgba(31, 42, 19, 0.92), rgba(16, 21, 9, 0.98));
+  border: 1px solid rgba(169, 184, 118, 0.26);
   border-radius: var(--radius);
   padding: 1.6rem 2rem;
   gap: 1.5rem;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(1, 24, 38, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px rgba(8, 11, 5, 0.6), inset 0 1px 0 rgba(254, 250, 224, 0.08);
 }
 
 .duo-bridge::before {
@@ -4856,7 +4877,7 @@ html.desktop-site-view .auth-card {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #219ebc 0%, #8ecae6 28%, #ffb703 68%, #fb8500 100%);
+  background: linear-gradient(90deg, #606c38 0%, #a9b876 25%, #fefae0 50%, #dda15e 75%, #bc6c25 100%);
   border-radius: var(--radius) var(--radius) 0 0;
 }
 
@@ -4884,27 +4905,27 @@ html.desktop-site-view .auth-card {
   text-align: right;
 }
 
-/* Dual Solaris Avatars: Ocean Sky (You) & Solar Sunset (Partner) */
+/* Dual Solaris Avatars: Botanical Olive (You) & Sunlit Copperwood (Partner) */
 .duo-member__avatar {
   font-size: 1.35rem;
   font-weight: 900;
   width: 52px;
   height: 52px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #219ebc, #8ecae6);
-  color: #023047;
-  border: 2px solid #8ecae6;
+  background: linear-gradient(135deg, #606c38, #88994f);
+  color: #fefae0;
+  border: 2px solid #a9b876;
   display: grid;
   place-items: center;
-  box-shadow: 0 4px 20px rgba(33, 158, 188, 0.45);
+  box-shadow: 0 4px 20px rgba(136, 153, 79, 0.45);
   flex-shrink: 0;
 }
 
 .duo-member--partner .duo-member__avatar {
-  background: linear-gradient(135deg, #fb8500, #ffb703);
-  color: #023047;
-  border: 2px solid #ffb703;
-  box-shadow: 0 4px 20px rgba(251, 133, 0, 0.45);
+  background: linear-gradient(135deg, #bc6c25, #dda15e);
+  color: #fefae0;
+  border: 2px solid #dda15e;
+  box-shadow: 0 4px 20px rgba(188, 108, 37, 0.45);
 }
 
 .duo-member__info {
@@ -4916,11 +4937,11 @@ html.desktop-site-view .auth-card {
 .duo-member__info strong {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #f8fafc;
+  color: #fefae0;
 }
 
 .duo-member__info span {
-  color: #8ecae6;
+  color: #c5d0a3;
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -4942,11 +4963,11 @@ html.desktop-site-view .auth-card {
 @keyframes pulseGlow {
   0%, 100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 6px rgba(255, 183, 3, 0.6));
+    filter: drop-shadow(0 0 6px rgba(221, 161, 94, 0.6));
   }
   50% {
     transform: scale(1.2);
-    filter: drop-shadow(0 0 16px rgba(251, 133, 0, 0.9));
+    filter: drop-shadow(0 0 16px rgba(188, 108, 37, 0.9));
   }
 }
 
@@ -4954,12 +4975,12 @@ html.desktop-site-view .auth-card {
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.15em;
-  color: #ffb703;
-  background: rgba(255, 183, 3, 0.15);
-  border: 1px solid rgba(255, 183, 3, 0.45);
+  color: #dda15e;
+  background: rgba(221, 161, 94, 0.16);
+  border: 1px solid rgba(221, 161, 94, 0.45);
   padding: 0.25rem 0.65rem;
   border-radius: 9999px;
-  box-shadow: 0 0 14px rgba(255, 183, 3, 0.25);
+  box-shadow: 0 0 14px rgba(221, 161, 94, 0.25);
   white-space: nowrap;
 }
 
@@ -4968,9 +4989,9 @@ html.desktop-site-view .auth-card {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  background: rgba(33, 158, 188, 0.2);
-  border: 1px solid #219ebc;
-  color: #8ecae6;
+  background: rgba(96, 108, 56, 0.25);
+  border: 1px solid #88994f;
+  color: #fefae0;
   border-radius: 9999px;
   padding: 0.35rem 0.85rem;
   font-size: 0.72rem;
@@ -4985,24 +5006,24 @@ html.desktop-site-view .auth-card {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #219ebc;
-  box-shadow: 0 0 8px #219ebc;
+  background: #88994f;
+  box-shadow: 0 0 8px #88994f;
 }
 
 .btn--unlink-duo {
-  background: rgba(4, 38, 58, 0.8) !important;
-  border: 1px solid rgba(142, 202, 230, 0.25) !important;
-  color: #8ecae6 !important;
+  background: rgba(31, 42, 19, 0.8) !important;
+  border: 1px solid rgba(169, 184, 118, 0.25) !important;
+  color: #c5d0a3 !important;
   border-radius: 9999px !important;
   font-weight: 700 !important;
   transition: all 0.2s ease !important;
 }
 
 .btn--unlink-duo:hover {
-  border-color: #fb8500 !important;
-  color: #fb8500 !important;
-  background: rgba(251, 133, 0, 0.14) !important;
-  box-shadow: 0 0 14px rgba(251, 133, 0, 0.25) !important;
+  border-color: #bc6c25 !important;
+  color: #bc6c25 !important;
+  background: rgba(188, 108, 37, 0.15) !important;
+  box-shadow: 0 0 14px rgba(188, 108, 37, 0.25) !important;
 }
 
 .btn--solaris-cta {
@@ -5010,20 +5031,20 @@ html.desktop-site-view .auth-card {
   align-items: center !important;
   justify-content: center !important;
   gap: 0.5rem !important;
-  background: linear-gradient(135deg, #219ebc 0%, #8ecae6 100%) !important;
-  color: #023047 !important;
+  background: linear-gradient(135deg, #dda15e 0%, #fefae0 100%) !important;
+  color: #101509 !important;
   font-weight: 800 !important;
   border-radius: 9999px !important;
   border: none !important;
   padding: 0.55rem 1.35rem !important;
-  box-shadow: 0 4px 16px rgba(33, 158, 188, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(221, 161, 94, 0.45) !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   text-decoration: none !important;
 }
 
 .btn--solaris-cta:hover {
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(33, 158, 188, 0.6) !important;
+  box-shadow: 0 8px 24px rgba(221, 161, 94, 0.6) !important;
   filter: brightness(1.08) !important;
 }
 
@@ -5039,13 +5060,13 @@ html.desktop-site-view .auth-card {
   display: flex;
   align-items: center;
   gap: 1.15rem;
-  background: linear-gradient(145deg, rgba(3, 40, 62, 0.90), rgba(2, 48, 71, 0.96));
-  border: 1px solid rgba(142, 202, 230, 0.22);
+  background: linear-gradient(145deg, rgba(31, 42, 19, 0.92), rgba(16, 21, 9, 0.98));
+  border: 1px solid rgba(169, 184, 118, 0.22);
   border-radius: var(--radius);
   padding: 1.35rem 1.45rem;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(1, 24, 38, 0.45);
+  box-shadow: 0 8px 24px rgba(8, 11, 5, 0.5);
   transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -5091,44 +5112,44 @@ html.desktop-site-view .auth-card {
   font-weight: 600;
 }
 
-/* Card 1: DUO STREAK (Golden Amber #ffb703 & Solar Orange #fb8500) */
+/* Card 1: DUO STREAK (Copperwood #bc6c25 & Sunlit Clay #dda15e) */
 .duo-stat-card--streak::before {
-  background: linear-gradient(90deg, #ffb703, #fb8500);
+  background: linear-gradient(90deg, #bc6c25, #dda15e);
 }
 .duo-stat-card--streak .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(255, 183, 3, 0.65));
+  filter: drop-shadow(0 0 12px rgba(188, 108, 37, 0.65));
 }
 .duo-stat-card--streak .duo-stat-card__label {
-  color: #ffb703;
+  color: #dda15e;
 }
 .duo-stat-card--streak .duo-stat-card__value {
-  color: #ffffff;
+  color: #fefae0;
 }
 .duo-stat-card--streak .duo-stat-card__sub {
-  color: #ffb703;
+  color: #ebc79f;
   opacity: 0.95;
 }
 .duo-stat-card--streak:hover {
-  border-color: #ffb703;
+  border-color: #dda15e;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(255, 183, 3, 0.28);
+  box-shadow: 0 12px 30px rgba(188, 108, 37, 0.35);
 }
 
-/* Card 2: SYNERGY SCORE (Cerulean Cyan #219ebc & Sky Blue #8ecae6) */
+/* Card 2: SYNERGY SCORE (Olive Leaf #606c38 & #88994f) */
 .duo-stat-card--synergy::before {
-  background: linear-gradient(90deg, #219ebc, #8ecae6);
+  background: linear-gradient(90deg, #606c38, #88994f);
 }
 .duo-stat-card--synergy .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(33, 158, 188, 0.65));
+  filter: drop-shadow(0 0 12px rgba(136, 153, 79, 0.65));
 }
 .duo-stat-card--synergy .duo-stat-card__label {
-  color: #8ecae6;
+  color: #a9b876;
 }
 .duo-stat-card--synergy .duo-stat-card__value {
-  color: #8ecae6;
+  color: #fefae0;
 }
 .duo-stat-card--synergy .progress-bar {
-  background: rgba(1, 24, 38, 0.75);
+  background: rgba(8, 11, 5, 0.75);
   height: 7px;
   border-radius: 9999px;
   overflow: hidden;
@@ -5136,61 +5157,61 @@ html.desktop-site-view .auth-card {
 }
 .duo-stat-card--synergy .progress-bar__fill {
   height: 100%;
-  background: linear-gradient(90deg, #219ebc, #8ecae6);
+  background: linear-gradient(90deg, #606c38, #88994f, #a9b876);
   border-radius: 9999px;
-  box-shadow: 0 0 12px rgba(33, 158, 188, 0.7);
+  box-shadow: 0 0 12px rgba(136, 153, 79, 0.7);
   transition: width 0.4s ease;
 }
 .duo-stat-card--synergy:hover {
-  border-color: #219ebc;
+  border-color: #88994f;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(33, 158, 188, 0.28);
+  box-shadow: 0 12px 30px rgba(136, 153, 79, 0.35);
 }
 
-/* Card 3: DUO SHIELDS (Radiant Sky Blue #8ecae6) */
+/* Card 3: DUO SHIELDS (Cornsilk #fefae0 & Olive Leaf Light #a9b876) */
 .duo-stat-card--shields::before {
-  background: linear-gradient(90deg, #8ecae6, #219ebc);
+  background: linear-gradient(90deg, #a9b876, #fefae0);
 }
 .duo-stat-card--shields .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(142, 202, 230, 0.65));
+  filter: drop-shadow(0 0 12px rgba(169, 184, 118, 0.65));
 }
 .duo-stat-card--shields .duo-stat-card__label {
-  color: #8ecae6;
+  color: #c5d0a3;
 }
 .duo-stat-card--shields .duo-stat-card__value {
-  color: #ffffff;
+  color: #fefae0;
 }
 .duo-stat-card--shields .duo-stat-card__sub {
-  color: #8ecae6;
+  color: #c5d0a3;
   opacity: 0.95;
 }
 .duo-stat-card--shields:hover {
-  border-color: #8ecae6;
+  border-color: #a9b876;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(142, 202, 230, 0.28);
+  box-shadow: 0 12px 30px rgba(169, 184, 118, 0.35);
 }
 
-/* Card 4: DUO LEVEL (Solar Orange #fb8500 & Golden Amber #ffb703) */
+/* Card 4: DUO LEVEL (Sunlit Clay #dda15e & Copperwood #bc6c25) */
 .duo-stat-card--level::before {
-  background: linear-gradient(90deg, #fb8500, #ffb703);
+  background: linear-gradient(90deg, #dda15e, #bc6c25);
 }
 .duo-stat-card--level .duo-stat-card__icon {
-  filter: drop-shadow(0 0 12px rgba(251, 133, 0, 0.65));
+  filter: drop-shadow(0 0 12px rgba(221, 161, 94, 0.65));
 }
 .duo-stat-card--level .duo-stat-card__label {
-  color: #fb8500;
+  color: #dda15e;
 }
 .duo-stat-card--level .duo-stat-card__value {
-  color: #ffb703;
+  color: #fefae0;
 }
 .duo-stat-card--level .duo-stat-card__sub {
-  color: #ffb703;
+  color: #e3a570;
   opacity: 0.95;
 }
 .duo-stat-card--level:hover {
-  border-color: #fb8500;
+  border-color: #dda15e;
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(251, 133, 0, 0.28);
+  box-shadow: 0 12px 30px rgba(221, 161, 94, 0.35);
 }
 
 /* ---------- Shared Duo Synergy Shells ---------- */
@@ -5462,15 +5483,15 @@ html.desktop-site-view .auth-card {
   justify-content: center;
   gap: 0.65rem;
   padding: 0.75rem 1.45rem;
-  background: #f1f3f5;
-  color: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 9999px; /* EXACT pill shape from user screenshot */
+  background: #fefae0;
+  color: #101509;
+  border: 1px solid rgba(254, 250, 224, 0.6);
+  border-radius: 9999px; /* EXACT pill shape */
   font-size: 0.95rem;
   font-weight: 800;
   letter-spacing: -0.01em;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 14px rgba(8, 11, 5, 0.4), 0 1px 3px rgba(8, 11, 5, 0.2);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   user-select: none;
@@ -5478,14 +5499,14 @@ html.desktop-site-view .auth-card {
 
 .duo-nudge-btn:hover {
   background: #ffffff;
-  color: #000000;
+  color: #080b05;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(8, 11, 5, 0.5), 0 2px 6px rgba(8, 11, 5, 0.3);
 }
 
 .duo-nudge-btn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(8, 11, 5, 0.25);
 }
 
 .duo-nudge-btn__icon {
@@ -5498,12 +5519,12 @@ html.desktop-site-view .auth-card {
 
 .duo-nudge-btn__label {
   font-weight: 800;
-  color: #0f172a;
+  color: #101509;
   transition: color 0.15s ease;
 }
 
 .duo-nudge-btn:hover .duo-nudge-btn__label {
-  color: #000000;
+  color: #080b05;
 }
 
 @media (max-width: 640px) {
