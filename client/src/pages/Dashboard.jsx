@@ -161,7 +161,7 @@ export default function Dashboard() {
           <section className="card duo-hub">
             <div className="duo-hub__header">
               <div>
-                <span className="badge badge--success">ACTIVE DUO</span>
+                <span className="badge badge--solaris-active">ACTIVE DUO</span>
                 <h2>{duo.duoName}</h2>
                 <p className="muted">
                   Paired on {new Date(duo.formedAt).toLocaleDateString(undefined, { dateStyle: 'medium' })}
@@ -170,7 +170,7 @@ export default function Dashboard() {
               <div className="duo-hub__header-actions">
                 <button
                   type="button"
-                  className="btn btn--ghost btn--sm btn--danger-hover"
+                  className="btn btn--ghost btn--sm btn--unlink-duo"
                   onClick={handleUnpair}
                   disabled={unpairing}
                 >
@@ -208,7 +208,8 @@ export default function Dashboard() {
 
             {/* Duo Shared Metrics Grid */}
             <div className="duo-stats-grid">
-              <div className="duo-stat-card">
+              <div className="duo-stat-card duo-stat-card--streak">
+                <div className="duo-stat-card__icon" aria-hidden="true">🔥</div>
                 <div className="duo-stat-card__content">
                   <span className="duo-stat-card__label">DUO STREAK</span>
                   <span className="duo-stat-card__value">{duo.duoStreak} Days</span>
@@ -216,7 +217,8 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="duo-stat-card">
+              <div className="duo-stat-card duo-stat-card--synergy">
+                <div className="duo-stat-card__icon" aria-hidden="true">⚡</div>
                 <div className="duo-stat-card__content">
                   <span className="duo-stat-card__label">SYNERGY SCORE</span>
                   <span className="duo-stat-card__value">{duo.synergyScore}%</span>
@@ -229,7 +231,8 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="duo-stat-card">
+              <div className="duo-stat-card duo-stat-card--shields">
+                <div className="duo-stat-card__icon" aria-hidden="true">🛡️</div>
                 <div className="duo-stat-card__content">
                   <span className="duo-stat-card__label">DUO SHIELDS</span>
                   <span className="duo-stat-card__value">{duo.duoShields} Active</span>
@@ -237,7 +240,8 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="duo-stat-card">
+              <div className="duo-stat-card duo-stat-card--level">
+                <div className="duo-stat-card__icon" aria-hidden="true">👑</div>
                 <div className="duo-stat-card__content">
                   <span className="duo-stat-card__label">DUO LEVEL</span>
                   <span className="duo-stat-card__value">Level {duo.duoLevel}</span>
@@ -265,7 +269,7 @@ export default function Dashboard() {
                     Your distinct daily habits automatically linked under shared accountability domains:
                   </p>
                 </div>
-                <Link to="/tasks" className="btn btn--secondary btn--sm">
+                <Link to="/tasks" className="btn btn--solaris-cta btn--sm">
                   + Manage My Tasks
                 </Link>
               </div>
