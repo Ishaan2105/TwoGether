@@ -5652,7 +5652,13 @@ html.desktop-site-view .auth-card {
 [data-theme="solaris"] .duo-solo-section p.muted,
 [data-theme="botanica"] .duo-solo-section p,
 [data-theme="botanica"] .duo-solo-section p.muted,
-.duo-solo-section p.muted {
+.duo-solo-section p.muted,
+.duo-shells-desc,
+.duo-shells-empty-desc,
+.duo-solo-desc,
+p.duo-shells-desc,
+p.duo-shells-empty-desc,
+p.duo-solo-desc {
   color: #fefae0 !important;
   font-size: 0.88rem !important;
   opacity: 0.95 !important;

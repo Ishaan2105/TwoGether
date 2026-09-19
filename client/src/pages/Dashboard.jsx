@@ -264,8 +264,8 @@ export default function Dashboard() {
                       </span>
                     )}
                   </div>
-                  <h3 style={{ color: '#fefae0' }}>Shared Synergy Shells</h3>
-                  <p className="muted" style={{ color: '#fefae0', opacity: 0.95 }}>
+                  <h3 className="duo-shells-title" style={{ color: '#fefae0' }}>Shared Synergy Shells</h3>
+                  <p className="duo-shells-desc" style={{ color: '#fefae0', opacity: 0.95 }}>
                     Your distinct daily habits automatically linked under shared accountability domains:
                   </p>
                 </div>
@@ -393,8 +393,8 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <div className="card duo-shells-empty">
-                  <h4 style={{ color: '#fefae0' }}>No overlapping task shells yet</h4>
-                  <p className="muted" style={{ color: '#fefae0', opacity: 0.95 }}>
+                  <h4 className="duo-shells-empty-title" style={{ color: '#fefae0' }}>No overlapping task shells yet</h4>
+                  <p className="duo-shells-empty-desc" style={{ color: '#fefae0', opacity: 0.95 }}>
                     When you and @{partner.username} both have habits in matching domains (like Exercise, Hydration, or Reading), the system will automatically fuse them into Shared Synergy Shells here!
                   </p>
                   <Link to="/tasks" className="btn btn--primary btn--sm">
@@ -406,8 +406,8 @@ export default function Dashboard() {
               {/* Solo Habits Section */}
               {shellsData?.soloShells && shellsData.soloShells.length > 0 && (
                 <div className="duo-solo-section">
-                  <h4 style={{ color: '#fefae0' }}>Individual / Solo Habits ({shellsData.soloShells.length})</h4>
-                  <p className="muted" style={{ fontSize: '0.85rem', color: '#fefae0', opacity: 0.95 }}>
+                  <h4 className="duo-solo-title" style={{ color: '#fefae0' }}>Individual / Solo Habits ({shellsData.soloShells.length})</h4>
+                  <p className="duo-solo-desc" style={{ fontSize: '0.85rem', color: '#fefae0', opacity: 0.95 }}>
                     Tasks currently unique to one partner. Add matching habits to turn them into shared synergy shells!
                   </p>
                   <div className="duo-solo-grid">
