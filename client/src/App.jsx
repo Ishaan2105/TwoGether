@@ -11,7 +11,6 @@ import Settings from './pages/Settings.jsx';
 import ProtectedRoute from './components/common/ProtectedRoute.jsx';
 import Sidebar from './components/common/Sidebar.jsx';
 import MobileTopBar from './components/common/MobileTopBar.jsx';
-import PortraitBottomBar from './components/common/PortraitBottomBar.jsx';
 import LeaderboardModal from './components/common/LeaderboardModal.jsx';
 import PWAInstallModal from './components/common/PWAInstallModal.jsx';
 import StreakShieldModal from './components/common/StreakShieldModal.jsx';
@@ -106,12 +105,11 @@ export default function App() {
 
     const orientationChoice = sessionStorage.getItem('tg_orientation_choice');
     if (orientationChoice === 'landscape') {
-      vp.setAttribute('content', 'width=1200, user-scalable=yes');
-      document.documentElement.classList.add('desktop-site-view');
-    } else {
-      vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
-      document.documentElement.classList.remove('desktop-site-view');
+      document.documentElement.classList.add('landscape-mode');
+    } else if (orientationChoice === 'portrait') {
+      document.documentElement.classList.remove('landscape-mode');
     }
+    vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
 
     // Landing, Login, and Register pages color theme is always Dark Blue (#0a192f / #050f1d)
     if (isPublicPage) {
@@ -139,7 +137,6 @@ export default function App() {
         <>
           <Sidebar />
           <MobileTopBar />
-          <PortraitBottomBar />
         </>
       )}
 

@@ -62,18 +62,11 @@ export default function LandscapeOrientationPrompt() {
     try {
       const savedChoice = sessionStorage.getItem('tg_orientation_choice');
       if (savedChoice === 'landscape') {
-        const vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
-        if (vp) {
-          vp.setAttribute('content', 'width=1200, user-scalable=yes');
-        }
-        document.documentElement.classList.add('desktop-site-view');
-        document.documentElement.classList.add('app-forced-landscape');
-        document.body.classList.add('app-forced-landscape');
+        document.documentElement.classList.add('landscape-mode');
+        document.body.classList.add('landscape-mode');
       } else if (savedChoice === 'portrait') {
-        const vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
-        if (vp) {
-          vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
-        }
+        document.documentElement.classList.remove('landscape-mode');
+        document.body.classList.remove('landscape-mode');
         document.documentElement.classList.remove('desktop-site-view');
         document.documentElement.classList.remove('app-forced-landscape');
         document.body.classList.remove('app-forced-landscape');
@@ -93,21 +86,7 @@ export default function LandscapeOrientationPrompt() {
 
   // Option 1: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
-    // 1. Attempt Fullscreen Request (needed by Chrome/Android to lock orientation)
-    try {
-      const doc = document.documentElement;
-      if (doc.requestFullscreen) {
-        await doc.requestFullscreen().catch(() => {});
-      } else if (doc.webkitRequestFullscreen) {
-        await doc.webkitRequestFullscreen().catch(() => {});
-      } else if (doc.mozRequestFullScreen) {
-        await doc.mozRequestFullScreen().catch(() => {});
-      } else if (doc.msRequestFullscreen) {
-        await doc.msRequestFullscreen().catch(() => {});
-      }
-    } catch {}
-
-    // 2. Attempt Screen Orientation Lock
+    // 1. Attempt Screen Orientation Lock without entering intrusive browser fullscreen mode
     try {
       if (window.screen?.orientation?.lock) {
         await window.screen.orientation.lock('landscape').catch(() => {});
@@ -120,18 +99,15 @@ export default function LandscapeOrientationPrompt() {
       }
     } catch {}
 
-    // 3. Apply landscape layout mode
+    // 2. Apply landscape layout mode
     try {
       sessionStorage.setItem('tg_orientation_choice', 'landscape');
     } catch {}
 
-    const vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
-    if (vp) {
-      vp.setAttribute('content', 'width=1200, user-scalable=yes');
-    }
-    document.documentElement.classList.add('desktop-site-view');
-    document.documentElement.classList.add('app-forced-landscape');
-    document.body.classList.add('app-forced-landscape');
+    document.documentElement.classList.add('landscape-mode');
+    document.body.classList.add('landscape-mode');
+    document.documentElement.classList.remove('app-forced-landscape');
+    document.body.classList.remove('app-forced-landscape');
 
     setCurrentMode('landscape');
     setDismissed(true);
@@ -147,6 +123,8 @@ export default function LandscapeOrientationPrompt() {
     if (vp) {
       vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
     }
+    document.documentElement.classList.remove('landscape-mode');
+    document.body.classList.remove('landscape-mode');
     document.documentElement.classList.remove('desktop-site-view');
     document.documentElement.classList.remove('app-forced-landscape');
     document.body.classList.remove('app-forced-landscape');

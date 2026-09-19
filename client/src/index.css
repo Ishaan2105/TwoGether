@@ -1165,309 +1165,113 @@ button {
 
 /* ---------- Persistent Desktop Sidebar & Responsive Mobile Drawer ---------- */
 
-/* ============================================================
-   PORTRAIT MOBILE: TOP BAR & BOTTOM TAB BAR
-   ============================================================ */
-
-/* ── 1. Portrait Top Bar ── */
-.portrait-topbar {
+/* Mobile Top Header (< 900px only) */
+.mobile-topbar {
   display: none;
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
   height: 56px;
-  background: rgba(10, 14, 23, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.2);
-  z-index: 1000;
-  padding: 0 0.85rem;
+  background: var(--bg-card-solid);
+  border-bottom: 1px solid var(--border);
+  z-index: 80;
+  padding: 0 1rem;
   align-items: center;
   justify-content: space-between;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.portrait-topbar__spacer {
-  flex: 1;
-  min-width: 32px;
-  max-width: 110px;
-}
-
-.portrait-topbar__center {
-  flex: 2;
+.mobile-topbar__left {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-topbar__toggle {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.mobile-topbar__toggle:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--cyan);
+}
+
+.mobile-topbar__hamburger-line {
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text);
+  transition: background 0.2s ease;
+}
+
+.mobile-topbar__brand {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
+  font-weight: 900;
+  font-size: 1.08rem;
+  letter-spacing: 0.03em;
+  color: var(--text);
   text-decoration: none;
 }
 
-.portrait-topbar__logo {
+.mobile-topbar__logo {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--gradient-primary);
+  color: var(--btn-primary-text);
+  font-weight: 900;
+  font-size: 0.95rem;
+}
+
+.mobile-topbar__logo-img {
   width: 28px;
   height: 28px;
   border-radius: 7px;
   object-fit: cover;
-  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.35);
-  box-shadow: 0 0 10px rgba(var(--cyan-rgb, 6, 182, 212), 0.25);
+  border: 1px solid rgba(var(--cyan-rgb), 0.35);
+  box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.2);
   background: #ffffff;
   flex-shrink: 0;
 }
 
-.portrait-topbar__brand {
-  font-size: 1.1rem;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  color: var(--text, #f8fafc);
-  text-shadow: 0 0 12px rgba(var(--cyan-rgb, 6, 182, 212), 0.35);
-}
-
-.portrait-topbar__right {
-  flex: 1;
+.mobile-topbar__avatar {
   display: flex;
-  justify-content: flex-end;
-  position: relative;
-  min-width: 32px;
-  max-width: 140px;
-}
-
-.portrait-topbar__account-btn {
-  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.65rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.25);
-  color: var(--text, #f8fafc);
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  max-width: 100%;
-}
-
-.portrait-topbar__account-btn:hover,
-.portrait-topbar__account-btn--open {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--cyan, #06b6d4);
-  box-shadow: 0 0 12px rgba(var(--cyan-rgb, 6, 182, 212), 0.25);
-}
-
-.portrait-topbar__avatar-badge {
-  width: 22px;
-  height: 22px;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: var(--gradient-primary, linear-gradient(135deg, #06b6d4, #3b82f6));
-  color: #ffffff;
-  font-size: 0.72rem;
+  background: var(--gradient-primary);
+  color: var(--btn-primary-text);
   font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.portrait-topbar__account-name {
-  font-size: 0.8rem;
-  font-weight: 700;
-  max-width: 68px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.portrait-topbar__chevron {
-  color: var(--text-muted, #94a3b8);
-  transition: transform 0.2s ease;
-  flex-shrink: 0;
-}
-
-.portrait-topbar__chevron--open {
-  transform: rotate(180deg);
-  color: var(--cyan, #06b6d4);
-}
-
-/* Account Dropdown Modal / Popover */
-.portrait-topbar__dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  min-width: 210px;
-  background: var(--bg-card, #121826);
-  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.35);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 18px rgba(var(--cyan-rgb, 6, 182, 212), 0.15);
-  border-radius: 14px;
-  padding: 0.85rem;
-  z-index: 1001;
-  animation: fadeIn 0.18s ease-out;
-}
-
-.portrait-topbar__dropdown-user {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.6rem;
-}
-
-.portrait-topbar__dropdown-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--gradient-primary, linear-gradient(135deg, #06b6d4, #3b82f6));
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
-}
-
-.portrait-topbar__dropdown-details {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.portrait-topbar__dropdown-name {
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: var(--text, #f8fafc);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.portrait-topbar__dropdown-email {
-  font-size: 0.74rem;
-  color: var(--text-muted, #94a3b8);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.portrait-topbar__dropdown-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0.5rem 0 0.65rem 0;
-}
-
-.portrait-topbar__logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-  padding: 0.65rem 0.85rem;
-  border-radius: 10px;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
-  font-size: 0.86rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: all 0.18s ease;
+  box-shadow: 0 2px 8px rgba(var(--cyan-rgb), 0.35);
+  transition: transform 0.18s ease;
 }
 
-.portrait-topbar__logout-btn:hover {
-  background: rgba(239, 68, 68, 0.22);
-  border-color: #ef4444;
-  color: #ffffff;
-  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
-}
-
-/* ── 2. Portrait Bottom Tab Bar ── */
-.portrait-bottom-bar {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: rgba(10, 14, 23, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.22);
-  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.6);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  z-index: 1000;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.portrait-tab-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  height: 100%;
-  padding: 0.25rem 0.1rem;
-  text-decoration: none;
-  color: var(--text-muted, #94a3b8);
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-.portrait-tab-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2px;
-  transition: transform 0.18s ease, color 0.18s ease;
-  color: inherit;
-}
-
-.portrait-tab-label {
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  text-align: center;
-  white-space: nowrap;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.15;
-}
-
-.portrait-tab-item:active {
-  transform: scale(0.92);
-}
-
-/* Active Tab Item */
-.portrait-tab-item--active {
-  color: var(--cyan, #06b6d4) !important;
-  font-weight: 800;
-}
-
-.portrait-tab-item--active .portrait-tab-icon {
-  color: var(--cyan, #06b6d4) !important;
-  transform: translateY(-1px);
-  filter: drop-shadow(0 0 6px rgba(var(--cyan-rgb, 6, 182, 212), 0.55));
-}
-
-.portrait-tab-item--active::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 20%;
-  right: 20%;
-  height: 2.5px;
-  background: var(--cyan, #06b6d4);
-  border-radius: 999px;
-  box-shadow: 0 0 10px var(--cyan, #06b6d4);
-}
-
-/* PWA App Tab Item */
-.portrait-tab-item--pwa .portrait-tab-icon {
-  color: #f59e0b;
-}
-
-.portrait-tab-item--pwa:hover .portrait-tab-icon,
-.portrait-tab-item--pwa:active .portrait-tab-icon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.7));
+.mobile-topbar__avatar:hover {
+  transform: scale(1.06);
 }
 
 /* Sidebar Drawer Shell */
@@ -2947,13 +2751,11 @@ button {
    LAYOUT ENGINE & TIGHT CONTENT SPACING (ZERO EXCESS GAPS)
    ============================================================ */
 
-/* Desktop Layout (>= 900px) */
-@media (min-width: 900px) {
-  /* Complete removal of Topbar and Bottom Tab Bar on Desktop */
+/* Desktop & Landscape Layout (>= 900px OR orientation: landscape OR .landscape-mode) */
+@media (min-width: 900px), (orientation: landscape) {
+  /* Complete removal of Topbar in Desktop & Landscape */
   .navbar,
-  .mobile-topbar,
-  .portrait-topbar,
-  .portrait-bottom-bar {
+  .mobile-topbar {
     display: none !important;
   }
 
@@ -2961,6 +2763,10 @@ button {
     transform: none !important;
     visibility: visible !important;
     pointer-events: auto !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
   }
 
   .sidebar-backdrop,
@@ -2969,10 +2775,10 @@ button {
     display: none !important;
   }
 
-  /* Single consistent margin for the entire page root - flush with 265px sidebar */
+  /* Single consistent margin for the entire page root - flush with 250px sidebar */
   .app-shell {
-    margin-left: 265px !important;
-    width: calc(100% - 265px) !important;
+    margin-left: 250px !important;
+    width: calc(100% - 250px) !important;
     min-height: 100vh;
     box-sizing: border-box;
   }
@@ -2999,7 +2805,7 @@ button {
     margin: 0 !important;
     max-width: 1320px !important;
     width: 100% !important;
-    padding: 1.75rem 2.25rem !important;
+    padding: 1.5rem 2rem !important;
   }
 
   .landing .container {
@@ -3009,26 +2815,44 @@ button {
   }
 }
 
-/* Responsive Mobile Layout (< 899px) */
-@media (max-width: 899px) {
-  .navbar {
+/* Explicit class-based landscape mode activation */
+html.landscape-mode .navbar,
+html.landscape-mode .mobile-topbar {
+  display: none !important;
+}
+
+html.landscape-mode .sidebar-drawer {
+  transform: none !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+}
+
+html.landscape-mode .sidebar-backdrop,
+html.landscape-mode .sidebar-close-btn,
+html.landscape-mode .navbar__sidebar-toggle {
+  display: none !important;
+}
+
+html.landscape-mode .app-shell {
+  margin-left: 250px !important;
+  width: calc(100% - 250px) !important;
+}
+
+/* Responsive Mobile Portrait Layout (< 899px AND orientation: portrait) */
+@media (max-width: 899px) and (orientation: portrait) {
+  html:not(.landscape-mode) .navbar {
     display: none !important;
   }
 
-  .portrait-topbar {
-    display: flex;
+  html:not(.landscape-mode) .mobile-topbar {
+    display: flex !important;
   }
 
-  .portrait-bottom-bar {
-    display: flex;
-  }
-
-  .app-shell {
-    padding-top: 58px !important;
-    padding-bottom: 74px !important;
-  }
-
-  .sidebar-drawer {
+  html:not(.landscape-mode) .sidebar-drawer {
     width: 275px;
     max-width: 86vw;
     z-index: 9999;
@@ -3036,11 +2860,11 @@ button {
     box-shadow: 12px 0 45px rgba(0, 0, 0, 0.7);
   }
 
-  .sidebar-drawer--open {
+  html:not(.landscape-mode) .sidebar-drawer--open {
     transform: translateX(0) !important;
   }
 
-  .sidebar-backdrop {
+  html:not(.landscape-mode) .sidebar-backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.65);
@@ -3050,18 +2874,18 @@ button {
     animation: sidebarBackdropFade 0.22s ease forwards;
   }
 
-  .app-shell,
-  .landing,
-  .auth-page,
-  .dashboard,
-  .tasks-page {
+  html:not(.landscape-mode) .app-shell,
+  html:not(.landscape-mode) .landing,
+  html:not(.landscape-mode) .auth-page,
+  html:not(.landscape-mode) .dashboard,
+  html:not(.landscape-mode) .tasks-page {
     margin-left: 0 !important;
     width: 100% !important;
   }
 
-  .container.dashboard,
-  .container.tasks-page,
-  .landing .container {
+  html:not(.landscape-mode) .container.dashboard,
+  html:not(.landscape-mode) .container.tasks-page,
+  html:not(.landscape-mode) .landing .container {
     margin: 0 auto !important;
     padding: 1rem 1.15rem !important;
     max-width: 100% !important;
@@ -15198,12 +15022,6 @@ html:has(.landing) .scroll-sequence-vignette {
 @media (max-height: 550px) and (orientation: landscape),
        (max-height: 550px) {
 
-  /* In mobile landscape, hide portrait topbar and bottom bar */
-  .portrait-topbar,
-  .portrait-bottom-bar {
-    display: none !important;
-  }
-
   /* Ensure 3D canvas is full-bleed with no cropped rounded box */
   .scroll-canvas-fixed-wrap,
   .landing .scroll-canvas-fixed-wrap,
@@ -15324,5 +15142,95 @@ html:has(.landing) .scroll-sequence-vignette {
   .scene-quote-counter {
     font-size: 0.65rem !important;
     margin-top: 0.2rem !important;
+  }
+
+  /* Compact & Sleek Sidebar on Mobile Landscape */
+  .sidebar-drawer {
+    width: 220px !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    transform: none !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 90 !important;
+  }
+
+  .app-shell {
+    margin-left: 220px !important;
+    width: calc(100% - 220px) !important;
+  }
+
+  .sidebar-backdrop,
+  .sidebar-close-btn,
+  .mobile-topbar {
+    display: none !important;
+  }
+
+  .sidebar-header {
+    padding: 0.55rem 0.75rem !important;
+  }
+
+  .sidebar-logo,
+  .sidebar-brand-img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .sidebar-brand-name {
+    font-size: 1.05rem !important;
+  }
+
+  .sidebar-content {
+    padding: 0.35rem 0.55rem !important;
+  }
+
+  .sidebar-nav {
+    gap: 0.2rem !important;
+  }
+
+  .sidebar-nav-item {
+    padding: 0.35rem 0.6rem !important;
+    font-size: 0.8rem !important;
+    gap: 0.5rem !important;
+    border-radius: 8px !important;
+  }
+
+  .sidebar-nav-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .sidebar-footer {
+    padding: 0.4rem 0.65rem !important;
+  }
+
+  .sidebar-profile-trigger {
+    padding: 0.3rem 0.5rem !important;
+  }
+
+  .sidebar-profile-avatar {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .sidebar-profile-name {
+    font-size: 0.76rem !important;
+  }
+
+  .container.dashboard,
+  .container.tasks-page {
+    padding: 0.65rem 0.85rem !important;
+  }
+
+  .duo-hub {
+    padding: 0.85rem 1rem !important;
+  }
+
+  .duo-stats-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.5rem !important;
   }
 }
