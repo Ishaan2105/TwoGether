@@ -96,55 +96,60 @@
   --canvas-bg: #fefae0;
 }
 
-/* ⚪ 2. PEARL (Luminous Light Theme) */
+/* 🌸 2. PEARL (Rose Sherbet, Rose Blush, Deep Rosewood & Velvet Plum)
+   Palette: #f9dbbd (Pale Apricot), #ffa5ab (Rose Sherbet), #da627d (Rose Blush), #a53860 (Deep Rosewood), #450920 (Midnight Plum) */
 [data-theme="pearl"] {
-  --bg-primary: #f8fafc;
+  --bg-primary: #fbf9f8;
   --bg-secondary: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card: #ffffff;
   --bg-card-hover: #ffffff;
   --bg-card-solid: #ffffff;
   --bg-surface: #ffffff;
-  --bg-input: #f1f5f9;
-  --bg-overlay: rgba(255, 255, 255, 0.94);
-  --navbar-bg: rgba(248, 250, 252, 0.84);
-  --modal-bg: linear-gradient(145deg, #ffffff, #f8fafc);
-  
-  --border: rgba(15, 23, 42, 0.12);
-  --border-subtle: rgba(15, 23, 42, 0.06);
-  --border-focus: #0284c7;
-  
-  --cyan: #0284c7;
-  --cyan-rgb: 2, 132, 199;
-  --teal: #0d9488;
-  --amber: #d97706;
-  --orange: #ea580c;
-  --violet: #7c3aed;
-  --success: #059669;
-  
-  --text: #0f172a;
-  --text-muted: #475569;
-  --text-main: #0f172a;
-  --text-dim: #94a3b8;
+  --bg-input: #fff6f4;
+  --bg-overlay: rgba(251, 249, 248, 0.96);
+  --navbar-bg: rgba(255, 255, 255, 0.88);
+  --modal-bg: linear-gradient(145deg, #ffffff, #fdfaf8);
+
+  --sidebar-bg: #ffffff;
+  --sidebar-border: rgba(218, 98, 125, 0.16);
+
+  --border: rgba(218, 98, 125, 0.22);
+  --border-subtle: rgba(218, 98, 125, 0.12);
+  --border-focus: #a53860;
+
+  --cyan: #a53860;
+  --cyan-rgb: 165, 56, 96;
+  --teal: #da627d;
+  --amber: #ffa5ab;
+  --orange: #da627d;
+  --violet: #a53860;
+  --success: #10b981;
+
+  --text: #450920;
+  --text-muted: #a53860;
+  --text-main: #450920;
+  --text-dim: #da627d;
   --text-inverse: #ffffff;
   --btn-primary-text: #ffffff;
-  
-  --radius: 14px;
+
+  /* Palette Specific Color Tokens */
+  --pale-apricot: #f9dbbd;
+  --rose-sherbet: #ffa5ab;
+  --rose-blush: #da627d;
+  --deep-rosewood: #a53860;
+  --midnight-plum: #450920;
+
+  --radius: 16px;
   --radius-sm: 10px;
-  --transition: 0.2s ease;
-  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.06);
-  --shadow-glow: 0 0 25px rgba(2, 132, 199, 0.2);
-  
-  --gradient-primary: linear-gradient(135deg, #0284c7, #2563eb);
-  --body-bg:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(2, 132, 199, 0.09), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(124, 58, 237, 0.06), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 0% 90%, rgba(37, 99, 235, 0.05), transparent 60%),
-    var(--bg-primary);
-  --vignette-bg:
-    radial-gradient(ellipse at center, rgba(248, 250, 252, 0.05) 0%, rgba(248, 250, 252, 0.55) 75%, #f8fafc 100%),
-    linear-gradient(180deg, rgba(248, 250, 252, 0.65) 0%, transparent 15%, transparent 85%, #f8fafc 100%);
-  --canvas-bg: #f8fafc;
+  --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow: 0 10px 30px rgba(69, 9, 32, 0.06);
+  --shadow-card: 0 4px 20px rgba(69, 9, 32, 0.05);
+  --shadow-glow: 0 0 25px rgba(218, 98, 125, 0.2);
+
+  --gradient-primary: linear-gradient(135deg, #a53860, #da627d);
+  --body-bg: #fbf9f8;
+  --vignette-bg: transparent;
+  --canvas-bg: #fbf9f8;
 }
 
 /* 🌲 3. EMERALD (Jade & Forest) */
@@ -2448,7 +2453,6 @@ button {
 /* ────────────────────────────────────────────────────────────
    BOTANICA / SOLARIS SIDEBAR SYSTEM (Black Forest #283618 & Olive Leaf #606c38)
    ──────────────────────────────────────────────────────────── */
-:root .sidebar-drawer,
 [data-theme="dark"] .sidebar-drawer,
 [data-theme="solaris"] .sidebar-drawer,
 [data-theme="botanica"] .sidebar-drawer {
@@ -2457,15 +2461,12 @@ button {
   box-shadow: 4px 0 24px rgba(16, 21, 9, 0.35) !important;
 }
 
-:root .sidebar-drawer .sidebar-header,
 [data-theme="dark"] .sidebar-drawer .sidebar-header,
 [data-theme="solaris"] .sidebar-drawer .sidebar-header,
 [data-theme="botanica"] .sidebar-drawer .sidebar-header {
   border-bottom: 1px solid rgba(254, 250, 224, 0.12) !important;
 }
 
-:root .sidebar-drawer .sidebar-brand,
-:root .sidebar-drawer .sidebar-brand-name,
 [data-theme="dark"] .sidebar-drawer .sidebar-brand,
 [data-theme="dark"] .sidebar-drawer .sidebar-brand-name,
 [data-theme="solaris"] .sidebar-drawer .sidebar-brand,
@@ -2476,7 +2477,6 @@ button {
   font-weight: 800;
 }
 
-:root .sidebar-drawer .sidebar-logo,
 [data-theme="dark"] .sidebar-drawer .sidebar-logo,
 [data-theme="solaris"] .sidebar-drawer .sidebar-logo,
 [data-theme="botanica"] .sidebar-drawer .sidebar-logo {
@@ -2486,7 +2486,6 @@ button {
   border-radius: 12px !important;
 }
 
-:root .sidebar-drawer .sidebar-close-btn,
 [data-theme="dark"] .sidebar-drawer .sidebar-close-btn,
 [data-theme="solaris"] .sidebar-drawer .sidebar-close-btn,
 [data-theme="botanica"] .sidebar-drawer .sidebar-close-btn {
@@ -2495,7 +2494,6 @@ button {
   color: #fefae0 !important;
 }
 
-:root .sidebar-drawer .sidebar-section-title,
 [data-theme="dark"] .sidebar-drawer .sidebar-section-title,
 [data-theme="solaris"] .sidebar-drawer .sidebar-section-title,
 [data-theme="botanica"] .sidebar-drawer .sidebar-section-title {
@@ -2503,7 +2501,6 @@ button {
   opacity: 0.85;
 }
 
-:root .sidebar-drawer .sidebar-nav-item,
 [data-theme="dark"] .sidebar-drawer .sidebar-nav-item,
 [data-theme="solaris"] .sidebar-drawer .sidebar-nav-item,
 [data-theme="botanica"] .sidebar-drawer .sidebar-nav-item {
@@ -2514,14 +2511,12 @@ button {
   border: 1px solid transparent !important;
 }
 
-:root .sidebar-drawer .sidebar-nav-icon,
 [data-theme="dark"] .sidebar-drawer .sidebar-nav-icon,
 [data-theme="solaris"] .sidebar-drawer .sidebar-nav-icon,
 [data-theme="botanica"] .sidebar-drawer .sidebar-nav-icon {
   color: #e2e7d1 !important;
 }
 
-:root .sidebar-drawer .sidebar-nav-item:hover,
 [data-theme="dark"] .sidebar-drawer .sidebar-nav-item:hover,
 [data-theme="solaris"] .sidebar-drawer .sidebar-nav-item:hover,
 [data-theme="botanica"] .sidebar-drawer .sidebar-nav-item:hover {
@@ -2530,14 +2525,12 @@ button {
   border-color: transparent !important;
 }
 
-:root .sidebar-drawer .sidebar-nav-item:hover .sidebar-nav-icon,
 [data-theme="dark"] .sidebar-drawer .sidebar-nav-item:hover .sidebar-nav-icon,
 [data-theme="solaris"] .sidebar-drawer .sidebar-nav-item:hover .sidebar-nav-icon,
 [data-theme="botanica"] .sidebar-drawer .sidebar-nav-item:hover .sidebar-nav-icon {
   color: #ffffff !important;
 }
 
-:root .sidebar-drawer .sidebar-nav-item--active,
 [data-theme="dark"] .sidebar-drawer .sidebar-nav-item--active,
 [data-theme="solaris"] .sidebar-drawer .sidebar-nav-item--active,
 [data-theme="botanica"] .sidebar-drawer .sidebar-nav-item--active {
@@ -2548,14 +2541,12 @@ button {
   box-shadow: 0 4px 14px rgba(19, 22, 11, 0.25) !important;
 }
 
-:root .sidebar-drawer .sidebar-nav-item--active .sidebar-nav-icon,
 [data-theme="dark"] .sidebar-drawer .sidebar-nav-item--active .sidebar-nav-icon,
 [data-theme="solaris"] .sidebar-drawer .sidebar-nav-item--active .sidebar-nav-icon,
 [data-theme="botanica"] .sidebar-drawer .sidebar-nav-item--active .sidebar-nav-icon {
   color: #ffffff !important;
 }
 
-:root .sidebar-drawer .sidebar-nav-badge,
 [data-theme="dark"] .sidebar-drawer .sidebar-nav-badge,
 [data-theme="solaris"] .sidebar-drawer .sidebar-nav-badge,
 [data-theme="botanica"] .sidebar-drawer .sidebar-nav-badge {
@@ -2563,7 +2554,6 @@ button {
   color: #fefae0 !important;
 }
 
-:root .sidebar-drawer .sidebar-footer,
 [data-theme="dark"] .sidebar-drawer .sidebar-footer,
 [data-theme="solaris"] .sidebar-drawer .sidebar-footer,
 [data-theme="botanica"] .sidebar-drawer .sidebar-footer {
@@ -2571,7 +2561,6 @@ button {
   border-top: 1px solid rgba(254, 250, 224, 0.12) !important;
 }
 
-:root .sidebar-drawer .sidebar-profile-trigger,
 [data-theme="dark"] .sidebar-drawer .sidebar-profile-trigger,
 [data-theme="solaris"] .sidebar-drawer .sidebar-profile-trigger,
 [data-theme="botanica"] .sidebar-drawer .sidebar-profile-trigger {
@@ -2581,7 +2570,6 @@ button {
   border-radius: 14px !important;
 }
 
-:root .sidebar-drawer .sidebar-profile-trigger:hover,
 [data-theme="dark"] .sidebar-drawer .sidebar-profile-trigger:hover,
 [data-theme="solaris"] .sidebar-drawer .sidebar-profile-trigger:hover,
 [data-theme="botanica"] .sidebar-drawer .sidebar-profile-trigger:hover {
@@ -2589,34 +2577,174 @@ button {
   border-color: rgba(96, 108, 56, 0.5) !important;
 }
 
-:root .sidebar-drawer .sidebar-profile-name,
 [data-theme="dark"] .sidebar-drawer .sidebar-profile-name,
 [data-theme="solaris"] .sidebar-drawer .sidebar-profile-name,
 [data-theme="botanica"] .sidebar-drawer .sidebar-profile-name {
   color: #ffffff !important;
 }
 
-:root .sidebar-drawer .sidebar-profile-sub,
 [data-theme="dark"] .sidebar-drawer .sidebar-profile-sub,
 [data-theme="solaris"] .sidebar-drawer .sidebar-profile-sub,
 [data-theme="botanica"] .sidebar-drawer .sidebar-profile-sub {
   color: #c5d0a3 !important;
 }
 
-:root .sidebar-drawer .sidebar-profile-chevron,
 [data-theme="dark"] .sidebar-drawer .sidebar-profile-chevron,
 [data-theme="solaris"] .sidebar-drawer .sidebar-profile-chevron,
 [data-theme="botanica"] .sidebar-drawer .sidebar-profile-chevron {
   color: #fefae0 !important;
 }
 
-:root .sidebar-drawer .sidebar-profile-avatar,
 [data-theme="dark"] .sidebar-drawer .sidebar-profile-avatar,
 [data-theme="solaris"] .sidebar-drawer .sidebar-profile-avatar,
 [data-theme="botanica"] .sidebar-drawer .sidebar-profile-avatar {
   background: #dda15e !important;
   color: #ffffff !important;
   border: none !important;
+}
+
+/* ────────────────────────────────────────────────────────────
+   PEARL (ROSE SHERBET & VELVET PLUM) SIDEBAR SYSTEM
+   Reference Image: Clean Light Canvas #ffffff, Midnight Plum #450920 Text, Deep Rosewood #a53860 Active Capsule & Profile Capsule
+   ──────────────────────────────────────────────────────────── */
+[data-theme="pearl"] .sidebar-drawer {
+  background: #ffffff !important;
+  border-right: 1px solid rgba(218, 98, 125, 0.16) !important;
+  box-shadow: 2px 0 20px rgba(69, 9, 32, 0.03) !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-header {
+  border-bottom: 1px solid rgba(218, 98, 125, 0.14) !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-brand,
+[data-theme="pearl"] .sidebar-drawer .sidebar-brand-name {
+  color: #450920 !important;
+  font-weight: 800;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-logo {
+  background: #f9dbbd !important;
+  color: #450920 !important;
+  border: none !important;
+  border-radius: 12px !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-close-btn {
+  background: rgba(218, 98, 125, 0.1) !important;
+  border-color: rgba(218, 98, 125, 0.2) !important;
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-section-title {
+  color: #a53860 !important;
+  opacity: 0.9;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-item {
+  color: #450920 !important;
+  font-weight: 600;
+  border-radius: 12px !important;
+  transition: all 0.18s ease;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-icon {
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-item:hover {
+  background: rgba(255, 165, 171, 0.22) !important;
+  color: #450920 !important;
+  border-color: transparent !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-item:hover .sidebar-nav-icon {
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-item--active {
+  background: #a53860 !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(165, 56, 96, 0.28) !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-item--active .sidebar-nav-icon {
+  color: #ffffff !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-nav-badge {
+  background: #f9dbbd !important;
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-footer {
+  background: #ffffff !important;
+  border-top: 1px solid rgba(218, 98, 125, 0.14) !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-profile-trigger {
+  background: #a53860 !important;
+  border: 1px solid rgba(165, 56, 96, 0.4) !important;
+  color: #ffffff !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 14px rgba(165, 56, 96, 0.25) !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-profile-trigger:hover {
+  background: #8e2d51 !important;
+  border-color: rgba(165, 56, 96, 0.6) !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-profile-name {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-profile-sub {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-profile-chevron {
+  color: #ffffff !important;
+}
+
+[data-theme="pearl"] .sidebar-drawer .sidebar-profile-avatar {
+  background: #da627d !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+[data-theme="pearl"] .sidebar-profile-popover {
+  background: #ffffff !important;
+  border: 1px solid rgba(218, 98, 125, 0.22) !important;
+  box-shadow: 0 10px 30px rgba(69, 9, 32, 0.12) !important;
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .sidebar-popover__username {
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .sidebar-popover__email {
+  color: #a53860 !important;
+}
+
+[data-theme="pearl"] .sidebar-popover__avatar-large {
+  background: #a53860 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="pearl"] .sidebar-popover__logout-btn {
+  color: #a53860 !important;
+}
+
+[data-theme="pearl"] .sidebar-popover__logout-btn:hover {
+  background: rgba(255, 165, 171, 0.2) !important;
+  color: #450920 !important;
 }
 
 /* ============================================================
@@ -4819,27 +4947,21 @@ html.desktop-site-view .auth-card {
 /* ────────────────────────────────────────────────────────────
    BOTANICA / SOLARIS CARD CONTAINERS SYSTEM (#fefbe7 Soft Cream Surface & #283618 Text)
    ──────────────────────────────────────────────────────────── */
-:root .card,
 [data-theme="dark"] .card,
 [data-theme="solaris"] .card,
 [data-theme="botanica"] .card,
-:root .hero-card,
 [data-theme="dark"] .hero-card,
 [data-theme="solaris"] .hero-card,
 [data-theme="botanica"] .hero-card,
-:root .dashboard-card,
 [data-theme="dark"] .dashboard-card,
 [data-theme="solaris"] .dashboard-card,
 [data-theme="botanica"] .dashboard-card,
-:root .task-card,
 [data-theme="dark"] .task-card,
 [data-theme="solaris"] .task-card,
 [data-theme="botanica"] .task-card,
-:root .vault-card,
 [data-theme="dark"] .vault-card,
 [data-theme="solaris"] .vault-card,
 [data-theme="botanica"] .vault-card,
-:root .leaderboard-card,
 [data-theme="dark"] .leaderboard-card,
 [data-theme="solaris"] .leaderboard-card,
 [data-theme="botanica"] .leaderboard-card {
@@ -4850,10 +4972,6 @@ html.desktop-site-view .auth-card {
   box-shadow: 0 4px 20px rgba(40, 54, 24, 0.06);
 }
 
-:root .card:not(.duo-shells-empty):not(.duo-shells-section) h1:not(.duo-shells-section *),
-:root .card:not(.duo-shells-empty):not(.duo-shells-section) h2:not(.duo-shells-section *),
-:root .card:not(.duo-shells-empty):not(.duo-shells-section) h3:not(.duo-shells-section *),
-:root .card:not(.duo-shells-empty):not(.duo-shells-section) h4:not(.duo-shells-section *),
 [data-theme="dark"] .card:not(.duo-shells-empty):not(.duo-shells-section) h1:not(.duo-shells-section *),
 [data-theme="dark"] .card:not(.duo-shells-empty):not(.duo-shells-section) h2:not(.duo-shells-section *),
 [data-theme="dark"] .card:not(.duo-shells-empty):not(.duo-shells-section) h3:not(.duo-shells-section *),
@@ -4866,34 +4984,62 @@ html.desktop-site-view .auth-card {
 [data-theme="botanica"] .card:not(.duo-shells-empty):not(.duo-shells-section) h2:not(.duo-shells-section *),
 [data-theme="botanica"] .card:not(.duo-shells-empty):not(.duo-shells-section) h3:not(.duo-shells-section *),
 [data-theme="botanica"] .card:not(.duo-shells-empty):not(.duo-shells-section) h4:not(.duo-shells-section *),
-:root .hero-card h1, :root .hero-card h2, :root .hero-card h3,
 [data-theme="dark"] .hero-card h1, [data-theme="dark"] .hero-card h2, [data-theme="dark"] .hero-card h3,
 [data-theme="solaris"] .hero-card h1, [data-theme="solaris"] .hero-card h2, [data-theme="solaris"] .hero-card h3,
 [data-theme="botanica"] .hero-card h1, [data-theme="botanica"] .hero-card h2, [data-theme="botanica"] .hero-card h3,
-:root .task-card__title,
 [data-theme="dark"] .task-card__title,
 [data-theme="solaris"] .task-card__title,
 [data-theme="botanica"] .task-card__title {
   color: #283618 !important;
 }
 
-:root .card:not(.duo-shells-empty):not(.duo-shells-section) p:not(.duo-shells-section *),
-:root .card:not(.duo-shells-empty):not(.duo-shells-section) .muted:not(.duo-shells-section *),
 [data-theme="dark"] .card:not(.duo-shells-empty):not(.duo-shells-section) p:not(.duo-shells-section *),
 [data-theme="dark"] .card:not(.duo-shells-empty):not(.duo-shells-section) .muted:not(.duo-shells-section *),
 [data-theme="solaris"] .card:not(.duo-shells-empty):not(.duo-shells-section) p:not(.duo-shells-section *),
 [data-theme="solaris"] .card:not(.duo-shells-empty):not(.duo-shells-section) .muted:not(.duo-shells-section *),
 [data-theme="botanica"] .card:not(.duo-shells-empty):not(.duo-shells-section) p:not(.duo-shells-section *),
 [data-theme="botanica"] .card:not(.duo-shells-empty):not(.duo-shells-section) .muted:not(.duo-shells-section *),
-:root .hero-card__meta,
 [data-theme="dark"] .hero-card__meta,
 [data-theme="solaris"] .hero-card__meta,
 [data-theme="botanica"] .hero-card__meta,
-:root .task-card__desc, :root .task-card__objective-note,
 [data-theme="dark"] .task-card__desc, [data-theme="dark"] .task-card__objective-note,
 [data-theme="solaris"] .task-card__desc, [data-theme="solaris"] .task-card__objective-note,
 [data-theme="botanica"] .task-card__desc, [data-theme="botanica"] .task-card__objective-note {
   color: #606c38 !important;
+}
+
+/* ────────────────────────────────────────────────────────────
+   PEARL / ROSE CARD CONTAINERS SYSTEM (#ffffff Crisp White Surface & #450920 Text)
+   ──────────────────────────────────────────────────────────── */
+[data-theme="pearl"] .card,
+[data-theme="pearl"] .hero-card,
+[data-theme="pearl"] .dashboard-card,
+[data-theme="pearl"] .task-card,
+[data-theme="pearl"] .vault-card,
+[data-theme="pearl"] .leaderboard-card,
+[data-theme="pearl"] .settings-card {
+  background: #ffffff;
+  color: #450920;
+  border: 1px solid rgba(218, 98, 125, 0.2);
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(69, 9, 32, 0.04);
+}
+
+[data-theme="pearl"] .card:not(.duo-shells-empty):not(.duo-shells-section) h1:not(.duo-shells-section *),
+[data-theme="pearl"] .card:not(.duo-shells-empty):not(.duo-shells-section) h2:not(.duo-shells-section *),
+[data-theme="pearl"] .card:not(.duo-shells-empty):not(.duo-shells-section) h3:not(.duo-shells-section *),
+[data-theme="pearl"] .card:not(.duo-shells-empty):not(.duo-shells-section) h4:not(.duo-shells-section *),
+[data-theme="pearl"] .hero-card h1, [data-theme="pearl"] .hero-card h2, [data-theme="pearl"] .hero-card h3,
+[data-theme="pearl"] .task-card__title {
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .card:not(.duo-shells-empty):not(.duo-shells-section) p:not(.duo-shells-section *),
+[data-theme="pearl"] .card:not(.duo-shells-empty):not(.duo-shells-section) .muted:not(.duo-shells-section *),
+[data-theme="pearl"] .hero-card__meta,
+[data-theme="pearl"] .task-card__desc,
+[data-theme="pearl"] .task-card__objective-note {
+  color: #a53860 !important;
 }
 
 .hero-card__left {
@@ -5039,7 +5185,9 @@ html.desktop-site-view .auth-card {
 
 /* ---------- Active Duo Hub ---------- */
 
-.duo-hub {
+[data-theme="dark"] .duo-hub,
+[data-theme="solaris"] .duo-hub,
+[data-theme="botanica"] .duo-hub {
   display: grid;
   gap: 1.6rem;
   background: #fefbe7 !important;
@@ -5105,7 +5253,9 @@ html.desktop-site-view .auth-card {
   box-shadow: 0 4px 12px rgba(96, 108, 56, 0.15) !important;
 }
 
-.duo-hub__header h2 {
+[data-theme="dark"] .duo-hub__header h2,
+[data-theme="solaris"] .duo-hub__header h2,
+[data-theme="botanica"] .duo-hub__header h2 {
   font-size: 2rem;
   font-weight: 800;
   color: #283618 !important;
@@ -5113,15 +5263,18 @@ html.desktop-site-view .auth-card {
   letter-spacing: -0.02em;
 }
 
-.duo-hub__header p.muted {
+[data-theme="dark"] .duo-hub__header p.muted,
+[data-theme="solaris"] .duo-hub__header p.muted,
+[data-theme="botanica"] .duo-hub__header p.muted {
   color: #606c38 !important;
   font-size: 0.88rem;
   font-weight: 500;
 }
 
-/* Connection Bridge */
-
-.duo-bridge {
+/* Connection Bridge - Botanica */
+[data-theme="dark"] .duo-bridge,
+[data-theme="solaris"] .duo-bridge,
+[data-theme="botanica"] .duo-bridge {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -5164,7 +5317,9 @@ html.desktop-site-view .auth-card {
 }
 
 /* Dual Avatars: Sunlit Clay (You) & Olive Leaf (Partner) */
-.duo-member__avatar {
+[data-theme="dark"] .duo-member__avatar,
+[data-theme="solaris"] .duo-member__avatar,
+[data-theme="botanica"] .duo-member__avatar {
   font-size: 1.25rem;
   font-weight: 800;
   width: 44px;
@@ -5179,7 +5334,9 @@ html.desktop-site-view .auth-card {
   box-shadow: none !important;
 }
 
-.duo-member--partner .duo-member__avatar {
+[data-theme="dark"] .duo-member--partner .duo-member__avatar,
+[data-theme="solaris"] .duo-member--partner .duo-member__avatar,
+[data-theme="botanica"] .duo-member--partner .duo-member__avatar {
   background: #606c38 !important;
   color: #ffffff !important;
   border: none !important;
@@ -5192,13 +5349,17 @@ html.desktop-site-view .auth-card {
   gap: 0.2rem;
 }
 
-.duo-member__info strong {
+[data-theme="dark"] .duo-member__info strong,
+[data-theme="solaris"] .duo-member__info strong,
+[data-theme="botanica"] .duo-member__info strong {
   font-size: 1.05rem;
   font-weight: 800;
   color: #283618 !important;
 }
 
-.duo-member__info span {
+[data-theme="dark"] .duo-member__info span,
+[data-theme="solaris"] .duo-member__info span,
+[data-theme="botanica"] .duo-member__info span {
   color: #606c38 !important;
   font-size: 0.82rem;
   font-weight: 600;
@@ -5217,7 +5378,9 @@ html.desktop-site-view .auth-card {
   display: none !important;
 }
 
-.duo-bridge__tag {
+[data-theme="dark"] .duo-bridge__tag,
+[data-theme="solaris"] .duo-bridge__tag,
+[data-theme="botanica"] .duo-bridge__tag {
   font-size: 0.7rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
@@ -5231,7 +5394,9 @@ html.desktop-site-view .auth-card {
 }
 
 /* Header Action Buttons & Active Duo Badge */
-.badge--solaris-active {
+[data-theme="dark"] .badge--solaris-active,
+[data-theme="solaris"] .badge--solaris-active,
+[data-theme="botanica"] .badge--solaris-active {
   display: inline-flex;
   align-items: center;
   background: #606c38 !important;
@@ -5249,7 +5414,9 @@ html.desktop-site-view .auth-card {
   display: none !important;
 }
 
-.btn--unlink-duo {
+[data-theme="dark"] .btn--unlink-duo,
+[data-theme="solaris"] .btn--unlink-duo,
+[data-theme="botanica"] .btn--unlink-duo {
   background: #bc6c25 !important;
   border: none !important;
   color: #ffffff !important;
@@ -5261,13 +5428,17 @@ html.desktop-site-view .auth-card {
   transition: all 0.2s ease !important;
 }
 
-.btn--unlink-duo:hover {
+[data-theme="dark"] .btn--unlink-duo:hover,
+[data-theme="solaris"] .btn--unlink-duo:hover,
+[data-theme="botanica"] .btn--unlink-duo:hover {
   background: #d98840 !important;
   color: #ffffff !important;
   transform: translateY(-1px);
 }
 
-.btn--solaris-cta {
+[data-theme="dark"] .btn--solaris-cta,
+[data-theme="solaris"] .btn--solaris-cta,
+[data-theme="botanica"] .btn--solaris-cta {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -5284,7 +5455,9 @@ html.desktop-site-view .auth-card {
   text-decoration: none !important;
 }
 
-.btn--solaris-cta:hover {
+[data-theme="dark"] .btn--solaris-cta:hover,
+[data-theme="solaris"] .btn--solaris-cta:hover,
+[data-theme="botanica"] .btn--solaris-cta:hover {
   background: #d98840 !important;
   transform: translateY(-1px) !important;
   box-shadow: 0 6px 18px rgba(188, 108, 37, 0.4) !important;
@@ -5310,7 +5483,9 @@ html.desktop-site-view .auth-card {
   }
 }
 
-.duo-stat-card {
+[data-theme="dark"] .duo-stat-card,
+[data-theme="solaris"] .duo-stat-card,
+[data-theme="botanica"] .duo-stat-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -5339,7 +5514,9 @@ html.desktop-site-view .auth-card {
   min-width: 0;
 }
 
-.duo-stat-card__label {
+[data-theme="dark"] .duo-stat-card__label,
+[data-theme="solaris"] .duo-stat-card__label,
+[data-theme="botanica"] .duo-stat-card__label {
   font-size: 0.7rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
@@ -5347,7 +5524,9 @@ html.desktop-site-view .auth-card {
   color: #e2e7d1 !important;
 }
 
-.duo-stat-card__value {
+[data-theme="dark"] .duo-stat-card__value,
+[data-theme="solaris"] .duo-stat-card__value,
+[data-theme="botanica"] .duo-stat-card__value {
   font-size: 1.55rem !important;
   font-weight: 900 !important;
   margin: 0.15rem 0 !important;
@@ -5355,13 +5534,17 @@ html.desktop-site-view .auth-card {
   color: #ffffff !important;
 }
 
-.duo-stat-card__sub {
+[data-theme="dark"] .duo-stat-card__sub,
+[data-theme="solaris"] .duo-stat-card__sub,
+[data-theme="botanica"] .duo-stat-card__sub {
   font-size: 0.8rem !important;
   font-weight: 600 !important;
   color: #e2e7d1 !important;
 }
 
-.duo-stat-card--synergy .progress-bar {
+[data-theme="dark"] .duo-stat-card--synergy .progress-bar,
+[data-theme="solaris"] .duo-stat-card--synergy .progress-bar,
+[data-theme="botanica"] .duo-stat-card--synergy .progress-bar {
   background: #283618 !important;
   height: 6px !important;
   border-radius: 4px !important;
@@ -5369,7 +5552,9 @@ html.desktop-site-view .auth-card {
   margin-top: 0.45rem;
 }
 
-.duo-stat-card--synergy .progress-bar__fill {
+[data-theme="dark"] .duo-stat-card--synergy .progress-bar__fill,
+[data-theme="solaris"] .duo-stat-card--synergy .progress-bar__fill,
+[data-theme="botanica"] .duo-stat-card--synergy .progress-bar__fill {
   height: 100%;
   background: #bc6c25 !important;
   border-radius: 4px !important;
@@ -5379,7 +5564,9 @@ html.desktop-site-view .auth-card {
 
 /* ---------- Shared Duo Synergy Shells ---------- */
 
-.duo-shells-section {
+[data-theme="dark"] .duo-shells-section,
+[data-theme="solaris"] .duo-shells-section,
+[data-theme="botanica"] .duo-shells-section {
   background: #283618 !important;
   border-radius: 18px !important;
   padding: 2rem 2.25rem !important;
@@ -5399,7 +5586,9 @@ html.desktop-site-view .auth-card {
   flex-wrap: wrap;
 }
 
-.duo-shells-badge {
+[data-theme="dark"] .duo-shells-badge,
+[data-theme="solaris"] .duo-shells-badge,
+[data-theme="botanica"] .duo-shells-badge {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -5410,17 +5599,260 @@ html.desktop-site-view .auth-card {
   margin-bottom: 0.35rem !important;
 }
 
-.duo-shells-header h3 {
+[data-theme="dark"] .duo-shells-header h3,
+[data-theme="solaris"] .duo-shells-header h3,
+[data-theme="botanica"] .duo-shells-header h3 {
   font-size: 1.55rem !important;
   font-weight: 800 !important;
   color: #fefae0 !important;
   margin: 0 0 0.3rem 0 !important;
 }
 
-.duo-shells-header p.muted {
+[data-theme="dark"] .duo-shells-header p.muted,
+[data-theme="solaris"] .duo-shells-header p.muted,
+[data-theme="botanica"] .duo-shells-header p.muted {
   color: #fefae0 !important;
   font-size: 0.88rem !important;
   opacity: 0.95;
+}
+
+/* ────────────────────────────────────────────────────────────
+   PEARL / ROSE DUO HUB, STATS & SHELLS SYSTEM
+   Reference Image: Soft Coral #ffa5ab Background, White #ffffff Shell Box, Dark Velvet #450920 Text, Rose Blush #da627d Avatars & Accents
+   Palette: ["#f9dbbd","#ffa5ab","#da627d","#a53860","#450920"]
+   ──────────────────────────────────────────────────────────── */
+[data-theme="pearl"] .duo-hub {
+  display: grid;
+  gap: 1.6rem;
+  background: #ffffff !important;
+  border: 1px solid rgba(218, 98, 125, 0.18) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 4px 24px rgba(69, 9, 32, 0.03) !important;
+  padding: 2rem !important;
+}
+
+[data-theme="pearl"] .badge--solaris-active,
+[data-theme="pearl"] .badge--active-duo {
+  display: inline-flex;
+  align-items: center;
+  background: #f9dbbd !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.35rem 0.8rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  margin-bottom: 0.25rem;
+}
+
+[data-theme="pearl"] .duo-hub__header h2 {
+  font-size: 2.1rem !important;
+  font-weight: 800 !important;
+  color: #450920 !important;
+  margin: 0.5rem 0 0.2rem 0;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="pearl"] .duo-hub__header p.muted {
+  color: #a53860 !important;
+  font-size: 0.88rem !important;
+  font-weight: 500;
+}
+
+[data-theme="pearl"] .btn--unlink-duo {
+  background: #f9dbbd !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 0.45rem 1.15rem !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-theme="pearl"] .btn--unlink-duo:hover {
+  background: #ffa5ab !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="pearl"] .btn--solaris-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  background: #f9dbbd !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 1.25rem !important;
+  box-shadow: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-decoration: none !important;
+}
+
+[data-theme="pearl"] .btn--solaris-cta:hover {
+  background: #ffa5ab !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Connection Bridge in Pearl */
+[data-theme="pearl"] .duo-bridge {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  background: #ffa5ab !important;
+  border: 1px solid rgba(218, 98, 125, 0.45) !important;
+  border-radius: 16px !important;
+  padding: 1.25rem 2rem !important;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+
+[data-theme="pearl"] .duo-member__avatar,
+[data-theme="pearl"] .duo-member--partner .duo-member__avatar {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: #da627d !important;
+  color: #ffffff !important;
+  border: none !important;
+  display: grid !important;
+  place-items: center !important;
+  flex-shrink: 0 !important;
+  box-shadow: none !important;
+}
+
+[data-theme="pearl"] .duo-member__info strong {
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .duo-member__info span {
+  color: #450920 !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  opacity: 0.85 !important;
+}
+
+[data-theme="pearl"] .duo-bridge__tag {
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  color: #450920 !important;
+  background: #da627d !important;
+  border: none !important;
+  padding: 0.3rem 0.85rem !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+/* Duo 4-Stat Cards in Pearl */
+[data-theme="pearl"] .duo-stat-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  background: #ffa5ab !important;
+  border: none !important;
+  border-radius: 14px !important;
+  padding: 1.2rem 1.4rem !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: none !important;
+  transition: all 0.2s ease;
+}
+
+[data-theme="pearl"] .duo-stat-card__icon {
+  display: none !important;
+}
+
+[data-theme="pearl"] .duo-stat-card__label {
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+}
+
+[data-theme="pearl"] .duo-stat-card__value {
+  font-size: 1.55rem !important;
+  font-weight: 900 !important;
+  margin: 0.15rem 0 !important;
+  letter-spacing: -0.02em !important;
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .duo-stat-card__sub {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: #450920 !important;
+  opacity: 0.85 !important;
+}
+
+[data-theme="pearl"] .duo-stat-card--synergy .progress-bar {
+  background: rgba(218, 98, 125, 0.35) !important;
+  height: 6px !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+  margin-top: 0.45rem !important;
+}
+
+[data-theme="pearl"] .duo-stat-card--synergy .progress-bar__fill {
+  height: 100% !important;
+  background: #da627d !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  transition: width 0.4s ease !important;
+}
+
+/* Shared Duo Synergy Shells Section in Pearl */
+[data-theme="pearl"] .duo-shells-section {
+  background: #ffa5ab !important;
+  border-radius: 18px !important;
+  padding: 2.25rem !important;
+  border: none !important;
+  margin-top: 1.5rem !important;
+  box-shadow: none !important;
+  color: #450920 !important;
+  display: grid !important;
+  gap: 1.5rem !important;
+}
+
+[data-theme="pearl"] .duo-shells-badge {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  color: #450920 !important;
+  margin-bottom: 0.35rem !important;
+}
+
+[data-theme="pearl"] .duo-shells-header h3,
+[data-theme="pearl"] .duo-shells-title {
+  font-size: 1.6rem !important;
+  font-weight: 800 !important;
+  color: #450920 !important;
+  margin: 0 0 0.3rem 0 !important;
+}
+
+[data-theme="pearl"] .duo-shells-header p.muted,
+[data-theme="pearl"] .duo-shells-desc {
+  color: #450920 !important;
+  font-size: 0.9rem !important;
+  opacity: 0.95 !important;
 }
 
 .duo-shells-list {
@@ -5575,12 +6007,9 @@ html.desktop-site-view .auth-card {
   animation: pulseGlow 2s infinite ease-in-out;
 }
 
-:root .card.duo-shells-empty,
 [data-theme="dark"] .card.duo-shells-empty,
 [data-theme="solaris"] .card.duo-shells-empty,
-[data-theme="botanica"] .card.duo-shells-empty,
-.card.duo-shells-empty,
-.duo-shells-empty {
+[data-theme="botanica"] .card.duo-shells-empty {
   background: rgba(16, 21, 9, 0.65) !important;
   border: 1px solid rgba(96, 108, 56, 0.45) !important;
   border-radius: 14px !important;
@@ -5589,12 +6018,9 @@ html.desktop-site-view .auth-card {
   color: #fefae0 !important;
 }
 
-:root .card.duo-shells-empty h4,
 [data-theme="dark"] .card.duo-shells-empty h4,
 [data-theme="solaris"] .card.duo-shells-empty h4,
-[data-theme="botanica"] .card.duo-shells-empty h4,
-.card.duo-shells-empty h4,
-.duo-shells-empty h4 {
+[data-theme="botanica"] .card.duo-shells-empty h4 {
   color: #fefae0 !important;
   font-size: 1.25rem !important;
   font-weight: 800 !important;
@@ -5602,18 +6028,12 @@ html.desktop-site-view .auth-card {
   letter-spacing: -0.01em !important;
 }
 
-:root .card.duo-shells-empty p,
-:root .card.duo-shells-empty .muted,
 [data-theme="dark"] .card.duo-shells-empty p,
 [data-theme="dark"] .card.duo-shells-empty .muted,
 [data-theme="solaris"] .card.duo-shells-empty p,
 [data-theme="solaris"] .card.duo-shells-empty .muted,
 [data-theme="botanica"] .card.duo-shells-empty p,
-[data-theme="botanica"] .card.duo-shells-empty .muted,
-.card.duo-shells-empty p,
-.card.duo-shells-empty .muted,
-.duo-shells-empty p,
-.duo-shells-empty p.muted {
+[data-theme="botanica"] .card.duo-shells-empty .muted {
   color: #fefae0 !important;
   font-size: 0.92rem !important;
   max-width: 680px !important;
@@ -5622,12 +6042,9 @@ html.desktop-site-view .auth-card {
   opacity: 0.95 !important;
 }
 
-:root .card.duo-shells-empty .btn--primary,
 [data-theme="dark"] .card.duo-shells-empty .btn--primary,
 [data-theme="solaris"] .card.duo-shells-empty .btn--primary,
-[data-theme="botanica"] .card.duo-shells-empty .btn--primary,
-.card.duo-shells-empty .btn--primary,
-.duo-shells-empty .btn--primary {
+[data-theme="botanica"] .card.duo-shells-empty .btn--primary {
   background: #606c38 !important;
   color: #fefae0 !important;
   border: 1px solid rgba(254, 250, 224, 0.3) !important;
@@ -5646,41 +6063,24 @@ html.desktop-site-view .auth-card {
 .duo-solo-section {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(254, 250, 224, 0.15) !important;
+  border-top: 1px solid rgba(254, 250, 224, 0.15);
 }
 
-:root .duo-solo-section h4,
 [data-theme="dark"] .duo-solo-section h4,
 [data-theme="solaris"] .duo-solo-section h4,
-[data-theme="botanica"] .duo-solo-section h4,
-.duo-solo-section h4 {
+[data-theme="botanica"] .duo-solo-section h4 {
   color: #fefae0 !important;
   font-size: 1.1rem !important;
   font-weight: 800 !important;
   margin: 0 0 0.35rem 0 !important;
 }
 
-:root .duo-solo-section p,
-:root .duo-solo-section p.muted,
 [data-theme="dark"] .duo-solo-section p,
 [data-theme="dark"] .duo-solo-section p.muted,
 [data-theme="solaris"] .duo-solo-section p,
 [data-theme="solaris"] .duo-solo-section p.muted,
 [data-theme="botanica"] .duo-solo-section p,
 [data-theme="botanica"] .duo-solo-section p.muted,
-.duo-solo-section p.muted,
-.duo-shells-desc,
-.duo-shells-empty-desc,
-.duo-solo-desc,
-p.duo-shells-desc,
-p.duo-shells-empty-desc,
-p.duo-solo-desc,
-.card .duo-shells-section p,
-.card .duo-shells-section p.muted,
-.card .duo-shells-section .duo-shells-desc,
-.card .duo-shells-section .duo-solo-desc,
-.card .duo-shells-section h3,
-.card .duo-shells-section h4,
 [data-theme="dark"] .card .duo-shells-section p,
 [data-theme="dark"] .card .duo-shells-section p.muted,
 [data-theme="dark"] .card .duo-shells-section .duo-shells-desc,
@@ -5711,7 +6111,9 @@ p.duo-solo-desc,
   margin-top: 0.75rem;
 }
 
-.duo-solo-card {
+[data-theme="dark"] .duo-solo-card,
+[data-theme="solaris"] .duo-solo-card,
+[data-theme="botanica"] .duo-solo-card {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -5731,14 +6133,106 @@ p.duo-solo-desc,
   font-size: 0.82rem;
 }
 
-.duo-solo-card__info strong {
+[data-theme="dark"] .duo-solo-card__info strong,
+[data-theme="solaris"] .duo-solo-card__info strong,
+[data-theme="botanica"] .duo-solo-card__info strong {
   font-size: 0.92rem;
   color: #fefae0 !important;
 }
 
-.duo-solo-card__info span {
+[data-theme="dark"] .duo-solo-card__info span,
+[data-theme="solaris"] .duo-solo-card__info span,
+[data-theme="botanica"] .duo-solo-card__info span {
   color: #d5e4c3 !important;
   font-size: 0.8rem;
+}
+
+/* ── Pearl / Rose Empty State, Shells & Solo Section Overrides ── */
+[data-theme="pearl"] .card.duo-shells-empty,
+[data-theme="pearl"] .duo-shells-empty {
+  background: #ffffff !important;
+  border: 1px solid rgba(218, 98, 125, 0.22) !important;
+  border-radius: 14px !important;
+  padding: 2.5rem 1.5rem !important;
+  text-align: center !important;
+  color: #450920 !important;
+  box-shadow: 0 4px 16px rgba(69, 9, 32, 0.03) !important;
+}
+
+[data-theme="pearl"] .card.duo-shells-empty h4,
+[data-theme="pearl"] .duo-shells-empty h4,
+[data-theme="pearl"] .duo-shells-empty-title {
+  color: #450920 !important;
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  margin: 0 0 0.45rem 0 !important;
+  letter-spacing: -0.01em !important;
+}
+
+[data-theme="pearl"] .card.duo-shells-empty p,
+[data-theme="pearl"] .card.duo-shells-empty .muted,
+[data-theme="pearl"] .duo-shells-empty p,
+[data-theme="pearl"] .duo-shells-empty-desc {
+  color: #450920 !important;
+  font-size: 0.92rem !important;
+  max-width: 680px !important;
+  margin: 0.4rem auto 1.35rem auto !important;
+  line-height: 1.55 !important;
+  opacity: 0.9 !important;
+}
+
+[data-theme="pearl"] .card.duo-shells-empty .btn--primary,
+[data-theme="pearl"] .duo-shells-empty .btn--primary {
+  background: #a53860 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  padding: 0.55rem 1.35rem !important;
+  box-shadow: 0 4px 14px rgba(165, 56, 96, 0.25) !important;
+}
+
+[data-theme="pearl"] .card.duo-shells-empty .btn--primary:hover,
+[data-theme="pearl"] .duo-shells-empty .btn--primary:hover {
+  background: #8e2d51 !important;
+}
+
+[data-theme="pearl"] .duo-solo-section {
+  border-top: 1px solid rgba(218, 98, 125, 0.25) !important;
+}
+
+[data-theme="pearl"] .duo-solo-section h4,
+[data-theme="pearl"] .duo-solo-title {
+  color: #450920 !important;
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="pearl"] .duo-solo-section p,
+[data-theme="pearl"] .duo-solo-section p.muted,
+[data-theme="pearl"] .duo-solo-desc {
+  color: #450920 !important;
+  font-size: 0.88rem !important;
+  opacity: 0.9 !important;
+}
+
+[data-theme="pearl"] .duo-solo-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.15rem;
+  background: #ffffff !important;
+  border: 1px solid rgba(218, 98, 125, 0.25) !important;
+  border-radius: 12px !important;
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .duo-solo-card__info strong {
+  color: #450920 !important;
+}
+
+[data-theme="pearl"] .duo-solo-card__info span {
+  color: #a53860 !important;
 }
 
 .task-tag--shell {
