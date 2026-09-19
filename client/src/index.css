@@ -5402,8 +5402,9 @@ html.desktop-site-view .auth-card {
 }
 
 .duo-shells-header p.muted {
-  color: #d5e4c3 !important;
+  color: #fefae0 !important;
   font-size: 0.88rem !important;
+  opacity: 0.95;
 }
 
 .duo-shells-list {
@@ -5568,18 +5569,19 @@ html.desktop-site-view .auth-card {
 }
 
 .duo-shells-empty h4 {
-  color: #ffffff !important;
+  color: #fefae0 !important;
   font-size: 1.15rem !important;
   font-weight: 800 !important;
   margin: 0 0 0.4rem 0 !important;
 }
 
 .duo-shells-empty p.muted {
-  color: #d5e4c3 !important;
+  color: #fefae0 !important;
   font-size: 0.88rem !important;
   max-width: 680px !important;
   margin: 0.4rem auto 1.25rem auto !important;
   line-height: 1.5 !important;
+  opacity: 0.95;
 }
 
 .duo-shells-empty .btn--primary {
