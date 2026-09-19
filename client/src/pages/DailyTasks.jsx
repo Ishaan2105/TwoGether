@@ -624,9 +624,9 @@ export default function DailyTasks() {
             />
           </>
         ) : (
-          <>
+          <div className="daily-cards-wrapper">
             {/* Categories & Filter Controls for Daily Cards View */}
-            <div className="tasks-controls">
+            <div className="daily-cards-toolbar">
               <div className="category-pills">
                 {CATEGORIES.map((cat) => (
                   <button
@@ -671,7 +671,7 @@ export default function DailyTasks() {
               if (habitStatusTab === 'completed') return h.status === 'completed';
               return true;
             }).length > 0 ? (
-              <div className="task-list">
+              <div className="daily-cards-list">
                 {filteredHabits
                   .filter((h) => {
                     if (habitStatusTab === 'active') return h.status !== 'completed';
@@ -703,7 +703,22 @@ export default function DailyTasks() {
                             habit.isCompletedToday ? 'Mark incomplete' : 'Mark complete'
                           }
                         >
-                          {habit.isCompletedToday && '✓'}
+                          {habit.isCompletedToday && (
+                            <svg
+                              className="spreadsheet-check-svg"
+                              viewBox="0 0 12 12"
+                              width="11"
+                              height="11"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <polyline points="2.5 6.5 5 9 9.5 3.5" />
+                            </svg>
+                          )}
                         </button>
 
                         {/* Details */}
@@ -824,7 +839,7 @@ export default function DailyTasks() {
                   })}
               </div>
             ) : (
-              <div className="card tasks-empty-state">
+              <div className="tasks-empty-state" style={{ padding: '2.5rem 1.5rem', textAlign: 'center' }}>
                 <div className="tasks-empty-state__icon" aria-hidden="true" style={{ fontSize: '2rem', color: 'var(--text-muted)' }}>
                   —
                 </div>
@@ -855,7 +870,7 @@ export default function DailyTasks() {
                 )}
               </div>
             )}
-          </>
+          </div>
         )}
 
         {/* Quick Link Banner to Duo Section */}

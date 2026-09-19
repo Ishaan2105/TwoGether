@@ -7445,29 +7445,36 @@ html:has(.landing) .scroll-sequence-vignette {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   background: var(--bg-card);
-  border: 1px solid rgba(var(--cyan-rgb), 0.25);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.5rem 2rem;
+  padding: 0.85rem 1.25rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: 0.85rem;
   box-shadow: var(--shadow-card);
 }
 
 .duo-callout-banner__content {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.85rem;
 }
 
 .duo-callout-banner__icon {
-  font-size: 2.5rem;
+  font-size: 1.6rem;
 }
 
 .duo-callout-banner h3 {
-  margin: 0 0 0.2rem 0;
-  font-size: 1.2rem;
+  margin: 0 0 0.15rem 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.duo-callout-banner p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 .forgot-password-link {
@@ -9327,6 +9334,414 @@ html:has(.landing) .scroll-sequence-vignette {
   color: var(--text-muted);
   font-size: 0.75rem;
   font-style: italic;
+}
+
+/* ============================================================
+   Unified Daily Cards View - Matching Monthly Matrix Spreadsheet UI
+   ============================================================ */
+
+.daily-cards-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .daily-cards-wrapper,
+[data-theme="botanica"] .daily-cards-wrapper,
+[data-theme="solaris"] .daily-cards-wrapper {
+  background: #fefbe7;
+  color: #283618;
+  border: 1px solid rgba(96, 108, 56, 0.22);
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(40, 54, 24, 0.06);
+}
+
+[data-theme="pearl"] .daily-cards-wrapper {
+  background: #fff8f8;
+  border: 1px solid rgba(165, 56, 96, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(69, 9, 32, 0.05);
+}
+
+.daily-cards-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1.15rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+[data-theme="dark"] .daily-cards-toolbar,
+[data-theme="botanica"] .daily-cards-toolbar,
+[data-theme="solaris"] .daily-cards-toolbar {
+  background: rgba(96, 108, 56, 0.08);
+  border-bottom: 1px solid rgba(96, 108, 56, 0.16);
+}
+
+[data-theme="pearl"] .daily-cards-toolbar {
+  background: rgba(165, 56, 96, 0.06);
+  border-bottom: 1px solid rgba(165, 56, 96, 0.14);
+}
+
+.daily-cards-toolbar .category-pills {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  align-items: center;
+}
+
+.daily-cards-toolbar .category-pill {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .daily-cards-toolbar .category-pill,
+[data-theme="botanica"] .daily-cards-toolbar .category-pill,
+[data-theme="solaris"] .daily-cards-toolbar .category-pill {
+  background: #fefbe7;
+  border-color: rgba(96, 108, 56, 0.2);
+  color: #606c38;
+}
+
+[data-theme="pearl"] .daily-cards-toolbar .category-pill {
+  background: #fff8f8;
+  border-color: rgba(165, 56, 96, 0.2);
+  color: #a53860;
+}
+
+.daily-cards-toolbar .category-pill--active {
+  background: rgba(var(--cyan-rgb), 0.12);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+[data-theme="dark"] .daily-cards-toolbar .category-pill--active,
+[data-theme="botanica"] .daily-cards-toolbar .category-pill--active,
+[data-theme="solaris"] .daily-cards-toolbar .category-pill--active {
+  background: #606c38 !important;
+  border-color: #606c38 !important;
+  color: #fefae0 !important;
+}
+
+[data-theme="pearl"] .daily-cards-toolbar .category-pill--active {
+  background: #a53860 !important;
+  border-color: #a53860 !important;
+  color: #fff8f8 !important;
+}
+
+.daily-cards-toolbar .status-filter-group {
+  display: flex;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.15rem;
+  gap: 0.15rem;
+}
+
+[data-theme="dark"] .daily-cards-toolbar .status-filter-group,
+[data-theme="botanica"] .daily-cards-toolbar .status-filter-group,
+[data-theme="solaris"] .daily-cards-toolbar .status-filter-group {
+  background: rgba(96, 108, 56, 0.12);
+  border-color: rgba(96, 108, 56, 0.2);
+}
+
+[data-theme="pearl"] .daily-cards-toolbar .status-filter-group {
+  background: rgba(165, 56, 96, 0.08);
+  border-color: rgba(165, 56, 96, 0.18);
+}
+
+.daily-cards-toolbar .status-btn {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+[data-theme="dark"] .daily-cards-toolbar .status-btn,
+[data-theme="botanica"] .daily-cards-toolbar .status-btn,
+[data-theme="solaris"] .daily-cards-toolbar .status-btn {
+  color: #606c38;
+}
+
+[data-theme="pearl"] .daily-cards-toolbar .status-btn {
+  color: #a53860;
+}
+
+.daily-cards-toolbar .status-btn--active {
+  background: var(--bg-card);
+  color: var(--cyan);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .daily-cards-toolbar .status-btn--active,
+[data-theme="botanica"] .daily-cards-toolbar .status-btn--active,
+[data-theme="solaris"] .daily-cards-toolbar .status-btn--active {
+  background: #fefbe7 !important;
+  color: #283618 !important;
+}
+
+[data-theme="pearl"] .daily-cards-toolbar .status-btn--active {
+  background: #fff8f8 !important;
+  color: #450920 !important;
+}
+
+/* Daily Cards List Container */
+.daily-cards-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Compact Daily Habit Row - Exact Same Density as Spreadsheet Rows */
+.daily-cards-wrapper .task-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  padding: 0.55rem 1.15rem !important;
+  box-shadow: none !important;
+  transition: background 0.15s ease;
+  min-height: 44px;
+}
+
+[data-theme="dark"] .daily-cards-wrapper .task-card,
+[data-theme="botanica"] .daily-cards-wrapper .task-card,
+[data-theme="solaris"] .daily-cards-wrapper .task-card {
+  border-bottom: 1px solid rgba(96, 108, 56, 0.12) !important;
+  color: #283618;
+}
+
+[data-theme="pearl"] .daily-cards-wrapper .task-card {
+  border-bottom: 1px solid rgba(165, 56, 96, 0.12) !important;
+  color: #450920;
+}
+
+.daily-cards-wrapper .task-card:last-child {
+  border-bottom: none !important;
+}
+
+.daily-cards-wrapper .task-card:hover {
+  background: rgba(var(--cyan-rgb), 0.04) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .daily-cards-wrapper .task-card:hover,
+[data-theme="botanica"] .daily-cards-wrapper .task-card:hover,
+[data-theme="solaris"] .daily-cards-wrapper .task-card:hover {
+  background: rgba(96, 108, 56, 0.05) !important;
+}
+
+[data-theme="pearl"] .daily-cards-wrapper .task-card:hover {
+  background: rgba(165, 56, 96, 0.05) !important;
+}
+
+.daily-cards-wrapper .task-card--completed {
+  opacity: 0.65;
+  background: transparent !important;
+}
+
+/* Compact Checkbox: Exact Same 24px x 24px Rounded Square as Monthly Matrix */
+.daily-cards-wrapper .task-checkbox {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--bg-input) !important;
+  color: #ffffff;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+[data-theme="dark"] .daily-cards-wrapper .task-checkbox,
+[data-theme="botanica"] .daily-cards-wrapper .task-checkbox,
+[data-theme="solaris"] .daily-cards-wrapper .task-checkbox {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(96, 108, 56, 0.3) !important;
+}
+
+[data-theme="pearl"] .daily-cards-wrapper .task-checkbox {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(165, 56, 96, 0.3) !important;
+}
+
+.daily-cards-wrapper .task-checkbox:hover {
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 0 3px rgba(var(--cyan-rgb), 0.18) !important;
+  transform: scale(1.08);
+}
+
+[data-theme="dark"] .daily-cards-wrapper .task-checkbox:hover,
+[data-theme="botanica"] .daily-cards-wrapper .task-checkbox:hover,
+[data-theme="solaris"] .daily-cards-wrapper .task-checkbox:hover {
+  border-color: #606c38 !important;
+  box-shadow: 0 0 0 3px rgba(96, 108, 56, 0.2) !important;
+}
+
+[data-theme="pearl"] .daily-cards-wrapper .task-checkbox:hover {
+  border-color: #a53860 !important;
+  box-shadow: 0 0 0 3px rgba(165, 56, 96, 0.2) !important;
+}
+
+.daily-cards-wrapper .task-checkbox--checked {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35) !important;
+  transform: scale(1.02);
+}
+
+.daily-cards-wrapper .task-checkbox--checked:hover {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  transform: scale(1.1);
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Compact Content & Typography */
+.daily-cards-wrapper .task-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.daily-cards-wrapper .task-card__title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.daily-cards-wrapper .task-card__title {
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  margin: 0;
+  line-height: 1.3;
+}
+
+[data-theme="dark"] .daily-cards-wrapper .task-card__title,
+[data-theme="botanica"] .daily-cards-wrapper .task-card__title,
+[data-theme="solaris"] .daily-cards-wrapper .task-card__title {
+  color: #283618 !important;
+}
+
+[data-theme="pearl"] .daily-cards-wrapper .task-card__title {
+  color: #450920 !important;
+}
+
+.daily-cards-wrapper .task-card__streak {
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  padding: 0.08rem 0.4rem !important;
+  border-radius: 4px;
+  color: #ea580c;
+  background: rgba(234, 88, 12, 0.1);
+  border: 1px solid rgba(234, 88, 12, 0.22);
+}
+
+.daily-cards-wrapper .task-card__sprint-badge {
+  font-size: 0.7rem !important;
+  padding: 0.08rem 0.45rem !important;
+  border-radius: 4px;
+}
+
+.daily-cards-wrapper .task-card__tags {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.daily-cards-wrapper .task-tag {
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  padding: 0.1rem 0.4rem !important;
+  border-radius: 4px;
+}
+
+.daily-cards-wrapper .task-card__desc,
+.daily-cards-wrapper .task-card__objective-note {
+  font-size: 0.76rem !important;
+  margin: 0.1rem 0 0 0;
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .daily-cards-wrapper .task-card__desc,
+[data-theme="botanica"] .daily-cards-wrapper .task-card__desc {
+  color: #606c38 !important;
+}
+
+/* Action Icons */
+.daily-cards-wrapper .task-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.daily-cards-wrapper .btn-icon {
+  width: 26px !important;
+  height: 26px !important;
+  font-size: 0.78rem !important;
+  border-radius: 6px !important;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.daily-cards-wrapper .btn-icon:hover {
+  background: rgba(var(--cyan-rgb), 0.1);
+  color: var(--cyan);
+  border-color: rgba(var(--cyan-rgb), 0.2);
+}
+
+.daily-cards-wrapper .btn-icon--danger:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
 /* ---------- Monthly & Weekly Analytics Section ---------- */
