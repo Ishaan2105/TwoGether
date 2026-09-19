@@ -3147,8 +3147,9 @@ button {
   .container.dashboard,
   .container.tasks-page {
     margin: 0 auto !important;
+    width: 100% !important;
     max-width: 100% !important;
-    padding: 1rem 1.5rem 1.5rem 4.5rem !important;
+    padding: 0.85rem 0.85rem 1.25rem 3.5rem !important;
     box-sizing: border-box !important;
   }
 
@@ -14938,27 +14939,166 @@ html:has(.landing) .scroll-sequence-vignette {
   }
 }
 
-/* ── Landscape Mode Zoomed Out Experience ── */
+/* ── Landscape Mode: Strictly Fit All Data Horizontally Within Phone Borders ── */
 @media (orientation: landscape) and (max-height: 650px),
        (orientation: landscape) and (max-width: 1024px) {
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
   html.landscape-mode #root,
   html.app-zoomed-out #root {
-    zoom: 0.82;
-    -moz-transform: scale(0.82);
-    -moz-transform-origin: top left;
-    width: calc(100% / 0.82);
-    min-height: calc(100% / 0.82);
+    zoom: 0.78;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .app-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .container.dashboard,
+  .container.tasks-page,
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding-left: 3.5rem !important;
+    padding-right: 0.85rem !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Table strictly fits 100% width across the screen — no horizontal pan required */
+  .spreadsheet-wrapper,
+  .spreadsheet-scroll-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .spreadsheet-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .spreadsheet-th-habit,
+  .spreadsheet-td-habit {
+    width: 22% !important;
+    min-width: 0 !important;
+    max-width: 24% !important;
+  }
+
+  .spreadsheet-habit-cell {
+    padding: 0 4px !important;
+    gap: 4px !important;
+  }
+
+  .spreadsheet-habit-input {
+    font-size: 0.72rem !important;
+    padding: 0.15rem 0.3rem !important;
+  }
+
+  .spreadsheet-th-day,
+  .spreadsheet-td-day {
+    width: 2.45% !important;
+    min-width: 0 !important;
+    max-width: 2.5% !important;
+    padding: 0.25rem 0.05rem !important;
+  }
+
+  .spreadsheet-th-day__num {
+    font-size: 0.68rem !important;
+  }
+
+  .spreadsheet-th-day__weekday {
+    font-size: 0.48rem !important;
+  }
+
+  .spreadsheet-cell {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 24px !important;
+  }
+
+  .spreadsheet-check-svg {
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  .spreadsheet-th-stat,
+  .spreadsheet-td-stat {
+    width: 3.5% !important;
+    min-width: 0 !important;
+    padding: 0.2rem 0.1rem !important;
+    font-size: 0.68rem !important;
+  }
+
+  /* Dashboard: Duo metrics cards fit side-by-side in 1 row */
+  .duo-stats-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.55rem !important;
+    width: 100% !important;
+  }
+
+  .duo-stat-card {
+    padding: 0.65rem 0.8rem !important;
+  }
+
+  .duo-stat-card__value {
+    font-size: 1.15rem !important;
+  }
+
+  /* Cohort Retention Table fits horizontally */
+  .cohort-table-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .cohort-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .cohort-th-pinned,
+  .cohort-td-pinned {
+    width: 25% !important;
+    min-width: 0 !important;
+    padding: 0.45rem 0.65rem !important;
+  }
+
+  .cohort-th-period,
+  .cohort-td-cell {
+    width: 15% !important;
+    min-width: 0 !important;
+    padding: 0.4rem 0.25rem !important;
   }
 }
 
 /* Explicit app-zoomed-out class */
+html.app-zoomed-out,
+body.app-zoomed-out {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
 html.app-zoomed-out #root,
 body.app-zoomed-out #root {
-  zoom: 0.82;
-  -moz-transform: scale(0.82);
-  -moz-transform-origin: top left;
-  width: calc(100% / 0.82);
-  min-height: calc(100% / 0.82);
+  zoom: 0.78;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
 }
 
 /* Simulated Landscape Mode on Portrait Screens when requested */
@@ -14967,6 +15107,7 @@ body.app-zoomed-out #root {
     overflow: hidden !important;
     width: 100vw !important;
     height: 100vh !important;
+    max-width: 100vw !important;
   }
 
   html.app-forced-landscape body {
@@ -14975,6 +15116,8 @@ body.app-zoomed-out #root {
     left: 100vw !important;
     width: 100vh !important;
     height: 100vw !important;
+    max-width: 100vh !important;
+    max-height: 100vw !important;
     transform: rotate(90deg) !important;
     transform-origin: top left !important;
     overflow-y: auto !important;
@@ -14982,17 +15125,78 @@ body.app-zoomed-out #root {
     -webkit-overflow-scrolling: touch !important;
   }
 
-  /* Zoom out root in forced landscape so full widescreen fits without clipping */
+  /* Zoom out root in forced landscape so full widescreen fits strictly within borders */
   html.app-forced-landscape #root,
   html.app-forced-landscape.app-zoomed-out #root {
-    zoom: 0.80 !important;
-    -moz-transform: scale(0.80) !important;
-    -moz-transform-origin: top left !important;
-    width: calc(100% / 0.80) !important;
-    min-height: calc(100% / 0.80) !important;
+    zoom: 0.78 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
 
-  /* In forced landscape, display the 3-lines sidebar toggle and hide portrait topbar */
+  html.app-forced-landscape .container.dashboard,
+  html.app-forced-landscape .container.tasks-page,
+  html.app-forced-landscape .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding-left: 3.5rem !important;
+    padding-right: 0.85rem !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Table strictly fits 100% width across the screen in forced landscape */
+  html.app-forced-landscape .spreadsheet-wrapper,
+  html.app-forced-landscape .spreadsheet-scroll-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  html.app-forced-landscape .spreadsheet-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  html.app-forced-landscape .spreadsheet-th-habit,
+  html.app-forced-landscape .spreadsheet-td-habit {
+    width: 22% !important;
+    min-width: 0 !important;
+    max-width: 24% !important;
+  }
+
+  html.app-forced-landscape .spreadsheet-th-day,
+  html.app-forced-landscape .spreadsheet-td-day {
+    width: 2.45% !important;
+    min-width: 0 !important;
+    max-width: 2.5% !important;
+    padding: 0.25rem 0.05rem !important;
+  }
+
+  html.app-forced-landscape .spreadsheet-th-day__num {
+    font-size: 0.68rem !important;
+  }
+
+  html.app-forced-landscape .spreadsheet-th-day__weekday {
+    font-size: 0.48rem !important;
+  }
+
+  html.app-forced-landscape .spreadsheet-cell {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 24px !important;
+  }
+
+  html.app-forced-landscape .spreadsheet-th-stat,
+  html.app-forced-landscape .spreadsheet-td-stat {
+    width: 3.5% !important;
+    min-width: 0 !important;
+    padding: 0.2rem 0.1rem !important;
+    font-size: 0.68rem !important;
+  }
+
+  /* Display 3-lines edge toggle and hide portrait topbar */
   html.app-forced-landscape .sidebar-edge-toggle {
     display: flex !important;
   }
