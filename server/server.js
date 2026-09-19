@@ -51,9 +51,18 @@ app.use('/api/notifications', notificationRoutes);
 // Serve React frontend in production
 if (process.env.NODE_ENV === 'production') {
   const clientBuild = path.join(__dirname, '..', 'client', 'dist');
-  app.use(express.static(clientBuild));
+  app.use(express.static(clientBuild, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('sw.js') || filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      } else {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      }
+    },
+  }));
   // Catch-all: send index.html for any non-API route (React Router)
   app.get('*', (_req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.sendFile(path.join(clientBuild, 'index.html'));
   });
 } else {

@@ -11,6 +11,7 @@ export function SidebarProvider({ children }) {
   const [isImageNudgeOpen, setIsImageNudgeOpen] = useState(false);
   const [isNudgeViewerOpen, setIsNudgeViewerOpen] = useState(false);
   const [activeNudgeId, setActiveNudgeId] = useState(null);
+  const [activeNudgeDuration, setActiveNudgeDuration] = useState(null);
 
   // PWA beforeinstallprompt management
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -25,23 +26,21 @@ export function SidebarProvider({ children }) {
       setIsInstalled(true);
     }
 
-    function handleBeforeInstallPrompt(e) {
+    const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
-    }
+    };
+    window.addEventListener('beforeinstallprompt', handler);
 
-    function handleAppInstalled() {
+    const appInstalledHandler = () => {
       setIsInstalled(true);
       setDeferredPrompt(null);
-      setIsPWAInstallOpen(false);
-    }
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
+    };
+    window.addEventListener('appinstalled', appInstalledHandler);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
+      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener('appinstalled', appInstalledHandler);
     };
   }, []);
 
@@ -49,19 +48,15 @@ export function SidebarProvider({ children }) {
   const closeSidebar = useCallback(() => setIsSidebarOpen(false), []);
   const toggleSidebar = useCallback(() => setIsSidebarOpen((prev) => !prev), []);
 
-  const openLeaderboard = useCallback((tab = 'solo') => {
+  const openLeaderboard = useCallback((tab = 'duo') => {
     setLeaderboardTab(tab);
     setIsLeaderboardOpen(true);
-    setIsSidebarOpen(false); // Close sidebar when modal opens
+    setIsSidebarOpen(false);
   }, []);
 
   const closeLeaderboard = useCallback(() => setIsLeaderboardOpen(false), []);
 
-  const openPWAInstall = useCallback(() => {
-    setIsPWAInstallOpen(true);
-    setIsSidebarOpen(false);
-  }, []);
-
+  const openPWAInstall = useCallback(() => setIsPWAInstallOpen(true), []);
   const closePWAInstall = useCallback(() => setIsPWAInstallOpen(false), []);
 
   const openShieldModal = useCallback(() => {
@@ -78,14 +73,18 @@ export function SidebarProvider({ children }) {
 
   const closeImageNudge = useCallback(() => setIsImageNudgeOpen(false), []);
 
-  const openNudgeViewer = useCallback((nudgeId) => {
+  const openNudgeViewer = useCallback((nudgeId, initialDuration = null) => {
     setActiveNudgeId(nudgeId);
+    if (initialDuration) {
+      setActiveNudgeDuration(initialDuration);
+    }
     setIsNudgeViewerOpen(true);
   }, []);
 
   const closeNudgeViewer = useCallback(() => {
     setIsNudgeViewerOpen(false);
     setActiveNudgeId(null);
+    setActiveNudgeDuration(null);
   }, []);
 
   const triggerNativePWAInstall = useCallback(async () => {
@@ -128,6 +127,7 @@ export function SidebarProvider({ children }) {
         closeImageNudge,
         isNudgeViewerOpen,
         activeNudgeId,
+        activeNudgeDuration,
         openNudgeViewer,
         closeNudgeViewer,
         isInstallable: !!deferredPrompt,

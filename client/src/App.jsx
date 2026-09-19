@@ -32,11 +32,15 @@ function NudgeWatcher() {
 
   useEffect(() => {
     const nudgeId = searchParams.get('nudge');
+    const urlDuration = searchParams.get('d') || searchParams.get('duration');
     if (nudgeId && user) {
-      openNudgeViewer(nudgeId);
+      const parsedDur = urlDuration ? parseInt(urlDuration, 10) : null;
+      openNudgeViewer(nudgeId, parsedDur && !isNaN(parsedDur) ? parsedDur : null);
       // Strip the param from the URL so it doesn't persist on refresh
       const next = new URLSearchParams(searchParams);
       next.delete('nudge');
+      next.delete('d');
+      next.delete('duration');
       setSearchParams(next, { replace: true });
     }
   }, [searchParams, user, openNudgeViewer, setSearchParams]);

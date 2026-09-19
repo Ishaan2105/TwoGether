@@ -175,10 +175,10 @@ router.post('/send-image-nudge', async (req, res, next) => {
         imageSource,
         sourceText,
         duration: viewDuration,
-        url: `/?nudge=${nudge._id.toString()}`,
+        url: `/?nudge=${nudge._id.toString()}&d=${viewDuration}`,
       },
       actions: [
-        { action: 'open', title: hasImage ? '📸 View Attached Photo' : '👀 Open App' },
+        { action: 'open', title: hasImage ? `📸 View Photo (${viewDuration}s)` : '👀 Open App' },
         { action: 'dismiss', title: '✕ Dismiss' },
       ],
     });

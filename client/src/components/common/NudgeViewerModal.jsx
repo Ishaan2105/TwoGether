@@ -14,13 +14,13 @@ import { getNudgeMessage } from '../../services/notifications.js';
  *  6. Dynamic self-destruct timer configured by the sender
  */
 export default function NudgeViewerModal() {
-  const { isNudgeViewerOpen, closeNudgeViewer, activeNudgeId } = useSidebar();
+  const { isNudgeViewerOpen, closeNudgeViewer, activeNudgeId, activeNudgeDuration } = useSidebar();
 
   const [nudge, setNudge] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [totalDuration, setTotalDuration] = useState(15);
-  const [timeLeft, setTimeLeft] = useState(null); // countdown for self-destruct
+  const [totalDuration, setTotalDuration] = useState(activeNudgeDuration || 15);
+  const [timeLeft, setTimeLeft] = useState(activeNudgeDuration || null); // countdown for self-destruct
   const [isShieldActive, setIsShieldActive] = useState(false);
   const [shieldReason, setShieldReason] = useState('');
 
@@ -36,16 +36,21 @@ export default function NudgeViewerModal() {
     setShieldReason('');
     setLoading(true);
 
+    if (activeNudgeDuration) {
+      setTotalDuration(activeNudgeDuration);
+      setTimeLeft(activeNudgeDuration);
+    }
+
     getNudgeMessage(activeNudgeId)
       .then((data) => {
         setNudge(data);
-        const duration = Math.max(3, Math.min(120, Number(data.duration) || 15));
-        setTotalDuration(duration);
-        setTimeLeft(duration);
+        const resolvedDuration = Math.max(3, Math.min(120, Number(data.duration) || activeNudgeDuration || 15));
+        setTotalDuration(resolvedDuration);
+        setTimeLeft(resolvedDuration);
       })
       .catch(() => setError('This nudge has expired or you don\'t have access.'))
       .finally(() => setLoading(false));
-  }, [isNudgeViewerOpen, activeNudgeId]);
+  }, [isNudgeViewerOpen, activeNudgeId, activeNudgeDuration]);
 
   // ── Multi-layer Anti-Screenshot & Screen Capture Protection ──────
   useEffect(() => {
