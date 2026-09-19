@@ -5,6 +5,7 @@ import { useInAppModal } from '../context/ModalContext.jsx';
 import HabitMatrixGrid from '../components/habits/HabitMatrixGrid.jsx';
 import CohortRetentionMatrix from '../components/habits/CohortRetentionMatrix.jsx';
 import * as habitService from '../services/habits.js';
+import { getLocalTodayStr, subscribeToMidnightTick } from '../utils/dateUtils.js';
 
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -63,7 +64,7 @@ const QUICK_SUGGESTIONS = PRESET_TEMPLATES.slice(0, 5);
 
 // Helpers for Sprint Date calculations
 function addDaysToDate(dateStr, days) {
-  if (!dateStr) dateStr = new Date().toISOString().slice(0, 10);
+  if (!dateStr) dateStr = getLocalTodayStr();
   const parts = dateStr.split('-');
   const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
   d.setDate(d.getDate() + (days - 1));
@@ -74,7 +75,7 @@ function addDaysToDate(dateStr, days) {
 }
 
 function getMonthEndDate(dateStr) {
-  if (!dateStr) dateStr = new Date().toISOString().slice(0, 10);
+  if (!dateStr) dateStr = getLocalTodayStr();
   const parts = dateStr.split('-');
   const year = parseInt(parts[0], 10);
   const month = parseInt(parts[1], 10) - 1;
@@ -111,8 +112,8 @@ export default function DailyTasks() {
     completedCount: 0,
     percentComplete: 0,
     todayXP: 0,
-    todayStr: new Date().toISOString().slice(0, 10),
-    joinDateStr: new Date().toISOString().slice(0, 10),
+    todayStr: getLocalTodayStr(),
+    joinDateStr: getLocalTodayStr(),
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -141,7 +142,7 @@ export default function DailyTasks() {
     priority: 'medium',
     timeOfDay: 'anytime',
     habitType: 'ongoing', // 'ongoing' | 'sprint'
-    startDate: new Date().toISOString().slice(0, 10),
+    startDate: getLocalTodayStr(),
     endDate: '',
     targetDays: 5,
     objectiveNote: '',
@@ -171,6 +172,26 @@ export default function DailyTasks() {
 
   useEffect(() => {
     fetchHabits();
+  }, [fetchHabits]);
+
+  // Subscribe to exact 12:00:00 AM midnight tick to flip the day and reload tasks automatically
+  useEffect(() => {
+    const unsubscribe = subscribeToMidnightTick(() => {
+      fetchHabits();
+      const d = new Date();
+      setSelectedYear(d.getFullYear());
+      setSelectedMonth(d.getMonth());
+    });
+
+    const handleNewDay = () => {
+      fetchHabits();
+    };
+    window.addEventListener('twogether:new-day', handleNewDay);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('twogether:new-day', handleNewDay);
+    };
   }, [fetchHabits]);
 
   // Month Navigation Handlers
@@ -204,7 +225,7 @@ export default function DailyTasks() {
   // Open modal for Create
   const handleOpenCreate = (isSprint = false) => {
     setEditingHabit(null);
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getLocalTodayStr();
     setFormData({
       title: '',
       description: '',
@@ -232,7 +253,7 @@ export default function DailyTasks() {
       priority: habit.priority || 'medium',
       timeOfDay: habit.timeOfDay || 'anytime',
       habitType: habit.habitType || 'ongoing',
-      startDate: habit.startDate || habit.createdAt?.slice(0, 10) || new Date().toISOString().slice(0, 10),
+      startDate: habit.startDate || habit.createdAt?.slice(0, 10) || getLocalTodayStr(),
       endDate: habit.endDate || '',
       targetDays: habit.targetDays || 5,
       objectiveNote: habit.objectiveNote || '',
@@ -389,7 +410,7 @@ export default function DailyTasks() {
     const id = typeof habitOrId === 'string' ? habitOrId : habitOrId._id;
     try {
       setTogglingHabitId(id);
-      const res = await habitService.toggleHabit(id);
+      const res = await habitService.toggleHabit(id, getLocalTodayStr());
       await fetchHabits();
       if (refreshUser) refreshUser();
       setSuccessMsg(res.message);
@@ -574,7 +595,7 @@ export default function DailyTasks() {
               })}
               selectedYear={selectedYear}
               selectedMonth={selectedMonth}
-              todayStr={summary.todayStr || new Date().toISOString().slice(0, 10)}
+              todayStr={summary.todayStr || getLocalTodayStr()}
               joinDateStr={summary.joinDateStr || user?.createdAt?.slice(0, 10)}
               onToggleToday={handleToggle}
               onInlineCreateHabit={handleInlineCreate}
@@ -592,7 +613,7 @@ export default function DailyTasks() {
               habits={habits}
               selectedYear={selectedYear}
               selectedMonth={selectedMonth}
-              todayStr={summary.todayStr || new Date().toISOString().slice(0, 10)}
+              todayStr={summary.todayStr || getLocalTodayStr()}
               joinDateStr={summary.joinDateStr || user?.createdAt?.slice(0, 10)}
             />
           </>
@@ -689,7 +710,7 @@ export default function DailyTasks() {
                     formData.habitType === 'sprint' ? 'habit-type-btn--active' : ''
                   }`}
                   onClick={() => {
-                    const today = formData.startDate || new Date().toISOString().slice(0, 10);
+                    const today = formData.startDate || getLocalTodayStr();
                     setFormData({
                       ...formData,
                       habitType: 'sprint',
@@ -721,7 +742,7 @@ export default function DailyTasks() {
                       type="button"
                       className="sprint-preset-chip"
                       onClick={() => {
-                        const today = formData.startDate || new Date().toISOString().slice(0, 10);
+                        const today = formData.startDate || getLocalTodayStr();
                         if (preset.isMonthEnd) {
                           const monthEnd = getMonthEndDate(today);
                           const days = countDaysBetween(today, monthEnd);

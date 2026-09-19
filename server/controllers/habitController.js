@@ -2,7 +2,25 @@ const Habit = require('../models/Habit');
 const User = require('../models/User');
 const Duo = require('../models/Duo');
 
-function getTodayDateStr() {
+function getTodayDateStr(req) {
+  if (req) {
+    const clientDate = req.headers?.['x-client-date'] || req.headers?.['x-today-date'];
+    if (clientDate && /^\d{4}-\d{2}-\d{2}$/.test(clientDate)) {
+      return clientDate;
+    }
+    const tz = req.headers?.['x-timezone'];
+    if (tz) {
+      try {
+        const dateInTz = new Intl.DateTimeFormat('en-CA', {
+          timeZone: tz,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }).format(new Date());
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateInTz)) return dateInTz;
+      } catch (e) {}
+    }
+  }
   const d = new Date();
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -36,7 +54,7 @@ function getDaysBetween(startStr, endStr) {
  */
 async function getHabits(req, res, next) {
   try {
-    const todayStr = getTodayDateStr();
+    const todayStr = getTodayDateStr(req);
     const user = await User.findById(req.user._id);
     const joinDateStr = user?.createdAt ? formatDateToStr(user.createdAt) : todayStr;
     const statusQuery = req.query.status || 'active';
@@ -154,7 +172,7 @@ async function createHabit(req, res, next) {
       });
     }
 
-    const todayStr = getTodayDateStr();
+    const todayStr = getTodayDateStr(req);
     const effectiveStart = startDate ? startDate.trim() : todayStr;
     const effectiveEnd = endDate ? endDate.trim() : null;
 
@@ -251,7 +269,7 @@ async function updateHabit(req, res, next) {
 
     await habit.save();
 
-    const todayStr = getTodayDateStr();
+    const todayStr = getTodayDateStr(req);
     const isCompletedToday = habit.completedDates.includes(todayStr);
 
     res.json({
@@ -290,7 +308,7 @@ async function closeHabit(req, res, next) {
       });
     }
 
-    const todayStr = getTodayDateStr();
+    const todayStr = getTodayDateStr(req);
     const effectiveStart = habit.startDate || formatDateToStr(habit.createdAt);
 
     // Filter checkins within active window
@@ -443,7 +461,7 @@ async function toggleHabit(req, res, next) {
       });
     }
 
-    const todayStr = getTodayDateStr();
+    const todayStr = getTodayDateStr(req);
     const targetDateStr = req.body.date || todayStr;
 
     // Strict validation: Only today's date is editable

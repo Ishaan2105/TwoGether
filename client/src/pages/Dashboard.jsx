@@ -6,6 +6,7 @@ import { useSidebar } from '../context/SidebarContext.jsx';
 import { useInAppModal } from '../context/ModalContext.jsx';
 import * as duoService from '../services/duo.js';
 import WhatsAppShareModal from '../components/common/WhatsAppShareModal.jsx';
+import { subscribeToMidnightTick } from '../utils/dateUtils.js';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -46,6 +47,21 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadShells();
+  }, [loadShells]);
+
+  // Midnight tick subscription to update shell streak & status at 12:00 AM sharp
+  useEffect(() => {
+    const unsubscribe = subscribeToMidnightTick(() => {
+      loadShells();
+    });
+    const handleNewDay = () => {
+      loadShells();
+    };
+    window.addEventListener('twogether:new-day', handleNewDay);
+    return () => {
+      unsubscribe();
+      window.removeEventListener('twogether:new-day', handleNewDay);
+    };
   }, [loadShells]);
 
   // Listen for image nudge attachment & delivery confirmation
