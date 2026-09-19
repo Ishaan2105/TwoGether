@@ -152,7 +152,7 @@ export default function LeaderboardPage() {
               type="button"
               role="tab"
               aria-selected={currentTab === 'solo'}
-              className={`leaderboard-main-tab ${currentTab === 'solo' ? 'leaderboard-main-tab--active' : ''}`}
+              className={`leaderboard-main-tab leaderboard-main-tab--solo ${currentTab === 'solo' ? 'leaderboard-main-tab--active' : ''}`}
               onClick={() => handleTabChange('solo')}
             >
               <span className="leaderboard-main-tab__icon">🔥</span>
@@ -164,7 +164,7 @@ export default function LeaderboardPage() {
               type="button"
               role="tab"
               aria-selected={currentTab === 'duo'}
-              className={`leaderboard-main-tab ${currentTab === 'duo' ? 'leaderboard-main-tab--active' : ''}`}
+              className={`leaderboard-main-tab leaderboard-main-tab--duo ${currentTab === 'duo' ? 'leaderboard-main-tab--active' : ''}`}
               onClick={() => handleTabChange('duo')}
             >
               <span className="leaderboard-main-tab__icon">⚡</span>
@@ -200,7 +200,12 @@ export default function LeaderboardPage() {
               )}
             </div>
 
-            <div className="leaderboard-sort-group" role="group" aria-label="Sort rankings">
+            <div
+              className={`leaderboard-sort-group leaderboard-sort-group--${currentTab}`}
+              data-tab={currentTab}
+              role="group"
+              aria-label="Sort rankings"
+            >
               <span className="leaderboard-sort-label">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <line x1="18" y1="20" x2="18" y2="10" />
@@ -212,24 +217,30 @@ export default function LeaderboardPage() {
               <div className="leaderboard-sort-pills">
                 <button
                   type="button"
-                  className={`sort-pill ${sortBy === 'streak' ? 'sort-pill--active' : ''}`}
+                  className={`sort-pill sort-pill--streak ${sortBy === 'streak' ? 'sort-pill--active' : ''}`}
                   onClick={() => setSortBy('streak')}
+                  data-sort="streak"
+                  aria-pressed={sortBy === 'streak'}
                 >
                   <span className="sort-pill__icon">🔥</span>
                   <span>Streak</span>
                 </button>
                 <button
                   type="button"
-                  className={`sort-pill ${sortBy === 'xp' ? 'sort-pill--active' : ''}`}
+                  className={`sort-pill sort-pill--xp ${sortBy === 'xp' ? 'sort-pill--active' : ''}`}
                   onClick={() => setSortBy('xp')}
+                  data-sort="xp"
+                  aria-pressed={sortBy === 'xp'}
                 >
                   <span className="sort-pill__icon">⚡</span>
                   <span>XP</span>
                 </button>
                 <button
                   type="button"
-                  className={`sort-pill ${sortBy === 'level' ? 'sort-pill--active' : ''}`}
+                  className={`sort-pill sort-pill--level ${sortBy === 'level' ? 'sort-pill--active' : ''}`}
                   onClick={() => setSortBy('level')}
+                  data-sort="level"
+                  aria-pressed={sortBy === 'level'}
                 >
                   <span className="sort-pill__icon">👑</span>
                   <span>Level</span>
