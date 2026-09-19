@@ -78,7 +78,21 @@ export default function LandscapeOrientationPrompt() {
 
   // Option 1: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
-    // 1. Attempt Screen Orientation Lock without entering browser fullscreen mode
+    // 1. Android Chrome strictly requires a fullscreen context before allowing screen.orientation.lock()
+    try {
+      const doc = document.documentElement;
+      if (doc.requestFullscreen) {
+        await doc.requestFullscreen().catch(() => {});
+      } else if (doc.webkitRequestFullscreen) {
+        await doc.webkitRequestFullscreen().catch(() => {});
+      } else if (doc.mozRequestFullScreen) {
+        await doc.mozRequestFullScreen().catch(() => {});
+      } else if (doc.msRequestFullscreen) {
+        await doc.msRequestFullscreen().catch(() => {});
+      }
+    } catch {}
+
+    // 2. Lock screen orientation to landscape
     try {
       if (window.screen?.orientation?.lock) {
         await window.screen.orientation.lock('landscape').catch(() => {});
@@ -89,9 +103,11 @@ export default function LandscapeOrientationPrompt() {
       } else if (window.screen?.mozLockOrientation) {
         window.screen.mozLockOrientation('landscape');
       }
-    } catch {}
+    } catch (err) {
+      console.warn('Orientation lock error:', err);
+    }
 
-    // 2. Apply landscape layout mode
+    // 3. Apply landscape layout mode
     document.documentElement.classList.add('landscape-mode');
     document.body.classList.add('landscape-mode');
     document.documentElement.classList.remove('app-forced-landscape');
