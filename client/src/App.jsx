@@ -103,12 +103,6 @@ export default function App() {
       document.head.appendChild(vp);
     }
 
-    const orientationChoice = sessionStorage.getItem('tg_orientation_choice');
-    if (orientationChoice === 'landscape') {
-      document.documentElement.classList.add('landscape-mode');
-    } else if (orientationChoice === 'portrait') {
-      document.documentElement.classList.remove('landscape-mode');
-    }
     vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
 
     // Landing, Login, and Register pages color theme is always Dark Blue (#0a192f / #050f1d)

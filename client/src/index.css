@@ -14064,24 +14064,24 @@ html:has(.landing) .scroll-sequence-vignette {
 .landscape-prompt-overlay {
   position: fixed;
   inset: 0;
-  z-index: 999999;
+  z-index: 2147483647 !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 14, 23, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(0, 0, 0, 0.82) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 1.5rem;
-  animation: fadeIn 0.25s ease-out;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .landscape-prompt-card {
-  background: var(--bg-card, #121826);
-  border: 1px solid rgba(var(--cyan-rgb, 6, 182, 212), 0.35);
-  box-shadow: 0 0 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(var(--cyan-rgb, 6, 182, 212), 0.15);
-  border-radius: 20px;
+  background: var(--bg-card, #121826) !important;
+  border: 1.5px solid var(--border, rgba(var(--cyan-rgb, 6, 182, 212), 0.35)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), 0 0 24px rgba(var(--cyan-rgb, 6, 182, 212), 0.15) !important;
+  border-radius: 24px;
   padding: 2.25rem 1.75rem;
-  max-width: 360px;
+  max-width: 380px;
   width: 100%;
   text-align: center;
   display: flex;
@@ -14102,8 +14102,8 @@ html:has(.landing) .scroll-sequence-vignette {
 .landscape-prompt-phone {
   width: 44px;
   height: 72px;
-  border: 2.5px solid var(--cyan, #06b6d4);
-  border-radius: 9px;
+  border: 2.5px solid var(--btn-primary-bg, var(--cyan, #06b6d4)) !important;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14117,14 +14117,14 @@ html:has(.landing) .scroll-sequence-vignette {
   position: absolute;
   top: 4px;
   width: 14px;
-  height: 2px;
-  background: var(--cyan, #06b6d4);
+  height: 2.5px;
+  background: var(--btn-primary-bg, var(--cyan, #06b6d4)) !important;
   border-radius: 2px;
 }
 
 .landscape-prompt-phone__screen {
   font-size: 1.3rem;
-  color: var(--cyan, #06b6d4);
+  color: var(--btn-primary-bg, var(--cyan, #06b6d4)) !important;
 }
 
 .landscape-prompt-arrow {
@@ -14160,22 +14160,24 @@ html:has(.landing) .scroll-sequence-vignette {
 }
 
 .landscape-prompt-title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text, #ffffff) !important;
   margin: 0 0 0.5rem 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
 }
 
 .landscape-prompt-text {
-  font-size: 0.88rem;
-  color: var(--text-muted, #94a3b8);
-  line-height: 1.5;
+  font-size: 0.9rem;
+  color: var(--text-muted, #94a3b8) !important;
+  line-height: 1.55;
   margin: 0 0 1.5rem 0;
 }
 
 .landscape-prompt-text strong {
-  color: var(--cyan, #06b6d4);
+  color: var(--btn-primary-bg, var(--cyan, #06b6d4)) !important;
+  font-weight: 700;
 }
 
 .landscape-prompt-actions {
@@ -14187,19 +14189,19 @@ html:has(.landing) .scroll-sequence-vignette {
 
 .landscape-btn-primary {
   width: 100%;
-  padding: 0.85rem 1.15rem;
-  font-size: 0.88rem;
+  padding: 0.88rem 1.15rem;
+  font-size: 0.9rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 0.5rem;
-  background: var(--gradient-primary, linear-gradient(135deg, #06b6d4, #3b82f6));
-  color: #ffffff;
+  gap: 0.55rem;
+  background: var(--btn-primary-bg, var(--gradient-primary, linear-gradient(135deg, #06b6d4, #3b82f6))) !important;
+  color: var(--btn-primary-text, #ffffff) !important;
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   line-height: 1.35;
@@ -14207,7 +14209,7 @@ html:has(.landing) .scroll-sequence-vignette {
 
 .landscape-btn-primary:hover {
   filter: brightness(1.1);
-  box-shadow: 0 6px 24px rgba(6, 182, 212, 0.55);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
 .landscape-btn-primary:active {
@@ -14216,21 +14218,20 @@ html:has(.landing) .scroll-sequence-vignette {
 
 .landscape-btn-ghost {
   width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 0.86rem;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: var(--text-muted, #94a3b8);
-  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: transparent !important;
+  border: 1.5px solid var(--border, rgba(148, 163, 184, 0.35)) !important;
+  color: var(--text, #334155) !important;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .landscape-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(125, 125, 125, 0.1) !important;
+  border-color: var(--btn-primary-bg, var(--cyan, #06b6d4)) !important;
 }
 
 .landscape-btn-ghost:active {

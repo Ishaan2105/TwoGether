@@ -1,45 +1,52 @@
 import { useState, useEffect, useCallback } from 'react';
 
+function getIsPortrait() {
+  if (typeof window === 'undefined') return false;
+  const mql = window.matchMedia?.('(orientation: portrait)');
+  if (mql && typeof mql.matches === 'boolean') {
+    return mql.matches;
+  }
+  return window.innerHeight >= window.innerWidth;
+}
+
+function getIsMobileDevice() {
+  if (typeof window === 'undefined') return false;
+  const isTouch = 'ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
+  const isSmallScreen = Math.min(window.innerWidth, window.innerHeight) <= 1024;
+  return isMobileUA || isTouch || isSmallScreen;
+}
+
 /**
  * LandscapeOrientationPrompt
  *
- * Prompts mobile phone users viewing in portrait mode:
- * 1. "Rotate to view the site in landscape mode" -> switches the project to landscape mode
+ * Immediately shows on initial load whenever viewing on mobile in portrait mode:
+ * 1. "Rotate to view the site in landscape mode" -> switches to landscape mode
  * 2. "Preview as it is" -> allows the user to browse in portrait mode
+ *
+ * Whenever the device is in portrait mode or rotates back into portrait mode,
+ * the prompt is shown.
  */
 export default function LandscapeOrientationPrompt() {
-  const [isPortrait, setIsPortrait] = useState(false);
-  const [isMobileDevice, setIsMobileDevice] = useState(false);
-  const [dismissed, setDismissed] = useState(() => {
-    try {
-      return !!sessionStorage.getItem('tg_orientation_choice');
-    } catch {
-      return false;
-    }
-  });
-  const [currentMode, setCurrentMode] = useState(() => {
-    try {
-      return sessionStorage.getItem('tg_orientation_choice') || 'auto';
-    } catch {
-      return 'auto';
-    }
-  });
+  // Synchronous initialization so modal renders immediately on load with ZERO delay/flicker
+  const [isPortrait, setIsPortrait] = useState(getIsPortrait);
+  const [isMobileDevice, setIsMobileDevice] = useState(getIsMobileDevice);
+  const [dismissed, setDismissed] = useState(false);
 
   const checkOrientation = useCallback(() => {
-    const portraitMql = window.matchMedia('(orientation: portrait)');
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isMobileWidth = window.innerWidth <= 1024;
-
-    const portrait = portraitMql.matches;
-    const mobile = isMobileWidth || isTouch;
+    const portrait = getIsPortrait();
+    const mobile = getIsMobileDevice();
 
     setIsPortrait(portrait);
     setIsMobileDevice(mobile);
 
-    // If device is physically in landscape mode, remove any forced portrait/landscape CSS rotation
+    // If device is in landscape mode, clean up any forced portrait/landscape CSS rotation
     if (!portrait) {
       document.documentElement.classList.remove('app-forced-landscape');
       document.body.classList.remove('app-forced-landscape');
+      // When rotated physically to landscape, reset dismissed state
+      // so if the user rotates back to portrait later, the prompt will be seen again
+      setDismissed(false);
     }
   }, []);
 
@@ -51,32 +58,17 @@ export default function LandscapeOrientationPrompt() {
 
     if (portraitMql.addEventListener) {
       portraitMql.addEventListener('change', update);
-    } else {
+    } else if (portraitMql.addListener) {
       portraitMql.addListener(update);
     }
 
     window.addEventListener('resize', update);
     window.addEventListener('orientationchange', update);
 
-    // If previously selected landscape mode, restore landscape view
-    try {
-      const savedChoice = sessionStorage.getItem('tg_orientation_choice');
-      if (savedChoice === 'landscape') {
-        document.documentElement.classList.add('landscape-mode');
-        document.body.classList.add('landscape-mode');
-      } else if (savedChoice === 'portrait') {
-        document.documentElement.classList.remove('landscape-mode');
-        document.body.classList.remove('landscape-mode');
-        document.documentElement.classList.remove('desktop-site-view');
-        document.documentElement.classList.remove('app-forced-landscape');
-        document.body.classList.remove('app-forced-landscape');
-      }
-    } catch {}
-
     return () => {
       if (portraitMql.removeEventListener) {
         portraitMql.removeEventListener('change', update);
-      } else {
+      } else if (portraitMql.removeListener) {
         portraitMql.removeListener(update);
       }
       window.removeEventListener('resize', update);
@@ -86,7 +78,7 @@ export default function LandscapeOrientationPrompt() {
 
   // Option 1: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
-    // 1. Attempt Screen Orientation Lock without entering intrusive browser fullscreen mode
+    // 1. Attempt Screen Orientation Lock without entering browser fullscreen mode
     try {
       if (window.screen?.orientation?.lock) {
         await window.screen.orientation.lock('landscape').catch(() => {});
@@ -100,25 +92,16 @@ export default function LandscapeOrientationPrompt() {
     } catch {}
 
     // 2. Apply landscape layout mode
-    try {
-      sessionStorage.setItem('tg_orientation_choice', 'landscape');
-    } catch {}
-
     document.documentElement.classList.add('landscape-mode');
     document.body.classList.add('landscape-mode');
     document.documentElement.classList.remove('app-forced-landscape');
     document.body.classList.remove('app-forced-landscape');
 
-    setCurrentMode('landscape');
     setDismissed(true);
   };
 
   // Option 2: Preview as it is (stay in portrait mode)
   const handlePreviewAsItIs = () => {
-    try {
-      sessionStorage.setItem('tg_orientation_choice', 'portrait');
-    } catch {}
-
     const vp = document.getElementById('app-viewport') || document.querySelector('meta[name="viewport"]');
     if (vp) {
       vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
@@ -129,23 +112,27 @@ export default function LandscapeOrientationPrompt() {
     document.documentElement.classList.remove('app-forced-landscape');
     document.body.classList.remove('app-forced-landscape');
 
-    setCurrentMode('portrait');
     setDismissed(true);
   };
 
-  // Allow re-opening from FAB button
+  // Allow re-opening from quick toggle FAB
   const handleOpenPrompt = () => {
     setDismissed(false);
   };
 
-  // Should we show the orientation popup?
+  // The modal MUST be seen whenever the site is in portrait mode on mobile/touch screen
   const showModal = isPortrait && isMobileDevice && !dismissed;
 
   return (
     <>
       {/* Main Orientation Modal */}
       {showModal && (
-        <div className="landscape-prompt-overlay" role="dialog" aria-modal="true" aria-labelledby="landscape-prompt-title">
+        <div
+          className="landscape-prompt-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="landscape-prompt-title"
+        >
           <div className="landscape-prompt-card">
             <div className="landscape-prompt-animation">
               <div className="landscape-prompt-phone">
@@ -183,8 +170,8 @@ export default function LandscapeOrientationPrompt() {
         </div>
       )}
 
-      {/* Floating Orientation Quick-Toggle (visible on mobile after modal is dismissed) */}
-      {isMobileDevice && dismissed && (
+      {/* Floating Orientation Quick-Toggle (visible on mobile after modal is dismissed in portrait) */}
+      {isMobileDevice && isPortrait && dismissed && (
         <button
           type="button"
           className="orientation-toggle-fab"
@@ -194,9 +181,7 @@ export default function LandscapeOrientationPrompt() {
           id="btn-orientation-toggle-fab"
         >
           <span className="orientation-toggle-fab__icon">🔄</span>
-          <span className="orientation-toggle-fab__text">
-            {currentMode === 'landscape' ? 'Landscape' : 'Rotate'}
-          </span>
+          <span className="orientation-toggle-fab__text">Rotate</span>
         </button>
       )}
     </>
