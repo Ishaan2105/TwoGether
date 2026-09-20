@@ -1949,53 +1949,59 @@ button {
 }
 
 /* ============================================================
-   NUDGE VIEWER MODAL  (screenshot-protected popup)
+   NUDGE VIEWER MODAL  (White Theme, Large Centered Dialog)
    ============================================================ */
 
 .nudge-viewer-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: #000000;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 999999 !important;
+  background: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(8px, 2vw, 20px) !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  overflow: hidden !important;
 }
 
 .nudge-viewer-modal {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  max-width: 100vw;
-  max-height: 100dvh;
-  border-radius: 0;
-  background: #000000;
-  border: none;
-  box-shadow: none;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  animation: nudgeViewerPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  position: relative !important;
+  margin: auto !important;
+  width: min(96vw, 1100px) !important;
+  height: min(94vh, 94dvh) !important;
+  max-width: 96vw !important;
+  max-height: 94dvh !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.45),
+    0 4px 20px rgba(0, 0, 0, 0.12) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  animation: nudgeViewerPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) both !important;
 
   /* Screenshot prevention */
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
 }
 
 @keyframes nudgeViewerPop {
-  from { opacity: 0; transform: scale(0.97); }
+  from { opacity: 0; transform: scale(0.95); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* ── Screenshot disruption overlay ───────────────────────────
-   mix-blend-mode:screen + a low-opacity pattern makes
-   static screenshots look washed/distorted while
-   being nearly invisible to the human eye in real-time. */
+/* ── Screenshot disruption overlay ─────────────────────────── */
 .nudge-viewer__protect-overlay {
   position: absolute;
   inset: 0;
@@ -2012,206 +2018,240 @@ button {
   mix-blend-mode: screen;
 }
 
+/* ── Countdown timer bar ── */
+.nudge-viewer__timer-bar {
+  height: 4px !important;
+  background: #f1f5f9 !important;
+  flex-shrink: 0 !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  z-index: 30 !important;
+}
+
+.nudge-viewer__timer-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #ef4444, #3b82f6) !important;
+  transition: width 1s linear !important;
+}
+
 /* ── Header ── */
 .nudge-viewer__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 1.5rem;
-  background: rgba(14, 14, 20, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  flex-shrink: 0;
-  z-index: 20;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  padding: 0.85rem 1.25rem !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  flex-shrink: 0 !important;
+  z-index: 20 !important;
 }
 
 .nudge-viewer__header-left {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  min-width: 0;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  min-width: 0 !important;
 }
 
 .nudge-viewer__header-right {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  flex-shrink: 0;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  flex-shrink: 0 !important;
 }
 
 .nudge-viewer__title {
-  font-size: 1rem;
-  font-weight: 800;
-  margin: 0 0 0.1rem;
-  color: var(--text-main);
-  line-height: 1.2;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  margin: 0 0 0.1rem !important;
+  color: #0f172a !important;
+  line-height: 1.2 !important;
 }
 
 .nudge-viewer__subtitle {
-  font-size: 0.76rem;
-  color: var(--text-muted);
-  margin: 0;
+  font-size: 0.78rem !important;
+  color: #64748b !important;
+  font-weight: 500 !important;
+  margin: 0 !important;
+}
+
+/* Close button on white */
+.nudge-viewer-modal .modal-close-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.nudge-viewer-modal .modal-close-btn:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
 /* ── Body ── */
 .nudge-viewer__body {
-  flex: 1;
-  overflow: hidden;
-  padding: 0.75rem 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  gap: 0.75rem;
-  min-height: 0;
+  flex: 1 !important;
+  overflow: hidden !important;
+  padding: 0.75rem 1rem 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  gap: 0.75rem !important;
+  min-height: 0 !important;
+  background: #ffffff !important;
 }
 
 /* From chip */
 .nudge-viewer__from-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.75rem;
-  background: rgba(var(--cyan-rgb), 0.1);
-  border: 1px solid rgba(var(--cyan-rgb), 0.25);
-  border-radius: 999px;
-  font-size: 0.82rem;
-  color: var(--text-muted);
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.35rem 0.75rem !important;
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 999px !important;
+  font-size: 0.82rem !important;
+  color: #475569 !important;
 }
 
 .nudge-viewer__from-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
-  display: grid;
-  place-items: center;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: white;
-  flex-shrink: 0;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  background: var(--gradient-primary) !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  color: white !important;
+  flex-shrink: 0 !important;
 }
 
 .nudge-viewer__from-chip strong {
-  color: var(--text-main);
+  color: #0f172a !important;
 }
 
-/* Canvas wrap — screenshot protection layers */
+.nudge-viewer__timer-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 999px !important;
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+  color: #1d4ed8 !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+}
+
+/* Canvas wrap — centered, large, fills viewport nicely */
 .nudge-viewer__canvas-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 100%;
-  max-height: calc(100dvh - 160px);
-  flex: 1;
-  min-height: 0;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(var(--cyan-rgb), 0.2);
-  background: #000000;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  max-width: 100% !important;
+  max-height: calc(94dvh - 160px) !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid #e2e8f0 !important;
+  background: #0f172a !important;
 }
 
 .nudge-viewer__canvas {
-  display: block;
-  max-width: 98vw;
-  max-height: calc(100dvh - 170px);
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 14px;
+  display: block !important;
+  max-width: 100% !important;
+  max-height: calc(94dvh - 160px) !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  border-radius: 12px !important;
 }
 
 /* Transparent shield over canvas — blocks drag/right-click */
 .nudge-viewer__canvas-shield {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  background: transparent;
-  cursor: default;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 10 !important;
+  background: transparent !important;
+  cursor: default !important;
 }
 
-/* Message card */
+/* Message card on white background */
 .nudge-viewer__message-card {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.65rem 1.25rem;
-  background: rgba(22, 22, 30, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-  max-width: min(92vw, 680px);
-  width: auto;
-  flex-shrink: 0;
-  z-index: 15;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.65rem 1.25rem !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+  max-width: min(92vw, 680px) !important;
+  width: auto !important;
+  flex-shrink: 0 !important;
+  z-index: 15 !important;
 }
 
 .nudge-viewer__emoji {
-  font-size: 1.6rem;
-  flex-shrink: 0;
-  line-height: 1;
+  font-size: 1.6rem !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
 }
 
 .nudge-viewer__message {
-  margin: 0;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--text-main);
-  line-height: 1.4;
-  word-break: break-word;
-}
-
-/* Protection notice */
-.nudge-viewer__protect-notice {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  line-height: 1.5;
-  padding: 0.6rem 0.85rem;
-  background: rgba(239, 68, 68, 0.06);
-  border: 1px solid rgba(239, 68, 68, 0.15);
-  border-radius: 10px;
+  margin: 0 !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: #0f172a !important;
+  line-height: 1.4 !important;
+  word-break: break-word !important;
 }
 
 /* Loading state */
 .nudge-viewer__loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 2.5rem 1rem;
-  color: var(--text-muted);
-  font-size: 0.88rem;
-  font-weight: 600;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  padding: 2.5rem 1rem !important;
+  color: #475569 !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
 }
 
 .nudge-viewer__spinner {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 3px solid rgba(var(--cyan-rgb), 0.15);
-  border-top-color: var(--cyan);
-  animation: spin 0.8s linear infinite;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  border: 3px solid rgba(var(--cyan-rgb), 0.15) !important;
+  border-top-color: var(--cyan) !important;
+  animation: spin 0.8s linear infinite !important;
 }
 
 /* Error state */
 .nudge-viewer__error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 2rem 1rem;
-  text-align: center;
-  color: var(--text-muted);
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  padding: 2rem 1rem !important;
+  text-align: center !important;
+  color: #dc2626 !important;
 }
 
 .nudge-viewer__error span {

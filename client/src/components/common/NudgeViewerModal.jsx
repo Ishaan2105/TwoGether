@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useSidebar } from '../../context/SidebarContext.jsx';
 import { getNudgeMessage } from '../../services/notifications.js';
 
@@ -188,13 +189,13 @@ export default function NudgeViewerModal() {
     ? Math.max(0, Math.min(100, (timeLeft / totalDuration) * 100))
     : 100;
 
-  return (
+  const modalContent = (
     <div
-      className="modal-backdrop nudge-viewer-backdrop"
+      className="nudge-viewer-backdrop"
       onClick={handleClose}
     >
       <div
-        className="nudge-viewer-modal nudge-viewer-modal--fullscreen"
+        className="nudge-viewer-modal"
         onClick={(e) => {
           if (e.target.classList.contains('nudge-viewer__body') || e.target.classList.contains('nudge-viewer-modal')) {
             handleClose();
@@ -323,4 +324,8 @@ export default function NudgeViewerModal() {
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined'
+    ? createPortal(modalContent, document.body)
+    : modalContent;
 }
