@@ -28,10 +28,13 @@ export default function ScrollCanvasAnimation() {
 
   // Smooth scroll down to first card below hero
   const handleScrollToFirstCard = () => {
-    const el = document.getElementById('card-accountability');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    if (!wrapperRef.current) return;
+    const rect = wrapperRef.current.getBoundingClientRect();
+    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const wrapperTop = currentScrollY + rect.top;
+    const totalDistance = wrapperRef.current.offsetHeight - window.innerHeight;
+    const targetY = wrapperTop + totalDistance * 0.14;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
   };
 
   // Preload all image frames
@@ -190,6 +193,28 @@ export default function ScrollCanvasAnimation() {
     }
   }, [imagesLoaded, renderFrame]);
 
+  // Calculate active scene slot based on continuous scroll progress (0 to 8)
+  let activeIdx = 0;
+  if (scrollProgress < 0.11) {
+    activeIdx = 0; // Hero
+  } else if (scrollProgress < 0.22) {
+    activeIdx = 1; // 1-on-1 Accountability
+  } else if (scrollProgress < 0.33) {
+    activeIdx = 2; // Smart Synergy Shells
+  } else if (scrollProgress < 0.44) {
+    activeIdx = 3; // Duo Philosophy
+  } else if (scrollProgress < 0.55) {
+    activeIdx = 4; // Mutual Stakes
+  } else if (scrollProgress < 0.66) {
+    activeIdx = 5; // Unbreakable Momentum
+  } else if (scrollProgress < 0.77) {
+    activeIdx = 6; // Uncompromising Standards
+  } else if (scrollProgress < 0.88) {
+    activeIdx = 7; // Exponential Synergy
+  } else {
+    activeIdx = 8; // Streak Shields & Duo XP
+  }
+
   return (
     <>
       {/* ======================================================== */}
@@ -215,177 +240,211 @@ export default function ScrollCanvasAnimation() {
       </div>
 
       {/* ======================================================== */}
-      {/* 2. HERO & NARRATIVE CARDS TRACK                          */}
-      {/* Cards appear below SCROLL TO DISCOVER until Inspiration  */}
+      {/* 2. HERO & IN-PLACE NARRATIVE CARDS SEQUENCE              */}
+      {/* Cards replace in place without changing positions        */}
       {/* ======================================================== */}
       <div ref={wrapperRef} className="scroll-sequence-container">
-        {/* Section 1: Hero Header & CTAs */}
-        <section className="scroll-hero-section">
-          <div className="scroll-hero-content">
-            <h1 className="hero__title">
-              BUILD HABITS.
-              <br />
-              <span className="hero__title--accent">TOGETHER.</span>
-            </h1>
+        <div className="scroll-sequence-sticky">
+          {/* Card Slot 0: Hero Header & CTAs */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 0 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scroll-hero-content">
+              <h1 className="hero__title">
+                BUILD HABITS.
+                <br />
+                <span className="hero__title--accent">TOGETHER.</span>
+              </h1>
 
-            <p className="hero__sub">
-              Your daily habits aren&rsquo;t just a solo checklist anymore. Connect with a partner,
-              fuse your goals into <strong>Shared Synergy Shells</strong>, and hold each other to a
-              higher standard.
-            </p>
+              <p className="hero__sub">
+                Your daily habits aren&rsquo;t just a solo checklist anymore. Connect with a partner,
+                fuse your goals into <strong>Shared Synergy Shells</strong>, and hold each other to a
+                higher standard.
+              </p>
 
-            <div className="hero__cta">
-              <Link to="/register" className="btn btn--primary btn--lg">
-                START YOUR DUO ⚡
-              </Link>
-              <Link to="/login" className="btn btn--ghost btn--lg">
-                I ALREADY HAVE A CODE
-              </Link>
-            </div>
+              <div className="hero__cta">
+                <Link to="/register" className="btn btn--primary btn--lg">
+                  START YOUR DUO ⚡
+                </Link>
+                <Link to="/login" className="btn btn--ghost btn--lg">
+                  I ALREADY HAVE A CODE
+                </Link>
+              </div>
 
-            <button
-              type="button"
-              className="scroll-indicator"
-              onClick={handleScrollToFirstCard}
-              aria-label="Scroll to discover features"
-            >
-              <span className="scroll-indicator__text">SCROLL TO DISCOVER</span>
-              <span className="scroll-indicator__arrow">↓</span>
-            </button>
-          </div>
-        </section>
-
-        {/* ======================================================== */}
-        {/* CARDS BELOW SCROLL TO DISCOVER UNTIL DAILY DUO INSPIRATION */}
-        {/* ======================================================== */}
-
-        {/* Card 1: 1-on-1 Accountability */}
-        <section id="card-accountability" className="scroll-card-section">
-          <div className="scene-card">
-            <span className="badge badge--pill">🤝 1-ON-1 ACCOUNTABILITY</span>
-            <h2>Two people. One unbreakable bond.</h2>
-            <p className="muted">
-              When one of you slips, the entire Duo feels it. No more quietly skipping days or
-              giving up when nobody is watching.
-            </p>
-          </div>
-        </section>
-
-        {/* Card 2: Smart Synergy Shells */}
-        <section id="card-shells" className="scroll-card-section">
-          <div className="scene-card scene-card--highlight">
-            <span className="badge badge--success">🧩 SMART SYNERGY SHELLS</span>
-            <h2>Different habits. Shared team victory.</h2>
-            <p className="muted">
-              You do <strong>Deep Work Coding</strong>, your partner does <strong>Exam Study</strong>.
-              TwoGether intelligently fuses both under the <strong>Focus & Mastery Shell</strong> to
-              power your Duo streak!
-            </p>
-            <div className="scene-shell-preview">
-              <span className="scene-shell-habit">
-                <span className="scene-shell-icon">💻</span>
-                <span>90m Deep Work</span>
-              </span>
-              <span className="scene-shell-fuse">⚡ FUSED INTO FOCUS SHELL ⚡</span>
-              <span className="scene-shell-habit">
-                <span className="scene-shell-icon">📚</span>
-                <span>Exam Revision</span>
-              </span>
+              <button
+                type="button"
+                className="scroll-indicator"
+                onClick={handleScrollToFirstCard}
+                aria-label="Scroll to discover features"
+              >
+                <span className="scroll-indicator__text">SCROLL TO DISCOVER</span>
+                <span className="scroll-indicator__arrow">↓</span>
+              </button>
             </div>
           </div>
-        </section>
 
-        {/* Card 3: Duo Philosophy */}
-        <section id="card-philosophy" className="scroll-card-section">
-          <div className="scene-card scene-card--quote">
-            <span className="badge badge--pill">🔥 DUO PHILOSOPHY</span>
-            <h2 className="scene-quote-title">
-              &ldquo;If you want to go fast, go alone. If you want to go far, go together.&rdquo;
-            </h2>
-            <p className="muted scene-quote-sub">
-              A solo promise is easy to break in silence. But when someone you respect is relying
-              on your consistency, showing up becomes second nature.
-            </p>
-            <cite className="scene-quote-cite">— African Proverb · The Duo Principle</cite>
-          </div>
-        </section>
-
-        {/* Card 4: Mutual Stakes */}
-        <section id="card-stakes" className="scroll-card-section">
-          <div className="scene-card scene-card--quote">
-            <span className="badge badge--pill">🤝 MUTUAL STAKES</span>
-            <h2 className="scene-quote-title">
-              &ldquo;Two are better than one, because they have a good reward for their labor.&rdquo;
-            </h2>
-            <p className="muted scene-quote-sub">
-              When you share accountability, victory is twice as sweet and giving up is never an option.
-              Your partner&rsquo;s daily momentum is tied to your presence.
-            </p>
-            <cite className="scene-quote-cite">— Ecclesiastes 4:9 · Unbreakable Bond</cite>
-          </div>
-        </section>
-
-        {/* Card 5: Unbreakable Momentum */}
-        <section id="card-momentum" className="scroll-card-section">
-          <div className="scene-card scene-card--quote">
-            <span className="badge badge--pill">⚡ UNBREAKABLE MOMENTUM</span>
-            <h2 className="scene-quote-title">
-              &ldquo;We don&rsquo;t rise to the level of our goals, we fall to the level of our systems.&rdquo;
-            </h2>
-            <p className="muted scene-quote-sub">
-              When two partners build a shared system of daily execution, consistency stops being a struggle
-              and becomes your default identity.
-            </p>
-            <cite className="scene-quote-cite">— James Clear · Powered by Duo Synergy</cite>
-          </div>
-        </section>
-
-        {/* Card 6: Uncompromising Standards */}
-        <section id="card-standards" className="scroll-card-section">
-          <div className="scene-card scene-card--quote">
-            <span className="badge badge--pill">🎯 UNCOMPROMISING STANDARDS</span>
-            <h2 className="scene-quote-title">
-              &ldquo;When two people commit to the same standard, slacking is no longer an option.&rdquo;
-            </h2>
-            <p className="muted scene-quote-sub">
-              Every check-in powers your joint streak. Your partner is depending on your standard today.
-              Elevate each other&rsquo;s discipline ceiling.
-            </p>
-            <cite className="scene-quote-cite">— TwoGether Philosophy · Shared Accountability</cite>
-          </div>
-        </section>
-
-        {/* Card 7: Exponential Synergy */}
-        <section id="card-synergy" className="scroll-card-section">
-          <div className="scene-card scene-card--quote">
-            <span className="badge badge--pill">✨ EXPONENTIAL SYNERGY</span>
-            <h2 className="scene-quote-title">
-              &ldquo;Alone we can do so little; together we can do so much.&rdquo;
-            </h2>
-            <p className="muted scene-quote-sub">
-              One partner pushes the other. Two disciplined minds create an unstoppable flywheel of daily
-              progress, compounding discipline into lifelong habits.
-            </p>
-            <cite className="scene-quote-cite">— Helen Keller · TwoGether Synergy</cite>
-          </div>
-        </section>
-
-        {/* Card 8: Streak Shields & Duo XP */}
-        <section id="card-shields" className="scroll-card-section">
-          <div className="scene-card">
-            <span className="badge badge--pill">🛡️ STREAK SHIELDS & DUO XP</span>
-            <h2>Level up together. Protect the chain.</h2>
-            <p className="muted">
-              Earn XP with every habit completed, climb ranks, unlock titles, and protect your
-              streak with emergency Duo Shields.
-            </p>
-            <div className="hero__cta" style={{ marginTop: '1.5rem' }}>
-              <Link to="/register" className="btn btn--primary btn--md">
-                CREATE YOUR DUO NOW ➜
-              </Link>
+          {/* Card Slot 1: 1-on-1 Accountability */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 1 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card">
+              <span className="badge badge--pill">🤝 1-ON-1 ACCOUNTABILITY</span>
+              <h2>Two people. One unbreakable bond.</h2>
+              <p className="muted">
+                When one of you slips, the entire Duo feels it. No more quietly skipping days or
+                giving up when nobody is watching.
+              </p>
             </div>
           </div>
-        </section>
+
+          {/* Card Slot 2: Smart Synergy Shells */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 2 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card scene-card--highlight">
+              <span className="badge badge--success">🧩 SMART SYNERGY SHELLS</span>
+              <h2>Different habits. Shared team victory.</h2>
+              <p className="muted">
+                You do <strong>Deep Work Coding</strong>, your partner does <strong>Exam Study</strong>.
+                TwoGether intelligently fuses both under the <strong>Focus & Mastery Shell</strong> to
+                power your Duo streak!
+              </p>
+              <div className="scene-shell-preview">
+                <span className="scene-shell-habit">
+                  <span className="scene-shell-icon">💻</span>
+                  <span>90m Deep Work</span>
+                </span>
+                <span className="scene-shell-fuse">⚡ FUSED INTO FOCUS SHELL ⚡</span>
+                <span className="scene-shell-habit">
+                  <span className="scene-shell-icon">📚</span>
+                  <span>Exam Revision</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card Slot 3: Duo Philosophy */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 3 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card scene-card--quote">
+              <span className="badge badge--pill">🔥 DUO PHILOSOPHY</span>
+              <h2 className="scene-quote-title">
+                &ldquo;If you want to go fast, go alone. If you want to go far, go together.&rdquo;
+              </h2>
+              <p className="muted scene-quote-sub">
+                A solo promise is easy to break in silence. But when someone you respect is relying
+                on your consistency, showing up becomes second nature.
+              </p>
+              <cite className="scene-quote-cite">— African Proverb · The Duo Principle</cite>
+            </div>
+          </div>
+
+          {/* Card Slot 4: Mutual Stakes */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 4 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card scene-card--quote">
+              <span className="badge badge--pill">🤝 MUTUAL STAKES</span>
+              <h2 className="scene-quote-title">
+                &ldquo;Two are better than one, because they have a good reward for their labor.&rdquo;
+              </h2>
+              <p className="muted scene-quote-sub">
+                When you share accountability, victory is twice as sweet and giving up is never an option.
+                Your partner&rsquo;s daily momentum is tied to your presence.
+              </p>
+              <cite className="scene-quote-cite">— Ecclesiastes 4:9 · Unbreakable Bond</cite>
+            </div>
+          </div>
+
+          {/* Card Slot 5: Unbreakable Momentum */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 5 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card scene-card--quote">
+              <span className="badge badge--pill">⚡ UNBREAKABLE MOMENTUM</span>
+              <h2 className="scene-quote-title">
+                &ldquo;We don&rsquo;t rise to the level of our goals, we fall to the level of our systems.&rdquo;
+              </h2>
+              <p className="muted scene-quote-sub">
+                When two partners build a shared system of daily execution, consistency stops being a struggle
+                and becomes your default identity.
+              </p>
+              <cite className="scene-quote-cite">— James Clear · Powered by Duo Synergy</cite>
+            </div>
+          </div>
+
+          {/* Card Slot 6: Uncompromising Standards */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 6 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card scene-card--quote">
+              <span className="badge badge--pill">🎯 UNCOMPROMISING STANDARDS</span>
+              <h2 className="scene-quote-title">
+                &ldquo;When two people commit to the same standard, slacking is no longer an option.&rdquo;
+              </h2>
+              <p className="muted scene-quote-sub">
+                Every check-in powers your joint streak. Your partner is depending on your standard today.
+                Elevate each other&rsquo;s discipline ceiling.
+              </p>
+              <cite className="scene-quote-cite">— TwoGether Philosophy · Shared Accountability</cite>
+            </div>
+          </div>
+
+          {/* Card Slot 7: Exponential Synergy */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 7 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card scene-card--quote">
+              <span className="badge badge--pill">✨ EXPONENTIAL SYNERGY</span>
+              <h2 className="scene-quote-title">
+                &ldquo;Alone we can do so little; together we can do so much.&rdquo;
+              </h2>
+              <p className="muted scene-quote-sub">
+                One partner pushes the other. Two disciplined minds create an unstoppable flywheel of daily
+                progress, compounding discipline into lifelong habits.
+              </p>
+              <cite className="scene-quote-cite">— Helen Keller · TwoGether Synergy</cite>
+            </div>
+          </div>
+
+          {/* Card Slot 8: Streak Shields & Duo XP */}
+          <div
+            className={`scroll-card-slot ${
+              activeIdx === 8 ? 'scroll-card-slot--active' : 'scroll-card-slot--hidden'
+            }`}
+          >
+            <div className="scene-card">
+              <span className="badge badge--pill">🛡️ STREAK SHIELDS & DUO XP</span>
+              <h2>Level up together. Protect the chain.</h2>
+              <p className="muted">
+                Earn XP with every habit completed, climb ranks, unlock titles, and protect your
+                streak with emergency Duo Shields.
+              </p>
+              <div className="hero__cta" style={{ marginTop: '1.5rem' }}>
+                <Link to="/register" className="btn btn--primary btn--md">
+                  CREATE YOUR DUO NOW ➜
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
