@@ -16,12 +16,12 @@ export async function subscribeToWebPush() {
   }
 
   // Register SW if not already registered
-  let reg = await navigator.serviceWorker.getRegistration('/');
-  if (!reg) {
+  const existingReg = await navigator.serviceWorker.getRegistration('/');
+  if (!existingReg) {
     await navigator.serviceWorker.register('/sw.js', { scope: '/' });
   }
   // Wait until the SW is active and ready
-  reg = await navigator.serviceWorker.ready;
+  const reg = await navigator.serviceWorker.ready;
 
   const publicKey = await getVapidKey();
   if (!publicKey) {
@@ -30,6 +30,33 @@ export async function subscribeToWebPush() {
 
   // Convert base64 VAPID key → Uint8Array
   const applicationServerKey = urlBase64ToUint8Array(publicKey);
+
+  // If there's an existing subscription with a different key, remove it first
+  const existingSub = await reg.pushManager.getSubscription();
+  if (existingSub) {
+    try {
+      // Check if the existing subscription uses the same key
+      const existingKey = existingSub.options?.applicationServerKey;
+      const newKeyBytes = applicationServerKey;
+      let keysMatch = false;
+      if (existingKey) {
+        const existingBytes = new Uint8Array(existingKey);
+        keysMatch = existingBytes.length === newKeyBytes.length &&
+          existingBytes.every((b, i) => b === newKeyBytes[i]);
+      }
+      if (!keysMatch) {
+        // Unsubscribe stale subscription before re-subscribing with new key
+        await existingSub.unsubscribe();
+      } else {
+        // Already subscribed with correct key — just re-save to backend
+        await api.post('/notifications/subscribe', { subscription: existingSub });
+        return existingSub;
+      }
+    } catch {
+      // If checking fails, force unsubscribe and re-subscribe
+      try { await existingSub.unsubscribe(); } catch { /* ignore */ }
+    }
+  }
 
   const subscription = await reg.pushManager.subscribe({
     userVisibleOnly: true,

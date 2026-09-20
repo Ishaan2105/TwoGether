@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate, useSearchParams, useLocation } from 'react-router-dom';
+import { checkSubscriptionStatus, subscribeToWebPush } from './services/notifications.js';
 import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
@@ -23,6 +24,48 @@ import LandscapeOrientationPrompt from './components/common/LandscapeOrientation
 import InAppConfirmModal from './components/common/InAppConfirmModal.jsx';
 import { useSidebar } from './context/SidebarContext.jsx';
 import { useAuth } from './context/AuthContext.jsx';
+
+/**
+ * NotificationAutoSubscriber — silently ensures the current browser/device
+ * has a valid push subscription whenever the user is logged in and has already
+ * granted notification permission. This fixes the laptop/desktop issue where
+ * permission was granted but the subscription was never registered for that
+ * specific browser.
+ */
+function NotificationAutoSubscriber() {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) return;
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    if (typeof Notification === 'undefined') return;
+    // Only auto-subscribe if permission is already granted — never auto-prompt
+    if (Notification.permission !== 'granted') return;
+
+    let cancelled = false;
+    const autoSubscribe = async () => {
+      try {
+        const alreadySubscribed = await checkSubscriptionStatus();
+        if (!alreadySubscribed && !cancelled) {
+          await subscribeToWebPush();
+          console.log('[TwoGether] Auto-registered push subscription for this device.');
+        }
+      } catch (err) {
+        // Silently ignore — this is a best-effort background task
+        console.warn('[TwoGether] Auto-subscribe failed (non-critical):', err?.message || err);
+      }
+    };
+
+    // Delay slightly to let the service worker stabilise after page load
+    const timer = setTimeout(autoSubscribe, 2000);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [user]);
+
+  return null;
+}
 
 /**
  * NudgeWatcher — reads ?nudge=ID and ?action=hype|nudge|sos from the URL
@@ -151,6 +194,9 @@ export default function App() {
 
       {/* Deep-link notification watcher */}
       <NudgeWatcher />
+
+      {/* Silent auto-subscriber: ensures every logged-in device gets push notifications */}
+      <NotificationAutoSubscriber />
 
       <Routes>
         <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Landing />} />

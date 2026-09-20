@@ -140,9 +140,16 @@ export default function Settings() {
         const already = await checkSubscriptionStatus();
         if (!already) await subscribeToWebPush();
       } else if (perm === 'denied') {
-        setNotifError(
-          'Notifications are currently blocked by Android or your browser. To fix: Open Android Settings > Apps > TwoGether (or Chrome) > Notifications and turn them ON.'
-        );
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isMobile) {
+          setNotifError(
+            'Notifications are blocked on this device. To fix: Open your device Settings > Apps > TwoGether (or Chrome/Browser) > Notifications and turn them ON. Then come back and try again.'
+          );
+        } else {
+          setNotifError(
+            'Notifications are blocked in your browser. To fix: Click the 🔒 lock icon (or ℹ️ info icon) in the browser address bar > Site settings > Notifications > Allow. Then refresh and try again.'
+          );
+        }
       }
     } catch (err) {
       setNotifError(err.message || 'Failed to enable notifications. Please try again.');
@@ -529,7 +536,11 @@ export default function Settings() {
                 <span className="settings-alert__icon">⚠️</span>
                 <div>
                   <strong>Notifications are blocked in your browser.</strong>
-                  <p>Click the lock/settings icon in your browser URL bar to grant notification permissions for this site.</p>
+                  <p>
+                    {/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+                      ? 'Open your device Settings > Apps > TwoGether (or Chrome) > Notifications and turn them ON. Then come back and refresh.'
+                      : 'Click the 🔒 lock icon (or ℹ️ info) in the browser address bar > Site settings > Notifications > Allow. Then refresh the page.'}
+                  </p>
                 </div>
               </div>
             ) : notifGranted ? (
