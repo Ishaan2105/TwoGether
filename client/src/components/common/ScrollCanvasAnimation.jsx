@@ -27,6 +27,8 @@ export default function ScrollCanvasAnimation() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [cardsProgress, setCardsProgress] = useState(0);
+  const [pinState, setPinState] = useState('before'); // 'before' | 'fixed' | 'after'
+  const [activeCardIdx, setActiveCardIdx] = useState(0);
 
   // Smooth scroll down to first card below 'SCROLL TO DISCOVER'
   const handleScrollToFirstCard = () => {
@@ -150,6 +152,34 @@ export default function ScrollCanvasAnimation() {
         if (cardsDist > 0) {
           const cProg = clamp(-cardsRect.top / cardsDist, 0, 1);
           setCardsProgress(cProg);
+
+          // Calculate active card index (0 to 6) at a fixed pace across the 7 cards
+          const newIdx = Math.min(6, Math.max(0, Math.floor(cProg * 7)));
+          setActiveCardIdx((prev) => (prev !== newIdx ? newIdx : prev));
+        }
+
+        // Determine pinState:
+        // 'before': user is still on Hero section above cards
+        // 'fixed': user is scrolling through cards (cards stay locked in place with 0 upward movement)
+        // 'after': all 7 cards have finished, scroll the last card up off screen
+        let newPin = 'fixed';
+        if (cardsRect.top > 0) {
+          newPin = 'before';
+        } else if (cardsRect.bottom < windowHeight) {
+          newPin = 'after';
+        }
+        setPinState((prev) => (prev !== newPin ? newPin : prev));
+
+        // Smooth Fade-Out as user finishes the cards and transitions into Daily Duo Inspiration
+        if (fixedWrap) {
+          let opacity = 1;
+          if (cardsRect.bottom < windowHeight) {
+            const scrollPast = windowHeight - cardsRect.bottom;
+            const fadeRatio = clamp(scrollPast / 300, 0, 1);
+            opacity = Math.max(0, 1 - fadeRatio);
+          }
+          fixedWrap.style.opacity = opacity;
+          fixedWrap.style.visibility = opacity <= 0.001 ? 'hidden' : 'visible';
         }
       }
 
@@ -158,23 +188,6 @@ export default function ScrollCanvasAnimation() {
         TOTAL_FRAMES - 1,
         Math.max(0, Math.floor(progress * TOTAL_FRAMES))
       );
-
-      // 3. Smooth Fade-Out as user finishes the cards and transitions into Daily Duo Inspiration
-      if (fixedWrap) {
-        let opacity = 1;
-        if (progress >= 0.92) {
-          const fadeRatio = clamp((progress - 0.92) / 0.08, 0, 1);
-          opacity = Math.max(0, 0.5 * (1 + Math.cos(fadeRatio * Math.PI)));
-        }
-
-        const scrollPastTrack = -rect.top - totalTrackDistance;
-        if (scrollPastTrack > 50) {
-          opacity = 0;
-        }
-
-        fixedWrap.style.opacity = opacity;
-        fixedWrap.style.visibility = opacity <= 0.001 ? 'hidden' : 'visible';
-      }
 
       animationFrameId = requestAnimationFrame(() => {
         renderFrame(frameIndex);
@@ -201,25 +214,6 @@ export default function ScrollCanvasAnimation() {
       renderFrame(0);
     }
   }, [imagesLoaded, renderFrame]);
-
-  // Calculate active card index (0 to 6) for the 7 narrative cards
-  // below 'SCROLL TO DISCOVER' and exactly before 'DAILY DUO INSPIRATION'
-  let activeCardIdx = 0;
-  if (cardsProgress < 0.14) {
-    activeCardIdx = 0; // 🤝 1-ON-1 ACCOUNTABILITY
-  } else if (cardsProgress < 0.28) {
-    activeCardIdx = 1; // 🧩 SMART SYNERGY SHELLS
-  } else if (cardsProgress < 0.43) {
-    activeCardIdx = 2; // 🔥 DUO PHILOSOPHY
-  } else if (cardsProgress < 0.57) {
-    activeCardIdx = 3; // 🤝 MUTUAL STAKES
-  } else if (cardsProgress < 0.71) {
-    activeCardIdx = 4; // ⚡ UNBREAKABLE MOMENTUM
-  } else if (cardsProgress < 0.85) {
-    activeCardIdx = 5; // 🎯 UNCOMPROMISING STANDARDS
-  } else {
-    activeCardIdx = 6; // ✨ EXPONENTIAL SYNERGY
-  }
 
   return (
     <>
@@ -287,7 +281,16 @@ export default function ScrollCanvasAnimation() {
 
         {/* Section 2: 7 Cards Sequence BELOW 'SCROLL TO DISCOVER' & ABOVE 'DAILY DUO INSPIRATION' */}
         <div ref={cardsTrackRef} className="scroll-cards-track">
-          <div className="scroll-cards-sticky">
+          <div
+            className={`scroll-cards-sticky scroll-cards-sticky--${pinState}`}
+            style={
+              pinState === 'fixed'
+                ? { position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 10 }
+                : pinState === 'after'
+                ? { position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100vh', zIndex: 10 }
+                : { position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 10 }
+            }
+          >
             {/* Card 1: 🤝 1-ON-1 ACCOUNTABILITY */}
             <div
               className={`scroll-card-slot ${

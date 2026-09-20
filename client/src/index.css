@@ -4602,14 +4602,14 @@ html:has(.landing) .scroll-sequence-vignette {
     linear-gradient(180deg, rgba(4, 10, 19, 0.7) 0%, transparent 15%, transparent 85%, #040a13 100%) !important;
 }
 
-/* Ensure Landing Page ALWAYS has zoom: 1 and natural overflow so position: sticky and 3D canvas work 100% flawlessly on all devices and PWAs */
+/* Ensure Landing Page ALWAYS has natural overflow and proper sizing on all devices and PWAs */
 html:has(.landing),
 html:has(.landing) body,
 html.landing-dark-theme,
 html.landing-dark-theme body,
 body:has(.landing),
 body.landing-dark-theme {
-  overflow-x: clip !important;
+  overflow-x: hidden !important;
   overflow-y: auto !important;
 }
 
@@ -4624,7 +4624,7 @@ html.app-zoomed-out.landing-dark-theme #root {
   zoom: 1 !important;
   width: 100% !important;
   max-width: 100% !important;
-  overflow-x: clip !important;
+  overflow-x: hidden !important;
 }
 
 .landing .canvas-loader {
@@ -8955,16 +8955,12 @@ html.app-zoomed-out.landing-dark-theme #root {
 .scroll-cards-track {
   position: relative;
   width: 100%;
-  height: 460vh;
+  height: 420vh;
   background: transparent;
   pointer-events: auto;
 }
 
-.scroll-cards-sticky,
-.scroll-sequence-sticky {
-  position: sticky;
-  top: 0;
-  left: 0;
+.scroll-cards-sticky {
   width: 100%;
   height: 100vh;
   height: 100dvh;
@@ -8974,6 +8970,28 @@ html.app-zoomed-out.landing-dark-theme #root {
   justify-content: center;
   background: transparent;
   pointer-events: none;
+  z-index: 5;
+}
+
+.scroll-cards-sticky--fixed {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: auto !important;
+}
+
+.scroll-cards-sticky--before {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: auto !important;
+}
+
+.scroll-cards-sticky--after {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 0 !important;
+  left: 0 !important;
 }
 
 .scroll-card-slot {
