@@ -4483,7 +4483,7 @@ html.desktop-site-view .auth-card {
 }
 
 /* ============================================================
-   PERMANENT LANDING PAGE NAVY BLUE THEME (#0a192f & #050f1d)
+   PERMANENT LANDING PAGE NAVY BLUE THEME (#0a192f)
    Always stays pure navy blue regardless of user settings theme
    ============================================================ */
 
@@ -4506,7 +4506,7 @@ body:has(.auth-page),
   --bg-overlay: rgba(10, 25, 47, 0.95) !important;
   --navbar-bg: rgba(10, 25, 47, 0.90) !important;
   --modal-bg: linear-gradient(150deg, #0f2b52 0%, #0a192f 55%, #05101f 100%) !important;
-  --canvas-bg: #050f1d !important;
+  --canvas-bg: #0a192f !important;
 
   /* ── 2. Subtle & Focus Borders ── */
   --border: rgba(56, 189, 248, 0.20) !important;
@@ -4558,9 +4558,9 @@ body:has(.auth-page),
     radial-gradient(ellipse 70% 60% at 50% 110%, rgba(30, 58, 138, 0.28), transparent 70%),
     #0a192f !important;
   --vignette-bg:
-    radial-gradient(ellipse at center, rgba(10, 25, 47, 0.05) 0%, rgba(5, 15, 29, 0.65) 75%, #050f1d 100%),
-    linear-gradient(180deg, rgba(10, 25, 47, 0.7) 0%, transparent 15%, transparent 85%, #050f1d 100%) !important;
-  --canvas-bg: #050f1d !important;
+    radial-gradient(ellipse at center, rgba(10, 25, 47, 0.05) 0%, rgba(10, 25, 47, 0.55) 75%, #0a192f 100%),
+    linear-gradient(180deg, rgba(10, 25, 47, 0.7) 0%, transparent 15%, transparent 85%, #0a192f 100%) !important;
+  --canvas-bg: #0a192f !important;
 }
 
 html.landing-dark-theme:not(.auth-page-active):not(:has(.auth-page)) body,
@@ -4587,19 +4587,19 @@ body.auth-page-active,
   color: #f8fafc !important;
 }
 
-/* Force 3D scroll canvas background & vignette to Deep Navy Blue #050f1d */
+/* Force 3D scroll canvas background & vignette to Navy Blue #0a192f */
 .landing .scroll-canvas-fixed-wrap,
 html.landing-dark-theme .scroll-canvas-fixed-wrap,
 html:has(.landing) .scroll-canvas-fixed-wrap {
-  background: #050f1d !important;
+  background: #0a192f !important;
 }
 
 .landing .scroll-sequence-vignette,
 html.landing-dark-theme .scroll-sequence-vignette,
 html:has(.landing) .scroll-sequence-vignette {
   background:
-    radial-gradient(ellipse at center, rgba(10, 25, 47, 0.05) 0%, rgba(5, 15, 29, 0.65) 75%, #050f1d 100%),
-    linear-gradient(180deg, rgba(10, 25, 47, 0.7) 0%, transparent 15%, transparent 85%, #050f1d 100%) !important;
+    radial-gradient(ellipse at center, rgba(10, 25, 47, 0.05) 0%, rgba(10, 25, 47, 0.55) 75%, #0a192f 100%),
+    linear-gradient(180deg, rgba(10, 25, 47, 0.7) 0%, transparent 15%, transparent 85%, #0a192f 100%) !important;
 }
 
 .landing .canvas-loader {
@@ -4938,7 +4938,7 @@ html:has(.landing) .scroll-sequence-vignette {
 /* Landing Footer */
 .landing .footer,
 .landing > .footer {
-  background: #050f1d !important;
+  background: #0a192f !important;
   border-top: 1px solid rgba(56, 189, 248, 0.15) !important;
   color: #94a3b8 !important;
 }
@@ -5219,7 +5219,7 @@ html:has(.landing) .scroll-sequence-vignette {
 .quote-section {
   position: relative;
   z-index: 10;
-  padding: 3.5rem 1.5rem 4rem;
+  padding: 1.25rem 1.5rem 3.5rem;
 }
 
 .quote-card {
@@ -8898,7 +8898,7 @@ html:has(.landing) .scroll-sequence-vignette {
 .scroll-sequence-container {
   position: relative;
   width: 100%;
-  height: 500vh;
+  height: 420vh;
   background: transparent;
   z-index: 10;
   pointer-events: none;

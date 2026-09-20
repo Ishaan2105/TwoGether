@@ -132,13 +132,13 @@ html:has(.landing) .scroll-expand__title .hero__title {
   inset: 0;
   width: 100%;
   height: 100%;
-  background: var(--canvas-bg, #050f1d);
+  background: var(--canvas-bg, #0a192f);
 }
 
 .landing .scroll-canvas-inner-wrap,
 .landing-dark-theme .scroll-canvas-inner-wrap,
 html:has(.landing) .scroll-canvas-inner-wrap {
-  background: #050f1d !important;
+  background: #0a192f !important;
 }
 
 .scroll-expand-title-hero {

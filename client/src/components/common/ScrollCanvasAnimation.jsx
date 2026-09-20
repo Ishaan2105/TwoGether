@@ -111,7 +111,7 @@ export default function ScrollCanvasAnimation() {
 
     // Clear with theme background
     const canvasBg =
-      getComputedStyle(canvas).getPropertyValue('--canvas-bg').trim() || '#04121f';
+      getComputedStyle(canvas).getPropertyValue('--canvas-bg').trim() || '#0a192f';
     ctx.fillStyle = canvasBg;
     ctx.fillRect(0, 0, displayWidth, displayHeight);
 
@@ -332,10 +332,10 @@ export default function ScrollCanvasAnimation() {
               </div>
             </div>
 
-            {/* Scene 4: Interactive Scrolling Duo Quotes (50% - 84% Scroll) */}
+            {/* Scene 4: Interactive Scrolling Duo Quotes (50% - 80% Scroll) */}
             {(() => {
-              const isQuotesPhase = scrollProgress > 0.50 && scrollProgress <= 0.84;
-              const quotePhaseProgress = clamp((scrollProgress - 0.50) / (0.84 - 0.50), 0, 0.999);
+              const isQuotesPhase = scrollProgress > 0.50 && scrollProgress <= 0.80;
+              const quotePhaseProgress = clamp((scrollProgress - 0.50) / (0.80 - 0.50), 0, 0.999);
               const activeQuoteIdx = Math.min(
                 SCROLL_DUO_QUOTES.length - 1,
                 Math.max(0, Math.floor(quotePhaseProgress * SCROLL_DUO_QUOTES.length))
@@ -374,10 +374,10 @@ export default function ScrollCanvasAnimation() {
               );
             })()}
 
-            {/* Scene 5: Unbreakable Streaks & Shields (84% - 96% Scroll with clean exit fade) */}
+            {/* Scene 5: Unbreakable Streaks & Shields (80%+ Scroll seamlessly leading into Daily Inspiration) */}
             <div
               className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.84 && scrollProgress <= 0.96
+                scrollProgress > 0.80
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}

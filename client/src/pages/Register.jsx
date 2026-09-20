@@ -7,7 +7,7 @@ export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  // Ensure Register page color theme is always Dark Blue (#0a192f / #050f1d)
+  // Ensure Register page color theme is always Navy Blue (#0a192f)
   useEffect(() => {
     document.documentElement.classList.add('landing-dark-theme', 'auth-page-active');
     document.body.classList.add('landing-dark-theme', 'auth-page-active');

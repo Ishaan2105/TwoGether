@@ -30,7 +30,7 @@ export default function Login() {
   const wrapperRef = useRef(null);
   const debounceTimerRef = useRef(null);
 
-  // Ensure Login page color theme is always Dark Blue (#0a192f / #050f1d)
+  // Ensure Login page color theme is always Navy Blue (#0a192f)
   useEffect(() => {
     try {
       localStorage.removeItem('twogether_recent_logins');
