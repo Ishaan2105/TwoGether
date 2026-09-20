@@ -111,7 +111,7 @@ export default function ScrollCanvasAnimation() {
 
     // Clear with theme background
     const canvasBg =
-      getComputedStyle(canvas).getPropertyValue('--canvas-bg').trim() || '#0a192f';
+      getComputedStyle(canvas).getPropertyValue('--canvas-bg').trim() || '#040a13';
     ctx.fillStyle = canvasBg;
     ctx.fillRect(0, 0, displayWidth, displayHeight);
 
