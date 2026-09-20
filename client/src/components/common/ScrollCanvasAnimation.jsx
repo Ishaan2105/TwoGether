@@ -321,14 +321,12 @@ export default function ScrollCanvasAnimation() {
                   : 'scroll-scene--hidden'
               }`}
             >
-              <div className="scene-card">
-                <span className="badge badge--pill">🤝 1-ON-1 ACCOUNTABILITY</span>
-                <h2>Two people. One unbreakable bond.</h2>
-                <p className="muted">
-                  When one of you slips, the entire Duo feels it. No more quietly skipping days or
-                  giving up when nobody is watching.
-                </p>
-              </div>
+              <span className="badge badge--pill">🤝 1-ON-1 ACCOUNTABILITY</span>
+              <h2>Two people. One unbreakable bond.</h2>
+              <p className="muted">
+                When one of you slips, the entire Duo feels it. No more quietly skipping days or
+                giving up when nobody is watching.
+              </p>
             </div>
 
             {/* Scene 3: Semantic Synergy Shells (36% - 50% Scroll) */}
@@ -339,25 +337,23 @@ export default function ScrollCanvasAnimation() {
                   : 'scroll-scene--hidden'
               }`}
             >
-              <div className="scene-card scene-card--highlight">
-                <span className="badge badge--success">🧩 SMART SYNERGY SHELLS</span>
-                <h2>Different habits. Shared team victory.</h2>
-                <p className="muted">
-                  You do <strong>Deep Work Coding</strong>, your partner does <strong>Exam Study</strong>.
-                  TwoGether intelligently fuses both under the <strong>Focus & Mastery Shell</strong> to
-                  power your Duo streak!
-                </p>
-                <div className="scene-shell-preview">
-                  <span className="scene-shell-habit">
-                    <span className="scene-shell-icon">💻</span>
-                    <span>90m Deep Work</span>
-                  </span>
-                  <span className="scene-shell-fuse">⚡ FUSED INTO FOCUS SHELL ⚡</span>
-                  <span className="scene-shell-habit">
-                    <span className="scene-shell-icon">📚</span>
-                    <span>Exam Revision</span>
-                  </span>
-                </div>
+              <span className="badge badge--success">🧩 SMART SYNERGY SHELLS</span>
+              <h2>Different habits. Shared team victory.</h2>
+              <p className="muted">
+                You do <strong>Deep Work Coding</strong>, your partner does <strong>Exam Study</strong>.
+                TwoGether intelligently fuses both under the <strong>Focus & Mastery Shell</strong> to
+                power your Duo streak!
+              </p>
+              <div className="scene-shell-preview">
+                <span className="scene-shell-habit">
+                  <span className="scene-shell-icon">💻</span>
+                  <span>90m Deep Work</span>
+                </span>
+                <span className="scene-shell-fuse">⚡ FUSED INTO FOCUS SHELL ⚡</span>
+                <span className="scene-shell-habit">
+                  <span className="scene-shell-icon">📚</span>
+                  <span>Exam Revision</span>
+                </span>
               </div>
             </div>
 
@@ -373,11 +369,11 @@ export default function ScrollCanvasAnimation() {
 
               return (
                 <div
-                  className={`scroll-scene scroll-scene--callout ${
+                  className={`scroll-scene scroll-scene--callout scroll-scene--quote ${
                     isQuotesPhase ? 'scroll-scene--active' : 'scroll-scene--hidden'
                   }`}
                 >
-                  <div key={activeQuoteIdx} className="scene-card scene-card--quote scene-quote-animated">
+                  <div key={activeQuoteIdx} className="scene-quote-animated">
                     <span className="badge badge--pill">{activeQuote.tag}</span>
                     <h2 className="scene-quote-title">
                       &ldquo;{activeQuote.quote}&rdquo;
@@ -411,18 +407,16 @@ export default function ScrollCanvasAnimation() {
                   : 'scroll-scene--hidden'
               }`}
             >
-              <div className="scene-card">
-                <span className="badge badge--pill">🛡️ STREAK SHIELDS & DUO XP</span>
-                <h2>Level up together. Protect the chain.</h2>
-                <p className="muted">
-                  Earn XP with every habit completed, climb ranks, unlock titles, and protect your
-                  streak with emergency Duo Shields.
-                </p>
-                <div className="hero__cta" style={{ marginTop: '1.5rem' }}>
-                  <Link to="/register" className="btn btn--primary btn--md">
-                    CREATE YOUR DUO NOW ➜
-                  </Link>
-                </div>
+              <span className="badge badge--pill">🛡️ STREAK SHIELDS & DUO XP</span>
+              <h2>Level up together. Protect the chain.</h2>
+              <p className="muted">
+                Earn XP with every habit completed, climb ranks, unlock titles, and protect your
+                streak with emergency Duo Shields.
+              </p>
+              <div className="hero__cta" style={{ marginTop: '1.5rem' }}>
+                <Link to="/register" className="btn btn--primary btn--md">
+                  CREATE YOUR DUO NOW ➜
+                </Link>
               </div>
             </div>
           </div>
