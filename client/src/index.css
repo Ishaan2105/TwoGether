@@ -16879,3 +16879,59 @@ html.app-zoomed-out.landing-dark-theme #root {
   font-weight: 700;
   border-radius: 10px;
 }
+
+/* Strict Landscape Switch Banner for Mobile Portrait */
+.strict-landscape-banner {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  width: calc(100% - 2rem);
+  max-width: 440px;
+  animation: slideUpBounce 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.strict-landscape-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.35rem;
+  background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 30px rgba(6, 182, 212, 0.45), 0 4px 14px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.strict-landscape-btn:active {
+  transform: scale(0.97);
+}
+
+.strict-landscape-btn__icon {
+  font-size: 1.25rem;
+  animation: rotateSpin 4s linear infinite;
+}
+
+@keyframes rotateSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideUpBounce {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 25px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
