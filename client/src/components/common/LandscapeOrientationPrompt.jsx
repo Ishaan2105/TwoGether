@@ -44,15 +44,7 @@ export default function LandscapeOrientationPrompt() {
     setIsPortrait(portrait);
     setIsMobileDevice(mobile);
 
-    // On non-mobile screens (desktop/laptop), ensure mobile zoom and forced rotation classes are NEVER applied
-    if (!mobile) {
-      document.documentElement.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
-      document.body.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
-      setForcedLandscape(false);
-      return;
-    }
-
-    // If mobile device is in native landscape mode, ensure landscape and zoomed-out classes are active
+    // If device is in native landscape mode, ensure landscape and zoomed-out classes are active
     if (!portrait) {
       document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
       document.body.classList.add('landscape-mode', 'app-zoomed-out');
@@ -74,8 +66,8 @@ export default function LandscapeOrientationPrompt() {
   }, []);
 
   useEffect(() => {
-    // Proactively lock orientation to landscape on load if supported on mobile
-    if (getIsMobileDevice() && window.screen?.orientation?.lock) {
+    // Proactively lock orientation to landscape on load if supported
+    if (window.screen?.orientation?.lock) {
       window.screen.orientation.lock('landscape').catch(() => {});
     }
 
@@ -172,13 +164,6 @@ export default function LandscapeOrientationPrompt() {
     setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
   };
 
-  const handleClosePrompt = () => {
-    setDismissed(true);
-    try {
-      sessionStorage.setItem('twogether_landscape_dismissed', 'true');
-    } catch (e) {}
-  };
-
   // Strictly visible when in portrait on mobile and not yet dismissed / not forced
   const showModal = isPortrait && isMobileDevice && !dismissed && !forcedLandscape;
 
@@ -193,18 +178,6 @@ export default function LandscapeOrientationPrompt() {
           aria-labelledby="landscape-prompt-title"
         >
           <div className="landscape-prompt-card">
-            {/* Top-Left Cross Button to close dialog */}
-            <button
-              type="button"
-              className="landscape-prompt-close-btn"
-              onClick={handleClosePrompt}
-              aria-label="Close rotation prompt"
-              title="Close"
-              id="btn-close-landscape-prompt"
-            >
-              ✕
-            </button>
-
             <div className="landscape-prompt-animation">
               <div className="landscape-prompt-phone">
                 <div className="landscape-prompt-phone__screen">⚡</div>
