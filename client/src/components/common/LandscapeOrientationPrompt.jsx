@@ -46,7 +46,15 @@ export default function LandscapeOrientationPrompt() {
     setIsPortrait(portrait);
     setIsMobileDevice(mobile);
 
-    // If device is in native landscape mode, ensure landscape and zoomed-out classes are active
+    // On non-mobile screens (desktop/laptop), ensure mobile zoom and forced rotation classes are NEVER applied
+    if (!mobile) {
+      document.documentElement.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
+      document.body.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
+      setForcedLandscape(false);
+      return;
+    }
+
+    // If mobile device is in native landscape mode, ensure landscape and zoomed-out classes are active
     if (!portrait) {
       document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
       document.body.classList.add('landscape-mode', 'app-zoomed-out');
@@ -81,7 +89,15 @@ export default function LandscapeOrientationPrompt() {
   }, [forcedLandscape]);
 
   useEffect(() => {
-    // On mount, if device is in portrait, ensure clean state so prompt shows
+    // If desktop/laptop, remove any stale mobile classes
+    if (!getIsMobileDevice()) {
+      document.documentElement.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
+      document.body.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
+      setForcedLandscape(false);
+      return;
+    }
+
+    // On mount on mobile, if device is in portrait, ensure clean state so prompt shows
     try {
       sessionStorage.removeItem('twogether_landscape_dismissed');
       if (getIsPortrait()) {

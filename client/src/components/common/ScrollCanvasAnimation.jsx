@@ -173,52 +173,23 @@ export default function ScrollCanvasAnimation() {
         Math.max(0, Math.round(progress * (TOTAL_FRAMES - 1)))
       );
 
-      // 3. Expansion Clip-Path during initial 0.0 -> 0.15 progress
+      // 3. Full-bleed 3D canvas on all viewports for immersive, cinematic presentation
       if (fixedWrap) {
-        // On mobile phones (especially short landscape viewports <= 560px or small mobile width <= 768px):
-        // Do NOT clip the canvas into a small 52%x64% box where text overflows.
-        // Instead, full-bleed 100% canvas fills the screen immersively!
-        const isMobileLandscape = window.innerHeight <= 560 && window.innerWidth > window.innerHeight;
-        const isMobileScreen = window.innerWidth <= 768;
+        fixedWrap.style.clipPath = 'none';
+        fixedWrap.style.border = 'none';
+        fixedWrap.style.boxShadow = 'none';
 
-        if (isMobileLandscape || isMobileScreen) {
-          fixedWrap.style.clipPath = 'none';
-          fixedWrap.style.border = 'none';
-          fixedWrap.style.boxShadow = 'none';
-        } else {
-          const expansionProgress = smoothstep(0, 0.15, progress);
-          const startWidth = 52;
-          const startHeight = 64;
-          const startRadius = 26;
-          const endRadius = 0;
-
-          if (expansionProgress < 0.999) {
-            const w = startWidth + (100 - startWidth) * expansionProgress;
-            const h = startHeight + (100 - startHeight) * expansionProgress;
-            const ix = Math.max(0, (100 - w) / 2);
-            const iy = Math.max(0, (100 - h) / 2);
-            const r = startRadius + (endRadius - startRadius) * expansionProgress;
-            fixedWrap.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
-            fixedWrap.style.border = '1px solid rgba(var(--cyan-rgb), 0.3)';
-            fixedWrap.style.boxShadow =
-              '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--cyan-rgb), 0.2)';
-          } else {
-            fixedWrap.style.clipPath = 'none';
-            fixedWrap.style.border = 'none';
-            fixedWrap.style.boxShadow = 'none';
-          }
+        // 4. Smooth Fade-Out as user finishes the hero track (progress 0.88 -> 1.0):
+        // Fades smoothly to clean background so the quotes & feature sections have crisp contrast
+        let opacity = 1;
+        if (progress >= 0.88) {
+          const fadeRatio = clamp((progress - 0.88) / 0.12, 0, 1);
+          opacity = Math.max(0, 0.5 * (1 + Math.cos(fadeRatio * Math.PI)));
         }
 
-        // 4. Smooth Fade-Out as user scrolls PAST the hero sequence into the rest of the page:
-        // Keeps the last frame as the fixed background, then slowly & softly fades it out until clean.
         const scrollPastHero = Math.max(0, -rect.top - totalHeroTrackDistance);
-        const fadeDistance = windowHeight * 1.5; // Smooth fade-out over next 1.5 viewport heights
-
-        let opacity = 1;
         if (scrollPastHero > 0) {
-          const fadeRatio = clamp(scrollPastHero / fadeDistance, 0, 1);
-          // Cosine S-curve for ultra-smooth transition with zero abrupt jump
-          opacity = Math.max(0, 0.5 * (1 + Math.cos(fadeRatio * Math.PI)));
+          opacity = 0;
         }
 
         fixedWrap.style.opacity = opacity;

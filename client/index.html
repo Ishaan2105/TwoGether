@@ -38,13 +38,16 @@
             isPortrait = window.innerHeight >= window.innerWidth;
           }
 
-          if (!isPortrait) {
+          var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '') || 
+            (('ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0)) && Math.min(window.innerWidth, window.innerHeight) <= 1024);
+
+          if (isMobile && !isPortrait) {
             document.documentElement.classList.add('landscape-mode');
           } else {
-            document.documentElement.classList.remove('landscape-mode', 'app-forced-landscape');
+            document.documentElement.classList.remove('landscape-mode', 'app-forced-landscape', 'app-zoomed-out');
           }
 
-          if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
+          if (isMobile && window.screen && window.screen.orientation && window.screen.orientation.lock) {
             window.screen.orientation.lock('landscape').catch(function () {});
           }
         } catch (e) {}
