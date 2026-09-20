@@ -3750,11 +3750,11 @@ html.desktop-site-view .auth-card {
 
 .modal-card {
   width: 100%;
-  max-width: 580px;
-  max-height: 90vh;
+  max-width: 860px;
+  max-height: 92vh;
   background: var(--bg-card-solid);
   border: 1px solid var(--border);
-  border-radius: 22px;
+  border-radius: 7px;
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.7),
     0 0 0 1px var(--border),
@@ -8513,24 +8513,24 @@ html.app-zoomed-out.landing-dark-theme #root {
 .modal-card {
   background: var(--modal-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 7px;
   padding: 2rem;
   width: 100%;
-  max-width: 520px;
+  max-width: 860px;
   box-shadow: var(--shadow);
   position: relative;
   animation: scaleIn 0.25s ease;
 }
 
 .modal-card--task-builder {
-  max-width: 680px;
+  max-width: 860px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 92vh;
   overflow-y: auto;
   background: var(--modal-bg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  border-radius: 20px;
+  border-radius: 6px;
   padding: 2.25rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(var(--cyan-rgb), 0.3) transparent;
@@ -9808,8 +9808,8 @@ html.app-zoomed-out.landing-dark-theme #root {
   left: 0;
   z-index: 10;
   background: var(--bg-card-solid);
-  min-width: 270px;
-  max-width: 330px;
+  min-width: 360px;
+  max-width: 440px;
   text-align: left;
   border-right: 2px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -11229,7 +11229,8 @@ html.app-zoomed-out.landing-dark-theme #root {
 
 /* Conclude Goal Modal */
 .modal-card--conclude-goal {
-  max-width: 540px;
+  max-width: 860px;
+  border-radius: 6px;
 }
 
 .conclude-goal-stats {
@@ -13226,11 +13227,11 @@ html.app-zoomed-out.landing-dark-theme #root {
    ============================================================ */
 
 .image-nudge-modal {
-  width: min(94vw, 520px);
-  max-height: min(90vh, 720px);
+  width: min(96vw, 860px);
+  max-height: min(94vh, 920px);
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
@@ -15984,14 +15985,14 @@ html.app-zoomed-out.landing-dark-theme #root {
 .nudge-action-modal {
   position: relative;
   width: 100%;
-  max-width: 530px;
-  max-height: 88vh;
-  max-height: 88dvh;
+  max-width: 860px;
+  max-height: 92vh;
+  max-height: 92dvh;
   overflow-y: auto !important;
   overflow-x: hidden;
   overscroll-behavior: contain;
   background: var(--bg-card, #121526);
-  border-radius: 24px;
+  border-radius: 7px;
   padding: 2rem 1.85rem;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
   color: var(--text-main, #f8fafc);
@@ -16927,7 +16928,7 @@ html.app-zoomed-out.landing-dark-theme #root {
     max-height: 94vh !important;
     max-height: 94dvh !important;
     padding: 1.15rem 1.35rem !important;
-    max-width: 500px !important;
+    max-width: 860px !important;
   }
 
   .nudge-presets-grid {
