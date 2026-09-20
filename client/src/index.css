@@ -3813,9 +3813,14 @@ html.desktop-site-view .auth-card {
 
 /* ---------- PWA Modal ---------- */
 
+/* ---------- PWA Modal ---------- */
+
 .pwa-modal {
-  max-width: 560px;
-  max-height: 85vh;
+  width: 100%;
+  max-width: 680px;
+  max-height: 94vh;
+  border-radius: 16px;
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
 }
@@ -3823,8 +3828,8 @@ html.desktop-site-view .auth-card {
 .pwa-modal__header {
   display: flex;
   align-items: flex-start;
-  gap: 0.85rem;
-  padding: 1.4rem 1.5rem 1rem;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem 0.65rem;
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
@@ -3833,37 +3838,38 @@ html.desktop-site-view .auth-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
   background: rgba(16, 185, 129, 0.15);
   border: 1px solid rgba(16, 185, 129, 0.35);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .pwa-modal__icon-img {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
   object-fit: cover;
   border: 1px solid rgba(var(--cyan-rgb), 0.35);
-  box-shadow: 0 0 16px rgba(var(--cyan-rgb), 0.25);
+  box-shadow: 0 0 12px rgba(var(--cyan-rgb), 0.2);
   background: #ffffff;
 }
 
 .pwa-modal__title {
-  font-size: 1.22rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--text);
   margin: 0;
 }
 
 .pwa-modal__subtitle {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
-  margin: 0.2rem 0 0;
+  margin: 0.15rem 0 0;
+  line-height: 1.35;
 }
 
 .pwa-modal__body {
@@ -3872,7 +3878,7 @@ html.desktop-site-view .auth-card {
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
 }
 
 .pwa-modal__body::-webkit-scrollbar {
@@ -3892,11 +3898,11 @@ html.desktop-site-view .auth-card {
 .pwa-status-banner {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin: 1rem 1.5rem 0;
-  padding: 0.85rem 1rem;
-  border-radius: 14px;
-  font-size: 0.84rem;
+  gap: 0.65rem;
+  margin: 0.5rem 1.25rem 0;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
 }
 
 .pwa-status-banner--ready {
@@ -3912,74 +3918,82 @@ html.desktop-site-view .auth-card {
 }
 
 .pwa-status-banner p {
-  margin: 0.15rem 0 0;
-  font-size: 0.76rem;
+  margin: 0.1rem 0 0;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
 .pwa-status-icon {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .pwa-benefits-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  padding: 1rem 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.45rem;
+  padding: 0.55rem 1.25rem;
+}
+
+@media (max-width: 560px) {
+  .pwa-benefits-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
 }
 
 .pwa-benefit-card {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.65rem 0.8rem;
-  border-radius: 12px;
+  gap: 0.45rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 9px;
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
 }
 
 .pwa-benefit-icon {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .pwa-benefit-card strong {
   display: block;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   color: var(--text);
 }
 
 .pwa-benefit-card span {
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   color: var(--text-muted);
+  line-height: 1.2;
 }
 
 .pwa-guide-section {
-  padding: 0.4rem 1.5rem 1rem;
+  padding: 0.35rem 1.25rem 0.55rem;
 }
 
 .pwa-guide-title {
   display: block;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: var(--text-dim);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .pwa-tabs {
   display: flex;
-  gap: 0.35rem;
-  margin-bottom: 0.75rem;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
 .pwa-tab {
   flex: 1;
-  padding: 0.45rem 0.5rem;
-  border-radius: 8px;
+  padding: 0.35rem 0.45rem;
+  border-radius: 7px;
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.16s ease;
@@ -3993,11 +4007,12 @@ html.desktop-site-view .auth-card {
 
 .pwa-steps-list {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-left: 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  font-size: 0.82rem;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
   color: var(--text-muted);
 }
 
@@ -4008,10 +4023,95 @@ html.desktop-site-view .auth-card {
 .pwa-modal__footer {
   display: flex;
   justify-content: flex-end;
-  padding: 0.9rem 1.5rem;
+  padding: 0.6rem 1.25rem;
   border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
   background: var(--bg-card-solid);
+}
+
+/* Compact Landscape & Mobile View for PWA Modal */
+@media (max-height: 600px), (orientation: landscape) and (max-width: 1024px) {
+  .pwa-modal {
+    max-width: min(720px, 94vw) !important;
+    max-height: 96vh !important;
+    border-radius: 12px !important;
+  }
+
+  .pwa-modal__header {
+    padding: 0.5rem 1rem 0.35rem !important;
+    gap: 0.55rem !important;
+  }
+
+  .pwa-modal__icon-img {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 7px !important;
+  }
+
+  .pwa-modal__title {
+    font-size: 0.95rem !important;
+  }
+
+  .pwa-modal__subtitle {
+    font-size: 0.7rem !important;
+    margin: 0.1rem 0 0 !important;
+  }
+
+  .pwa-benefits-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    padding: 0.35rem 1rem !important;
+    gap: 0.35rem !important;
+  }
+
+  .pwa-benefit-card {
+    padding: 0.28rem 0.45rem !important;
+  }
+
+  .pwa-benefit-icon {
+    font-size: 0.9rem !important;
+  }
+
+  .pwa-benefit-card strong {
+    font-size: 0.72rem !important;
+  }
+
+  .pwa-benefit-card span {
+    font-size: 0.62rem !important;
+  }
+
+  .pwa-guide-section {
+    padding: 0.25rem 1rem 0.4rem !important;
+  }
+
+  .pwa-guide-title {
+    margin-bottom: 0.25rem !important;
+  }
+
+  .pwa-tabs {
+    margin-bottom: 0.35rem !important;
+    gap: 0.25rem !important;
+  }
+
+  .pwa-tab {
+    padding: 0.25rem 0.4rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  .pwa-steps-list {
+    gap: 0.25rem !important;
+    font-size: 0.75rem !important;
+    padding-left: 1rem !important;
+  }
+
+  .pwa-modal__footer {
+    padding: 0.45rem 1rem !important;
+  }
+
+  .pwa-modal__footer .btn {
+    padding: 0.35rem 0.9rem !important;
+    font-size: 0.78rem !important;
+  }
 }
 
 /* ---------- Streak Shield Modal ---------- */
@@ -15318,6 +15418,89 @@ body.app-zoomed-out #root {
     transform: translateX(0) !important;
     visibility: visible !important;
     pointer-events: auto !important;
+  }
+
+  /* Compact PWA Install Dialog in Forced Landscape */
+  html.app-forced-landscape .pwa-modal {
+    max-width: min(720px, 94vw) !important;
+    max-height: 96vh !important;
+    border-radius: 12px !important;
+  }
+
+  html.app-forced-landscape .pwa-modal__header {
+    padding: 0.5rem 1rem 0.35rem !important;
+    gap: 0.55rem !important;
+  }
+
+  html.app-forced-landscape .pwa-modal__icon-img {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 7px !important;
+  }
+
+  html.app-forced-landscape .pwa-modal__title {
+    font-size: 0.95rem !important;
+  }
+
+  html.app-forced-landscape .pwa-modal__subtitle {
+    font-size: 0.7rem !important;
+    margin: 0.1rem 0 0 !important;
+  }
+
+  html.app-forced-landscape .pwa-benefits-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    padding: 0.35rem 1rem !important;
+    gap: 0.35rem !important;
+  }
+
+  html.app-forced-landscape .pwa-benefit-card {
+    padding: 0.28rem 0.45rem !important;
+  }
+
+  html.app-forced-landscape .pwa-benefit-icon {
+    font-size: 0.9rem !important;
+  }
+
+  html.app-forced-landscape .pwa-benefit-card strong {
+    font-size: 0.72rem !important;
+  }
+
+  html.app-forced-landscape .pwa-benefit-card span {
+    font-size: 0.62rem !important;
+  }
+
+  html.app-forced-landscape .pwa-guide-section {
+    padding: 0.25rem 1rem 0.4rem !important;
+  }
+
+  html.app-forced-landscape .pwa-guide-title {
+    margin-bottom: 0.25rem !important;
+  }
+
+  html.app-forced-landscape .pwa-tabs {
+    margin-bottom: 0.35rem !important;
+    gap: 0.25rem !important;
+  }
+
+  html.app-forced-landscape .pwa-tab {
+    padding: 0.25rem 0.4rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  html.app-forced-landscape .pwa-steps-list {
+    gap: 0.25rem !important;
+    font-size: 0.75rem !important;
+    padding-left: 1rem !important;
+  }
+
+  html.app-forced-landscape .pwa-modal__footer {
+    padding: 0.45rem 1rem !important;
+  }
+
+  html.app-forced-landscape .pwa-modal__footer .btn {
+    padding: 0.35rem 0.9rem !important;
+    font-size: 0.78rem !important;
   }
 }
 
