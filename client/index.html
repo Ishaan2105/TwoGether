@@ -24,10 +24,14 @@
           var saved = localStorage.getItem('twogether_theme') || localStorage.getItem('duohabit_theme') || 'dark';
           document.documentElement.setAttribute('data-theme', saved);
 
-          // Strictly enforce landscape mode across the project
-          document.documentElement.classList.add('landscape-mode');
-          if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
-            window.screen.orientation.lock('landscape').catch(function () {});
+          // On mobile touch devices only, suggest landscape mode
+          var isTouch = 'ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+          var isSmall = Math.min(window.innerWidth, window.innerHeight) <= 1024;
+          if (isTouch && isSmall) {
+            document.documentElement.classList.add('landscape-mode');
+            if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
+              window.screen.orientation.lock('landscape').catch(function () {});
+            }
           }
         } catch (e) {}
       })();
