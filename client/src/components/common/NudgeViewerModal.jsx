@@ -125,7 +125,7 @@ export default function NudgeViewerModal() {
     const ctx = canvas.getContext('2d');
     const img = new Image();
     img.onload = () => {
-      const maxDim = 380;
+      const maxDim = 600;
       let w = img.naturalWidth;
       let h = img.naturalHeight;
       if (w > maxDim || h > maxDim) {
@@ -210,7 +210,7 @@ export default function NudgeViewerModal() {
                 {nudge ? `${nudge.fromUsername}'s Private Photo` : 'Secret Photo Nudge'}
               </h2>
               <p className="nudge-viewer__subtitle">
-                🛡️ Anti-screenshot active · Disappears in {timeLeft ?? totalDuration}s
+                Disappears in {timeLeft ?? totalDuration}s
               </p>
             </div>
           </div>
@@ -298,14 +298,6 @@ export default function NudgeViewerModal() {
                 <p className="nudge-viewer__message">
                   {nudge.message?.trim() || `${nudge.fromUsername} sent you an ephemeral photo!`}
                 </p>
-              </div>
-
-              {/* Screenshot notice */}
-              <div className="nudge-viewer__protect-notice">
-                <span>🛡️</span>
-                <span>
-                  <strong>Anti-Screenshot Protection Active:</strong> Taking a screenshot or screen recording will capture only the blackout shield.
-                </span>
               </div>
             </>
           )}

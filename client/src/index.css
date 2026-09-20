@@ -1960,8 +1960,8 @@ button {
 
 .nudge-viewer-modal {
   position: relative;
-  width: min(94vw, 420px);
-  max-height: min(90vh, 640px);
+  width: min(94vw, 640px);
+  max-height: min(92vh, 860px);
   border-radius: 22px;
   background: var(--bg-card);
   border: 1px solid rgba(var(--cyan-rgb), 0.25);
@@ -2103,6 +2103,7 @@ button {
 .nudge-viewer__canvas-wrap {
   position: relative;
   align-self: center;
+  max-width: 100%;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
@@ -2112,7 +2113,10 @@ button {
 .nudge-viewer__canvas {
   display: block;
   max-width: 100%;
+  max-height: min(65vh, 600px);
+  width: auto;
   height: auto;
+  object-fit: contain;
   border-radius: 14px;
 }
 
