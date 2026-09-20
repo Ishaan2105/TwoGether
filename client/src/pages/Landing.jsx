@@ -40,91 +40,6 @@ const MOTIVATIONAL_QUOTES = [
   },
 ];
 
-const DUO_PILLARS = [
-  {
-    id: 'accountability',
-    badge: '🤝 1-ON-1 ACCOUNTABILITY',
-    badgeClass: 'badge--primary',
-    category: 'architecture',
-    title: 'Two People. One Unbreakable Bond.',
-    desc: 'When one of you slips, the entire Duo feels it. No more quietly skipping days or giving up when nobody is watching. Shared commitment and mutual stakes keep you both showing up every single day.',
-    chips: ['Direct Partner Pairing', 'Real-Time Nudges', 'Zero Silent Quitting'],
-    icon: '🤝',
-  },
-  {
-    id: 'shells',
-    badge: '🧩 SMART SYNERGY SHELLS',
-    badgeClass: 'badge--success',
-    category: 'architecture',
-    title: 'Different Habits. Shared Team Victory.',
-    desc: 'You do Deep Work Coding, your partner does Exam Study. TwoGether intelligently fuses disparate routines into Shared Focus Shells to power your joint Duo streak!',
-    preview: {
-      leftIcon: '💻',
-      leftHabit: '90m Deep Work',
-      centerTag: '⚡ FUSED INTO FOCUS SHELL ⚡',
-      rightIcon: '📚',
-      rightHabit: 'Exam Revision',
-    },
-    chips: ['Semantic Fusing', 'Personal Freedom', 'Unified Duo Progress'],
-    icon: '🧩',
-  },
-  {
-    id: 'philosophy',
-    badge: '🔥 DUO PHILOSOPHY',
-    badgeClass: 'badge--gold',
-    category: 'philosophy',
-    quote: 'If you want to go fast, go alone. If you want to go far, go together.',
-    desc: 'A solo promise is easy to break in silence. But when someone you respect is relying on your consistency, showing up becomes second nature.',
-    author: 'African Proverb · The Duo Principle',
-    chips: ['Core Ethos', 'Social Gravity', 'Unbroken Chains'],
-    icon: '🔥',
-  },
-  {
-    id: 'stakes',
-    badge: '🤝 MUTUAL STAKES',
-    badgeClass: 'badge--primary',
-    category: 'philosophy',
-    quote: 'Two are better than one, because they have a good reward for their labor.',
-    desc: 'When you share accountability, victory is twice as sweet and giving up is never an option. Your partner’s daily momentum is tied to your presence.',
-    author: 'Ecclesiastes 4:9 · Unbreakable Bond',
-    chips: ['Shared Victory', 'Equal Investment', 'Interlocked Fate'],
-    icon: '🤝',
-  },
-  {
-    id: 'momentum',
-    badge: '⚡ UNBREAKABLE MOMENTUM',
-    badgeClass: 'badge--cyan',
-    category: 'philosophy',
-    quote: 'We don’t rise to the level of our goals, we fall to the level of our systems.',
-    desc: 'When two partners build a shared system of daily execution, consistency stops being an uphill struggle and becomes your default identity.',
-    author: 'James Clear · Powered by Duo Synergy',
-    chips: ['Systemic Discipline', 'Daily Habit Loops', 'Flywheel Effect'],
-    icon: '⚡',
-  },
-  {
-    id: 'standards',
-    badge: '🎯 UNCOMPROMISING STANDARDS',
-    badgeClass: 'badge--danger',
-    category: 'philosophy',
-    quote: 'When two people commit to the same standard, slacking is no longer an option.',
-    desc: 'Every check-in powers your joint streak. Your partner is depending on your standard today. Elevate each other’s discipline ceiling.',
-    author: 'TwoGether Philosophy · Shared Accountability',
-    chips: ['High-Bar Standards', 'Mutual Respect', 'No Weak Links'],
-    icon: '🎯',
-  },
-  {
-    id: 'synergy',
-    badge: '✨ EXPONENTIAL SYNERGY',
-    badgeClass: 'badge--purple',
-    category: 'philosophy',
-    quote: 'Alone we can do so little; together we can do so much.',
-    desc: 'One partner pushes the other. Two disciplined minds create an unstoppable flywheel of daily progress, compounding discipline into lifelong habits.',
-    author: 'Helen Keller · TwoGether Synergy',
-    chips: ['1 + 1 = 10', 'Compound Gains', 'Exponential Impact'],
-    icon: '✨',
-  },
-];
-
 const PLATFORM_FEATURES = [
   {
     icon: '🤝',
@@ -185,7 +100,6 @@ const STEPS = [
 export default function Landing() {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [fadeQuote, setFadeQuote] = useState(false);
-  const [pillarFilter, setPillarFilter] = useState('all');
 
   // Ensure the landing page color theme is always Dark Blue (#023047 / #011d2b)
   // regardless of which theme the user selects under settings
@@ -215,10 +129,6 @@ export default function Landing() {
   };
 
   const currentQuote = MOTIVATIONAL_QUOTES[quoteIndex];
-  const displayedPillars =
-    pillarFilter === 'all'
-      ? DUO_PILLARS
-      : DUO_PILLARS.filter((p) => p.category === pillarFilter);
 
   return (
     <div className="landing">
@@ -226,97 +136,6 @@ export default function Landing() {
       {/* 3D SCROLL SEQUENCE CANVAS HERO & SCENES                  */}
       {/* ======================================================== */}
       <ScrollCanvasAnimation />
-
-      {/* ======================================================== */}
-      {/* THE 7 PILLARS OF DUO SYNERGY & PHILOSOPHY CARDS          */}
-      {/* ======================================================== */}
-      <section className="container section duo-pillars-section" id="duo-pillars">
-        <div className="duo-pillars-header">
-          <span className="badge badge--pill">✨ CORE ARCHITECTURE &amp; MINDSET</span>
-          <h2 className="section__title">The 7 Pillars of Duo Synergy</h2>
-          <p className="section__sub muted">
-            Every layer of TwoGether is designed using behavioral psychology, mutual accountability,
-            and shared stakes so neither partner ever walks alone.
-          </p>
-
-          <div className="duo-pillar-tabs" role="tablist">
-            <button
-              type="button"
-              className={`duo-pillar-tab ${pillarFilter === 'all' ? 'duo-pillar-tab--active' : ''}`}
-              onClick={() => setPillarFilter('all')}
-            >
-              All 7 Pillars (7)
-            </button>
-            <button
-              type="button"
-              className={`duo-pillar-tab ${pillarFilter === 'architecture' ? 'duo-pillar-tab--active' : ''}`}
-              onClick={() => setPillarFilter('architecture')}
-            >
-              ⚙️ Core Systems (2)
-            </button>
-            <button
-              type="button"
-              className={`duo-pillar-tab ${pillarFilter === 'philosophy' ? 'duo-pillar-tab--active' : ''}`}
-              onClick={() => setPillarFilter('philosophy')}
-            >
-              🔥 Duo Philosophy (5)
-            </button>
-          </div>
-        </div>
-
-        <div className="duo-pillars-grid">
-          {displayedPillars.map((pillar) => (
-            <div
-              key={pillar.id}
-              className={`duo-pillar-card ${pillar.preview ? 'duo-pillar-card--featured' : ''}`}
-            >
-              <div className="duo-pillar-card__top">
-                <span className={`badge badge--pill ${pillar.badgeClass}`}>
-                  {pillar.badge}
-                </span>
-                <span className="duo-pillar-card__icon">{pillar.icon}</span>
-              </div>
-
-              {pillar.quote ? (
-                <div className="duo-pillar-card__quote-block">
-                  <h3 className="duo-pillar-card__title duo-pillar-card__title--quote">
-                    &ldquo;{pillar.quote}&rdquo;
-                  </h3>
-                  <cite className="duo-pillar-card__citation">— {pillar.author}</cite>
-                </div>
-              ) : (
-                <h3 className="duo-pillar-card__title">{pillar.title}</h3>
-              )}
-
-              <p className="duo-pillar-card__desc">{pillar.desc}</p>
-
-              {pillar.preview && (
-                <div className="scene-shell-preview duo-pillar-preview">
-                  <span className="scene-shell-habit">
-                    <span className="scene-shell-icon">{pillar.preview.leftIcon}</span>
-                    <span>{pillar.preview.leftHabit}</span>
-                  </span>
-                  <span className="scene-shell-fuse">{pillar.preview.centerTag}</span>
-                  <span className="scene-shell-habit">
-                    <span className="scene-shell-icon">{pillar.preview.rightIcon}</span>
-                    <span>{pillar.preview.rightHabit}</span>
-                  </span>
-                </div>
-              )}
-
-              {pillar.chips && (
-                <div className="duo-pillar-card__chips">
-                  {pillar.chips.map((chip, i) => (
-                    <span key={i} className="duo-pillar-chip">
-                      {chip}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ======================================================== */}
       {/* MOTIVATIONAL QUOTE SECTION                               */}

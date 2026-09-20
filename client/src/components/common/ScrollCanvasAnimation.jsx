@@ -4,39 +4,6 @@ import './ScrollExpand.css';
 
 const TOTAL_FRAMES = 136;
 
-const SCROLL_DUO_QUOTES = [
-  {
-    tag: '🔥 DUO PHILOSOPHY',
-    quote: 'If you want to go fast, go alone. If you want to go far, go together.',
-    author: 'African Proverb · The Duo Principle',
-    sub: 'A solo promise is easy to break in silence. But when someone you respect is relying on your consistency, showing up becomes second nature.',
-  },
-  {
-    tag: '🤝 MUTUAL STAKES',
-    quote: 'Two are better than one, because they have a good reward for their labor.',
-    author: 'Ecclesiastes 4:9 · Unbreakable Bond',
-    sub: 'When you share accountability, victory is twice as sweet and giving up is never an option.',
-  },
-  {
-    tag: '⚡ UNBREAKABLE MOMENTUM',
-    quote: 'We don’t rise to the level of our goals, we fall to the level of our systems.',
-    author: 'James Clear · Powered by Duo Synergy',
-    sub: 'When two partners build a shared system of daily execution, consistency stops being a struggle and becomes your default identity.',
-  },
-  {
-    tag: '🎯 UNCOMPROMISING STANDARDS',
-    quote: 'When two people commit to the same standard, slacking is no longer an option.',
-    author: 'TwoGether Philosophy · Shared Accountability',
-    sub: 'Every check-in powers your joint streak. Your partner is depending on your standard today.',
-  },
-  {
-    tag: '✨ EXPONENTIAL SYNERGY',
-    quote: 'Alone we can do so little; together we can do so much.',
-    author: 'Helen Keller · TwoGether Synergy',
-    sub: 'One partner pushes the other. Two disciplined minds create an unstoppable flywheel of daily progress.',
-  },
-];
-
 function getFrameUrl(index) {
   const padded = String(index + 1).padStart(3, '0');
   return `/frames/ezgif-frame-${padded}.jpg`;
@@ -58,7 +25,22 @@ export default function ScrollCanvasAnimation() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [manualQuoteIdx, setManualQuoteIdx] = useState(null);
+
+  // Smooth jump to any of the 8 narrative scene cards
+  const scrollToCard = (index) => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+    const rect = wrapper.getBoundingClientRect();
+    const scrollTop = window.scrollY || window.pageYOffset;
+    const wrapperTop = rect.top + scrollTop;
+    const totalHeroTrackDistance = wrapper.offsetHeight - window.innerHeight;
+    if (totalHeroTrackDistance <= 0) return;
+    const targetProgress = 0.165 + index * 0.11;
+    window.scrollTo({
+      top: wrapperTop + targetProgress * totalHeroTrackDistance,
+      behavior: 'smooth',
+    });
+  };
 
   // Preload all image frames
   useEffect(() => {
@@ -80,20 +62,6 @@ export default function ScrollCanvasAnimation() {
     }
   }, []);
 
-  // Reset manual quote selection on scroll so scrubbing takes over naturally
-  useEffect(() => {
-    setManualQuoteIdx(null);
-  }, [scrollProgress]);
-
-  // Smoothly scroll to a specific section ratio in the hero scrubbing track
-  const scrollToRatio = useCallback((ratio) => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-    const totalDist = wrapper.offsetHeight - window.innerHeight;
-    const targetY = wrapper.offsetTop + Math.max(0, totalDist * ratio);
-    window.scrollTo({ top: targetY, behavior: 'smooth' });
-  }, []);
-
   // Render a specific frame on the canvas - perfectly centered and proportioned
   const renderFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
@@ -103,11 +71,10 @@ export default function ScrollCanvasAnimation() {
 
     if (!img.complete || img.naturalWidth === 0) return;
 
-    // True rendered pixel dimensions of the canvas element
-    const rect = canvas.getBoundingClientRect();
-    const displayWidth = Math.round(rect.width || window.innerWidth || 1280);
-    const displayHeight = Math.round(rect.height || window.innerHeight || 720);
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // High-DPI canvas matching true viewport width & height
+    const dpr = window.devicePixelRatio || 1;
+    const displayWidth = window.innerWidth || canvas.clientWidth;
+    const displayHeight = window.innerHeight || canvas.clientHeight;
 
     if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
       canvas.width = displayWidth * dpr;
@@ -140,8 +107,8 @@ export default function ScrollCanvasAnimation() {
       drawWidth = displayHeight * srcRatio;
     }
 
-    const offsetX = Math.round((displayWidth - drawWidth) / 2);
-    const offsetY = Math.round((displayHeight - drawHeight) / 2);
+    const offsetX = (displayWidth - drawWidth) / 2;
+    const offsetY = (displayHeight - drawHeight) / 2;
 
     ctx.drawImage(
       img,
@@ -263,10 +230,10 @@ export default function ScrollCanvasAnimation() {
         <div className="scroll-sequence-sticky">
           {/* Narrative Scenes Overlay */}
           <div className="scroll-expand-scenes-container">
-            {/* Scene 1: Unified Hero Header & CTAs (0% - 22% Scroll) */}
+            {/* Scene 1: Unified Hero Header & CTAs (0% - 11% Scroll) */}
             <div
               className={`scroll-scene scroll-scene--hero ${
-                scrollProgress <= 0.22
+                scrollProgress <= 0.11
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
@@ -292,49 +259,16 @@ export default function ScrollCanvasAnimation() {
                 </Link>
               </div>
 
-              <div className="hero-scene-jumps">
-                <span className="hero-scene-jumps__label">EXPLORE ARCHITECTURE &amp; PHILOSOPHY:</span>
-                <div className="hero-scene-jumps__pills">
-                  <button
-                    type="button"
-                    className="hero-jump-pill"
-                    onClick={() => scrollToRatio(0.28)}
-                    title="Jump to 1-on-1 Accountability"
-                  >
-                    🤝 1-ON-1 ACCOUNTABILITY
-                  </button>
-                  <button
-                    type="button"
-                    className="hero-jump-pill"
-                    onClick={() => scrollToRatio(0.43)}
-                    title="Jump to Smart Synergy Shells"
-                  >
-                    🧩 SMART SYNERGY SHELLS
-                  </button>
-                  <button
-                    type="button"
-                    className="hero-jump-pill"
-                    onClick={() => scrollToRatio(0.65)}
-                    title="Jump to Duo Philosophy &amp; Quotes"
-                  >
-                    🔥 DUO PHILOSOPHY (5 QUOTES)
-                  </button>
-                  <button
-                    type="button"
-                    className="hero-jump-pill"
-                    onClick={() => scrollToRatio(0.88)}
-                    title="Jump to Streak Shields &amp; XP"
-                  >
-                    🛡️ STREAK SHIELDS &amp; XP
-                  </button>
-                </div>
+              <div className="scroll-indicator">
+                <span className="scroll-indicator__text">SCROLL TO DISCOVER</span>
+                <span className="scroll-indicator__arrow">↓</span>
               </div>
             </div>
 
-            {/* Scene 2: 1-on-1 Accountability (22% - 36% Scroll) */}
+            {/* Scene 2: 1-on-1 Accountability (11% - 22% Scroll) */}
             <div
               className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.22 && scrollProgress <= 0.36
+                scrollProgress > 0.11 && scrollProgress <= 0.22
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
@@ -346,13 +280,30 @@ export default function ScrollCanvasAnimation() {
                   When one of you slips, the entire Duo feels it. No more quietly skipping days or
                   giving up when nobody is watching.
                 </p>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 0 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 1 of 8 · Scroll down for next card ↓
+                </div>
               </div>
             </div>
 
-            {/* Scene 3: Semantic Synergy Shells (36% - 50% Scroll) */}
+            {/* Scene 3: Smart Synergy Shells (22% - 33% Scroll) */}
             <div
               className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.36 && scrollProgress <= 0.50
+                scrollProgress > 0.22 && scrollProgress <= 0.33
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
@@ -376,87 +327,220 @@ export default function ScrollCanvasAnimation() {
                     <span>Exam Revision</span>
                   </span>
                 </div>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 1 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 2 of 8 · Scroll down for next card ↓
+                </div>
               </div>
             </div>
 
-            {/* Scene 4: Interactive Scrolling Duo Quotes (50% - 80% Scroll) */}
-            {(() => {
-              const isQuotesPhase = scrollProgress > 0.50 && scrollProgress <= 0.80;
-              const quotePhaseProgress = clamp((scrollProgress - 0.50) / (0.80 - 0.50), 0, 0.999);
-              const activeQuoteIdx = Math.min(
-                SCROLL_DUO_QUOTES.length - 1,
-                Math.max(0, Math.floor(quotePhaseProgress * SCROLL_DUO_QUOTES.length))
-              );
-              const currentIdx = manualQuoteIdx !== null ? manualQuoteIdx : activeQuoteIdx;
-              const activeQuote = SCROLL_DUO_QUOTES[currentIdx];
-
-              return (
-                <div
-                  className={`scroll-scene scroll-scene--callout ${
-                    isQuotesPhase ? 'scroll-scene--active' : 'scroll-scene--hidden'
-                  }`}
-                >
-                  <div key={currentIdx} className="scene-card scene-card--quote scene-quote-animated">
-                    <span className="badge badge--pill">{activeQuote.tag}</span>
-                    <h2 className="scene-quote-title">
-                      &ldquo;{activeQuote.quote}&rdquo;
-                    </h2>
-                    <p className="muted scene-quote-sub">
-                      {activeQuote.sub}
-                    </p>
-                    <cite className="scene-quote-cite">— {activeQuote.author}</cite>
-
-                    <div className="scene-quote-scroll-dots">
-                      {SCROLL_DUO_QUOTES.map((q, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          className={`scene-quote-dot ${i === currentIdx ? 'scene-quote-dot--active' : ''}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setManualQuoteIdx(i);
-                          }}
-                          aria-label={`View ${q.tag}`}
-                          title={q.tag}
-                        />
-                      ))}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginTop: '0.6rem' }}>
-                      <button
-                        type="button"
-                        className="btn btn--ghost btn--sm"
-                        style={{ padding: '0.2rem 0.6rem', fontSize: '0.72rem', pointerEvents: 'auto' }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setManualQuoteIdx((currentIdx - 1 + SCROLL_DUO_QUOTES.length) % SCROLL_DUO_QUOTES.length);
-                        }}
-                      >
-                        ‹ Prev
-                      </button>
-                      <div className="scene-quote-counter" style={{ margin: 0 }}>
-                        {currentIdx + 1} of {SCROLL_DUO_QUOTES.length} · Scroll or tap to cycle
-                      </div>
-                      <button
-                        type="button"
-                        className="btn btn--ghost btn--sm"
-                        style={{ padding: '0.2rem 0.6rem', fontSize: '0.72rem', pointerEvents: 'auto' }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setManualQuoteIdx((currentIdx + 1) % SCROLL_DUO_QUOTES.length);
-                        }}
-                      >
-                        Next ›
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Scene 5: Unbreakable Streaks & Shields (80%+ Scroll seamlessly leading into Daily Inspiration) */}
+            {/* Scene 4: Duo Philosophy (33% - 44% Scroll) */}
             <div
               className={`scroll-scene scroll-scene--callout ${
-                scrollProgress > 0.80
+                scrollProgress > 0.33 && scrollProgress <= 0.44
+                  ? 'scroll-scene--active'
+                  : 'scroll-scene--hidden'
+              }`}
+            >
+              <div className="scene-card scene-card--quote">
+                <span className="badge badge--pill">🔥 DUO PHILOSOPHY</span>
+                <h2 className="scene-quote-title">
+                  &ldquo;If you want to go fast, go alone. If you want to go far, go together.&rdquo;
+                </h2>
+                <p className="muted scene-quote-sub">
+                  A solo promise is easy to break in silence. But when someone you respect is relying
+                  on your consistency, showing up becomes second nature.
+                </p>
+                <cite className="scene-quote-cite">— African Proverb · The Duo Principle</cite>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 2 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 3 of 8 · Scroll down for next card ↓
+                </div>
+              </div>
+            </div>
+
+            {/* Scene 5: Mutual Stakes (44% - 55% Scroll) */}
+            <div
+              className={`scroll-scene scroll-scene--callout ${
+                scrollProgress > 0.44 && scrollProgress <= 0.55
+                  ? 'scroll-scene--active'
+                  : 'scroll-scene--hidden'
+              }`}
+            >
+              <div className="scene-card scene-card--quote">
+                <span className="badge badge--pill">🤝 MUTUAL STAKES</span>
+                <h2 className="scene-quote-title">
+                  &ldquo;Two are better than one, because they have a good reward for their labor.&rdquo;
+                </h2>
+                <p className="muted scene-quote-sub">
+                  When you share accountability, victory is twice as sweet and giving up is never an option.
+                  Your partner&rsquo;s daily momentum is tied to your presence.
+                </p>
+                <cite className="scene-quote-cite">— Ecclesiastes 4:9 · Unbreakable Bond</cite>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 3 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 4 of 8 · Scroll down for next card ↓
+                </div>
+              </div>
+            </div>
+
+            {/* Scene 6: Unbreakable Momentum (55% - 66% Scroll) */}
+            <div
+              className={`scroll-scene scroll-scene--callout ${
+                scrollProgress > 0.55 && scrollProgress <= 0.66
+                  ? 'scroll-scene--active'
+                  : 'scroll-scene--hidden'
+              }`}
+            >
+              <div className="scene-card scene-card--quote">
+                <span className="badge badge--pill">⚡ UNBREAKABLE MOMENTUM</span>
+                <h2 className="scene-quote-title">
+                  &ldquo;We don&rsquo;t rise to the level of our goals, we fall to the level of our systems.&rdquo;
+                </h2>
+                <p className="muted scene-quote-sub">
+                  When two partners build a shared system of daily execution, consistency stops being a struggle
+                  and becomes your default identity.
+                </p>
+                <cite className="scene-quote-cite">— James Clear · Powered by Duo Synergy</cite>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 4 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 5 of 8 · Scroll down for next card ↓
+                </div>
+              </div>
+            </div>
+
+            {/* Scene 7: Uncompromising Standards (66% - 77% Scroll) */}
+            <div
+              className={`scroll-scene scroll-scene--callout ${
+                scrollProgress > 0.66 && scrollProgress <= 0.77
+                  ? 'scroll-scene--active'
+                  : 'scroll-scene--hidden'
+              }`}
+            >
+              <div className="scene-card scene-card--quote">
+                <span className="badge badge--pill">🎯 UNCOMPROMISING STANDARDS</span>
+                <h2 className="scene-quote-title">
+                  &ldquo;When two people commit to the same standard, slacking is no longer an option.&rdquo;
+                </h2>
+                <p className="muted scene-quote-sub">
+                  Every check-in powers your joint streak. Your partner is depending on your standard today.
+                  Elevate each other&rsquo;s discipline ceiling.
+                </p>
+                <cite className="scene-quote-cite">— TwoGether Philosophy · Shared Accountability</cite>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 5 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 6 of 8 · Scroll down for next card ↓
+                </div>
+              </div>
+            </div>
+
+            {/* Scene 8: Exponential Synergy (77% - 88% Scroll) */}
+            <div
+              className={`scroll-scene scroll-scene--callout ${
+                scrollProgress > 0.77 && scrollProgress <= 0.88
+                  ? 'scroll-scene--active'
+                  : 'scroll-scene--hidden'
+              }`}
+            >
+              <div className="scene-card scene-card--quote">
+                <span className="badge badge--pill">✨ EXPONENTIAL SYNERGY</span>
+                <h2 className="scene-quote-title">
+                  &ldquo;Alone we can do so little; together we can do so much.&rdquo;
+                </h2>
+                <p className="muted scene-quote-sub">
+                  One partner pushes the other. Two disciplined minds create an unstoppable flywheel of daily
+                  progress, compounding discipline into lifelong habits.
+                </p>
+                <cite className="scene-quote-cite">— Helen Keller · TwoGether Synergy</cite>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 6 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 7 of 8 · Scroll down for next card ↓
+                </div>
+              </div>
+            </div>
+
+            {/* Scene 9: Streak Shields & Duo XP (88% - 100% Scroll) */}
+            <div
+              className={`scroll-scene scroll-scene--callout ${
+                scrollProgress > 0.88
                   ? 'scroll-scene--active'
                   : 'scroll-scene--hidden'
               }`}
@@ -468,10 +552,27 @@ export default function ScrollCanvasAnimation() {
                   Earn XP with every habit completed, climb ranks, unlock titles, and protect your
                   streak with emergency Duo Shields.
                 </p>
-                <div className="hero__cta" style={{ marginTop: '1.5rem' }}>
+                <div className="hero__cta" style={{ marginTop: '1.25rem' }}>
                   <Link to="/register" className="btn btn--primary btn--md">
                     CREATE YOUR DUO NOW ➜
                   </Link>
+                </div>
+                <div className="scene-quote-scroll-dots" style={{ marginTop: '1.25rem' }}>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-quote-dot ${i === 7 ? 'scene-quote-dot--active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollToCard(i);
+                      }}
+                      aria-label={`Jump to scene ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <div className="scene-quote-counter">
+                  Card 8 of 8 · Continue down to explore ↓
                 </div>
               </div>
             </div>

@@ -5239,204 +5239,6 @@ html.app-zoomed-out.landing-dark-theme #root {
   backdrop-filter: blur(8px);
 }
 
-/* ---------- 7 Pillars of Duo Synergy & Philosophy ---------- */
-
-.duo-pillars-section {
-  position: relative;
-  z-index: 10;
-  padding: 3.5rem 1.5rem 2.5rem;
-}
-
-.duo-pillars-header {
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto 2.75rem auto;
-}
-
-.duo-pillars-header .badge {
-  margin-bottom: 0.85rem;
-}
-
-.duo-pillar-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 0.6rem;
-  margin-top: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.duo-pillar-tab {
-  background: rgba(10, 25, 47, 0.65);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 0.45rem 1.15rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(10px);
-}
-
-.duo-pillar-tab:hover {
-  color: #f8fafc;
-  border-color: var(--cyan);
-  background: rgba(56, 189, 248, 0.12);
-}
-
-.duo-pillar-tab--active {
-  background: var(--gradient-primary);
-  color: #030d1a !important;
-  font-weight: 800;
-  border-color: transparent;
-  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4);
-}
-
-.duo-pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.duo-pillar-card {
-  background: rgba(10, 25, 47, 0.72);
-  border: 1px solid rgba(56, 189, 248, 0.22);
-  border-radius: var(--radius);
-  padding: 1.85rem;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.duo-pillar-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.duo-pillar-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(56, 189, 248, 0.45);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55), 0 0 25px rgba(56, 189, 248, 0.2);
-}
-
-.duo-pillar-card:hover::before {
-  opacity: 1;
-}
-
-.duo-pillar-card--featured {
-  border-color: rgba(16, 185, 129, 0.35);
-  background: linear-gradient(155deg, rgba(16, 185, 129, 0.08) 0%, rgba(10, 25, 47, 0.85) 60%);
-}
-
-.duo-pillar-card--featured::before {
-  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), transparent);
-}
-
-.duo-pillar-card__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.15rem;
-  gap: 0.75rem;
-}
-
-.duo-pillar-card__icon {
-  font-size: 1.85rem;
-  line-height: 1;
-}
-
-.duo-pillar-card__title {
-  font-size: 1.22rem;
-  font-weight: 800;
-  line-height: 1.4;
-  margin: 0 0 0.85rem 0;
-  color: #f8fafc;
-}
-
-.duo-pillar-card__title--quote {
-  font-style: italic;
-  font-size: 1.18rem;
-  line-height: 1.5;
-  color: #f1f5f9;
-  font-weight: 700;
-}
-
-.duo-pillar-card__quote-block {
-  margin-bottom: 0.85rem;
-}
-
-.duo-pillar-card__citation {
-  display: block;
-  font-size: 0.82rem;
-  font-style: normal;
-  font-weight: 700;
-  color: var(--cyan);
-  margin-top: 0.35rem;
-}
-
-.duo-pillar-card__desc {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #94a3b8;
-  margin: 0 0 1.25rem 0;
-  flex: 1;
-}
-
-.duo-pillar-preview {
-  margin-bottom: 1.25rem;
-}
-
-.duo-pillar-card__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: auto;
-  padding-top: 0.85rem;
-  border-top: 1px solid rgba(56, 189, 248, 0.12);
-}
-
-.duo-pillar-chip {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #cbd5e1;
-  background: rgba(15, 36, 68, 0.7);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  letter-spacing: 0.02em;
-}
-
-/* Specific Badge Accent Colors for Pillars */
-.badge--gold {
-  background: rgba(245, 158, 11, 0.16) !important;
-  color: #fbbf24 !important;
-  border-color: rgba(245, 158, 11, 0.35) !important;
-}
-
-.badge--danger {
-  background: rgba(239, 68, 68, 0.16) !important;
-  color: #f87171 !important;
-  border-color: rgba(239, 68, 68, 0.35) !important;
-}
-
-.badge--purple {
-  background: rgba(168, 85, 247, 0.16) !important;
-  color: #c084fc !important;
-  border-color: rgba(168, 85, 247, 0.35) !important;
-}
-
 /* ---------- Motivational Quote Section ---------- */
 
 .quote-section {
@@ -9122,7 +8924,7 @@ html.app-zoomed-out.landing-dark-theme #root {
 .scroll-sequence-container {
   position: relative;
   width: 100%;
-  height: 440vh;
+  height: 680vh;
   background: transparent;
   z-index: 10;
   pointer-events: none;
@@ -9147,8 +8949,9 @@ html.app-zoomed-out.landing-dark-theme #root {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100% !important;
-  height: 100% !important;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   display: block;
   z-index: 1;
 }
@@ -9156,23 +8959,35 @@ html.app-zoomed-out.landing-dark-theme #root {
 .scroll-sequence-vignette {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(4, 10, 19, 0.15) 0%,
+    rgba(4, 10, 19, 0.55) 60%,
+    rgba(4, 10, 19, 0.92) 100%
+  );
   pointer-events: none;
-  background: var(--vignette-bg);
+  z-index: 2;
 }
 
 .canvas-loader {
   position: absolute;
-  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  background: var(--bg-card-solid);
-  padding: 1.75rem 2.5rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  z-index: 3;
+}
+
+.canvas-loader .spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(var(--cyan-rgb), 0.2);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 .canvas-loader p {
@@ -9216,62 +9031,6 @@ html.app-zoomed-out.landing-dark-theme #root {
   padding-top: 1rem;
 }
 
-/* Hero Scene Quick Jump Navigation Pills */
-.hero-scene-jumps {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.55rem;
-  margin-top: 1.5rem;
-  width: 100%;
-  pointer-events: auto;
-}
-
-.hero-scene-jumps__label {
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  color: var(--cyan, #38bdf8);
-  text-transform: uppercase;
-  opacity: 0.85;
-}
-
-.hero-scene-jumps__pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.45rem;
-  max-width: 760px;
-}
-
-.hero-jump-pill {
-  background: rgba(10, 25, 47, 0.78);
-  border: 1px solid rgba(56, 189, 248, 0.32);
-  color: #f1f5f9;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  padding: 0.38rem 0.8rem;
-  border-radius: 999px;
-  cursor: pointer;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-}
-
-.hero-jump-pill:hover {
-  background: rgba(56, 189, 248, 0.22);
-  border-color: #38bdf8;
-  color: #38bdf8;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.32);
-}
-
-.hero-jump-pill:active {
-  transform: translateY(0);
-}
-
 .scroll-indicator {
   margin-top: 2rem;
   display: inline-flex;
@@ -9303,29 +9062,29 @@ html.app-zoomed-out.landing-dark-theme #root {
   }
   50% {
     transform: translateY(7px);
-    opacity: 1;
   }
 }
 
-/* Scene Cards (Transparent Overlay) */
+/* Scene Cards (Frosted Glassmorphic Overlay) */
 
 .scene-card {
-  background: transparent;
-  border: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-radius: 0;
-  padding: 1rem 1.5rem;
-  box-shadow: none;
-  max-width: 720px;
-  width: 100%;
+  background: rgba(8, 24, 48, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  padding: 1.75rem 2.25rem;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65), 0 0 35px rgba(56, 189, 248, 0.12);
+  max-width: 760px;
+  width: 92%;
   margin: 0 auto;
   text-align: center;
+  transition: all 0.3s ease;
 }
 
 .scene-card--highlight {
-  border: none;
-  box-shadow: none;
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.7), 0 0 45px rgba(56, 189, 248, 0.18);
 }
 
 .scene-card h2 {
@@ -16870,8 +16629,14 @@ html.app-zoomed-out.landing-dark-theme #root {
 
   /* All Narrative Scenes in short landscape */
   .scene-card {
-    padding: 0.4rem 1rem !important;
+    background: rgba(8, 24, 48, 0.9) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 14px !important;
+    padding: 0.5rem 1.15rem !important;
     max-width: 640px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75) !important;
   }
 
   .scene-card h2 {
