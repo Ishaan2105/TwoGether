@@ -451,31 +451,6 @@ export default function ImageNudgeModal() {
                   <span>← Swipe or scroll to pick viewing duration →</span>
                 </div>
               </div>
-
-              {/* Interactive Scrubber Slider */}
-              <div className="nudge-timer-scrubber-area">
-                <div className="nudge-timer-slider-header">
-                  <span className="nudge-timer-slider-label">⚡ Precision Timer Dial</span>
-                  <span className="nudge-timer-slider-value">{duration} seconds</span>
-                </div>
-                <input
-                  type="range"
-                  min="5"
-                  max="60"
-                  step="5"
-                  value={duration}
-                  onChange={(e) => setDuration(Number(e.target.value))}
-                  className="nudge-timer-slider"
-                  aria-label="Self destruct duration slider"
-                />
-                <div className="nudge-timer-slider-ticks">
-                  <span>5s</span>
-                  <span>15s</span>
-                  <span>30s</span>
-                  <span>45s</span>
-                  <span>60s</span>
-                </div>
-              </div>
             </div>
 
             {/* ── Section 4: Message ── */}

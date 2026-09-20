@@ -125,7 +125,7 @@ export default function NudgeViewerModal() {
     const ctx = canvas.getContext('2d');
     const img = new Image();
     img.onload = () => {
-      const maxDim = 600;
+      const maxDim = 2048;
       let w = img.naturalWidth;
       let h = img.naturalHeight;
       if (w > maxDim || h > maxDim) {
@@ -141,13 +141,16 @@ export default function NudgeViewerModal() {
       ctx.save();
       ctx.globalAlpha = 0.12;
       ctx.fillStyle = '#ffffff';
-      ctx.font = `bold ${Math.max(12, Math.round(w * 0.042))}px sans-serif`;
+      const fontSize = Math.max(14, Math.round(Math.min(w, h) * 0.032));
+      ctx.font = `bold ${fontSize}px sans-serif`;
       ctx.textAlign = 'center';
       ctx.rotate(-Math.PI / 5);
 
       const stamp = `TwoGether • Private Nudge • From ${nudge.fromUsername || 'Partner'}`;
-      for (let row = -h * 1.5; row < h * 2.5; row += 48) {
-        for (let col = -w * 1.5; col < w * 2.5; col += 220) {
+      const stepY = Math.max(50, Math.round(h * 0.09));
+      const stepX = Math.max(240, Math.round(w * 0.28));
+      for (let row = -h * 1.5; row < h * 2.5; row += stepY) {
+        for (let col = -w * 1.5; col < w * 2.5; col += stepX) {
           ctx.fillText(stamp, col, row);
         }
       }
@@ -191,8 +194,12 @@ export default function NudgeViewerModal() {
       onClick={handleClose}
     >
       <div
-        className="nudge-viewer-modal"
-        onClick={(e) => e.stopPropagation()}
+        className="nudge-viewer-modal nudge-viewer-modal--fullscreen"
+        onClick={(e) => {
+          if (e.target.classList.contains('nudge-viewer__body') || e.target.classList.contains('nudge-viewer-modal')) {
+            handleClose();
+          }
+        }}
         onContextMenu={blockContext}
         role="dialog"
         aria-modal="true"
@@ -201,33 +208,57 @@ export default function NudgeViewerModal() {
         {/* Anti-capture distortion overlay */}
         <div className="nudge-viewer__protect-overlay" aria-hidden="true" />
 
-        {/* ── Header ── */}
+        {/* ── Sender-configured Countdown Progress Bar (at top) ── */}
+        {timeLeft !== null && (
+          <div className="nudge-viewer__timer-bar" title={`${timeLeft}s remaining`}>
+            <div
+              className="nudge-viewer__timer-fill"
+              style={{ width: `${progressPct}%`, '--progress': progressPct }}
+            />
+          </div>
+        )}
+
+        {/* ── Fullscreen Header ── */}
         <div className="nudge-viewer__header">
           <div className="nudge-viewer__header-left">
-            <div className="nudge-viewer__lock-badge" aria-hidden="true">🔒</div>
+            <div className="nudge-viewer__from-chip">
+              <span className="nudge-viewer__from-avatar">
+                {(nudge?.fromUsername?.[0] || 'P').toUpperCase()}
+              </span>
+              <span>
+                <strong>{nudge?.fromUsername || 'Partner'}</strong>
+              </span>
+            </div>
             <div>
               <h2 id="nudge-viewer-title" className="nudge-viewer__title">
-                {nudge ? `${nudge.fromUsername}'s Private Photo` : 'Secret Photo Nudge'}
+                {nudge ? `${nudge.fromUsername}'s Photo Nudge` : 'Secret Photo Nudge'}
               </h2>
               <p className="nudge-viewer__subtitle">
                 Disappears in {timeLeft ?? totalDuration}s
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            className="modal-close-btn"
-            onClick={handleClose}
-            aria-label="Close nudge"
-          >✕</button>
+          <div className="nudge-viewer__header-right">
+            {timeLeft !== null && (
+              <div className="nudge-viewer__timer-chip">
+                <span>⏱️ {timeLeft}s</span>
+              </div>
+            )}
+            <button
+              type="button"
+              className="modal-close-btn"
+              onClick={handleClose}
+              aria-label="Close nudge"
+            >✕</button>
+          </div>
         </div>
 
-        {/* ── Body ── */}
+        {/* ── Fullscreen Body ── */}
         <div className="nudge-viewer__body">
           {loading && (
             <div className="nudge-viewer__loading">
               <div className="nudge-viewer__spinner" />
-              <span>Decrypting secure photo…</span>
+              <span>Decrypting photo…</span>
             </div>
           )}
 
@@ -240,21 +271,6 @@ export default function NudgeViewerModal() {
 
           {nudge && (
             <>
-              {/* From & Timer Chip */}
-              <div className="nudge-viewer__meta-row">
-                <div className="nudge-viewer__from-chip">
-                  <span className="nudge-viewer__from-avatar">
-                    {(nudge.fromUsername[0] || 'P').toUpperCase()}
-                  </span>
-                  <span>
-                    <strong>{nudge.fromUsername}</strong>
-                  </span>
-                </div>
-                <div className="nudge-viewer__timer-chip">
-                  <span>⏱️ {timeLeft}s remaining</span>
-                </div>
-              </div>
-
               {/* ── Image Canvas / Screenshot Shield ── */}
               {nudge.imageDataUrl && (
                 <div
@@ -292,26 +308,18 @@ export default function NudgeViewerModal() {
                 </div>
               )}
 
-              {/* Emoji + Message */}
-              <div className="nudge-viewer__message-card">
-                <span className="nudge-viewer__emoji" aria-hidden="true">{nudge.emoji}</span>
-                <p className="nudge-viewer__message">
-                  {nudge.message?.trim() || `${nudge.fromUsername} sent you an ephemeral photo!`}
-                </p>
-              </div>
+              {/* Emoji + Message floating pill */}
+              {(nudge.message?.trim() || nudge.emoji) && (
+                <div className="nudge-viewer__message-card">
+                  {nudge.emoji && <span className="nudge-viewer__emoji" aria-hidden="true">{nudge.emoji}</span>}
+                  <p className="nudge-viewer__message">
+                    {nudge.message?.trim() || `${nudge.fromUsername} sent you an ephemeral photo!`}
+                  </p>
+                </div>
+              )}
             </>
           )}
         </div>
-
-        {/* ── Sender-configured Countdown Progress Bar ── */}
-        {timeLeft !== null && (
-          <div className="nudge-viewer__timer-bar" title={`${timeLeft}s remaining`}>
-            <div
-              className="nudge-viewer__timer-fill"
-              style={{ width: `${progressPct}%`, '--progress': progressPct }}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
