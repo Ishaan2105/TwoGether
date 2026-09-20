@@ -260,9 +260,9 @@ export default function ScrollCanvasAnimation() {
 
             <div className="hero__cta">
               <Link to="/register" className="btn btn--primary btn--lg">
-                START YOUR DUO ⚡
+                START YOUR DUO
               </Link>
-              <Link to="/login" className="btn btn--ghost btn--lg">
+              <Link to="/login" className="btn btn--primary btn--lg">
                 I ALREADY HAVE A CODE
               </Link>
             </div>
