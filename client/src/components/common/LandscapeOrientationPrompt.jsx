@@ -54,10 +54,19 @@ export default function LandscapeOrientationPrompt() {
       return;
     }
 
-    // If mobile device is in native landscape mode, ensure landscape and zoomed-out classes are active
+    // If mobile device is in native landscape mode, ensure landscape and zoomed-out classes are active ONLY on authenticated app pages
     if (!portrait) {
-      document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
-      document.body.classList.add('landscape-mode', 'app-zoomed-out');
+      const isPublic =
+        window.location.pathname === '/' ||
+        window.location.pathname === '/login' ||
+        window.location.pathname === '/register';
+      if (!isPublic) {
+        document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
+        document.body.classList.add('landscape-mode', 'app-zoomed-out');
+      } else {
+        document.documentElement.classList.remove('landscape-mode', 'app-zoomed-out');
+        document.body.classList.remove('landscape-mode', 'app-zoomed-out');
+      }
       document.documentElement.classList.remove('app-forced-landscape');
       document.body.classList.remove('app-forced-landscape');
       setForcedLandscape(false);

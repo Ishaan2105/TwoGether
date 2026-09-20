@@ -58,8 +58,9 @@ export default function ScrollCanvasAnimation() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [manualQuoteIdx, setManualQuoteIdx] = useState(null);
 
-  // Preload all 63 image frames
+  // Preload all image frames
   useEffect(() => {
     let loadedCount = 0;
     const loadedImages = [];
@@ -70,22 +71,21 @@ export default function ScrollCanvasAnimation() {
       img.onload = () => {
         loadedCount++;
         setLoadProgress(Math.round((loadedCount / TOTAL_FRAMES) * 100));
-        if (loadedCount >= TOTAL_FRAMES) {
-          setImagesLoaded(true);
-        }
-      };
-      img.onerror = () => {
-        loadedCount++;
-        if (loadedCount >= TOTAL_FRAMES) {
+        if (loadedCount === TOTAL_FRAMES) {
+          setImages(loadedImages);
           setImagesLoaded(true);
         }
       };
       loadedImages.push(img);
     }
-    setImages(loadedImages);
   }, []);
 
-  // Draw frame on canvas with high-DPI scaling, cover mode, and smooth fit
+  // Reset manual quote selection on scroll so scrubbing takes over naturally
+  useEffect(() => {
+    setManualQuoteIdx(null);
+  }, [scrollProgress]);
+
+  // Render a specific frame on the canvas - perfectly centered and proportioned
   const renderFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
     if (!canvas || !images[frameIndex]) return;
@@ -94,10 +94,10 @@ export default function ScrollCanvasAnimation() {
 
     if (!img.complete || img.naturalWidth === 0) return;
 
-    // High-DPI canvas
+    // High-DPI canvas matching true viewport width & height
     const dpr = window.devicePixelRatio || 1;
-    const displayWidth = canvas.clientWidth;
-    const displayHeight = canvas.clientHeight;
+    const displayWidth = window.innerWidth || canvas.clientWidth;
+    const displayHeight = window.innerHeight || canvas.clientHeight;
 
     if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
       canvas.width = displayWidth * dpr;
@@ -120,15 +120,14 @@ export default function ScrollCanvasAnimation() {
     const srcRatio = srcWidth / srcHeight;
     const canvasRatio = displayWidth / displayHeight;
 
-    const ZOOM_FACTOR = 1.05;
-
+    // Center and cover full screen seamlessly without cropping characters off center
     let drawWidth, drawHeight;
     if (canvasRatio > srcRatio) {
-      drawWidth = displayWidth * ZOOM_FACTOR;
-      drawHeight = (displayWidth / srcRatio) * ZOOM_FACTOR;
+      drawWidth = displayWidth;
+      drawHeight = displayWidth / srcRatio;
     } else {
-      drawHeight = displayHeight * ZOOM_FACTOR;
-      drawWidth = (displayHeight * srcRatio) * ZOOM_FACTOR;
+      drawHeight = displayHeight;
+      drawWidth = displayHeight * srcRatio;
     }
 
     const offsetX = (displayWidth - drawWidth) / 2;
@@ -340,7 +339,8 @@ export default function ScrollCanvasAnimation() {
                 SCROLL_DUO_QUOTES.length - 1,
                 Math.max(0, Math.floor(quotePhaseProgress * SCROLL_DUO_QUOTES.length))
               );
-              const activeQuote = SCROLL_DUO_QUOTES[activeQuoteIdx];
+              const currentIdx = manualQuoteIdx !== null ? manualQuoteIdx : activeQuoteIdx;
+              const activeQuote = SCROLL_DUO_QUOTES[currentIdx];
 
               return (
                 <div
@@ -348,7 +348,7 @@ export default function ScrollCanvasAnimation() {
                     isQuotesPhase ? 'scroll-scene--active' : 'scroll-scene--hidden'
                   }`}
                 >
-                  <div key={activeQuoteIdx} className="scene-card scene-card--quote scene-quote-animated">
+                  <div key={currentIdx} className="scene-card scene-card--quote scene-quote-animated">
                     <span className="badge badge--pill">{activeQuote.tag}</span>
                     <h2 className="scene-quote-title">
                       &ldquo;{activeQuote.quote}&rdquo;
@@ -359,15 +359,46 @@ export default function ScrollCanvasAnimation() {
                     <cite className="scene-quote-cite">— {activeQuote.author}</cite>
 
                     <div className="scene-quote-scroll-dots">
-                      {SCROLL_DUO_QUOTES.map((_, i) => (
-                        <div
+                      {SCROLL_DUO_QUOTES.map((q, i) => (
+                        <button
                           key={i}
-                          className={`scene-quote-dot ${i === activeQuoteIdx ? 'scene-quote-dot--active' : ''}`}
+                          type="button"
+                          className={`scene-quote-dot ${i === currentIdx ? 'scene-quote-dot--active' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setManualQuoteIdx(i);
+                          }}
+                          aria-label={`View ${q.tag}`}
+                          title={q.tag}
                         />
                       ))}
                     </div>
-                    <div className="scene-quote-counter">
-                      Duo Quote {activeQuoteIdx + 1} of {SCROLL_DUO_QUOTES.length} · Scroll to cycle quotes ↓
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginTop: '0.6rem' }}>
+                      <button
+                        type="button"
+                        className="btn btn--ghost btn--sm"
+                        style={{ padding: '0.2rem 0.6rem', fontSize: '0.72rem', pointerEvents: 'auto' }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setManualQuoteIdx((currentIdx - 1 + SCROLL_DUO_QUOTES.length) % SCROLL_DUO_QUOTES.length);
+                        }}
+                      >
+                        ‹ Prev
+                      </button>
+                      <div className="scene-quote-counter" style={{ margin: 0 }}>
+                        {currentIdx + 1} of {SCROLL_DUO_QUOTES.length} · Scroll or tap to cycle
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn--ghost btn--sm"
+                        style={{ padding: '0.2rem 0.6rem', fontSize: '0.72rem', pointerEvents: 'auto' }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setManualQuoteIdx((currentIdx + 1) % SCROLL_DUO_QUOTES.length);
+                        }}
+                      >
+                        Next ›
+                      </button>
                     </div>
                   </div>
                 </div>

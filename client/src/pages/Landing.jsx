@@ -5,38 +5,38 @@ import ScrollCanvasAnimation from '../components/common/ScrollCanvasAnimation.js
 const MOTIVATIONAL_QUOTES = [
   {
     quote: 'If you want to go fast, go alone. If you want to go far, go together.',
-    author: 'African Proverb',
-    tag: 'Partnership',
+    author: 'African Proverb · The Duo Principle',
+    tag: '🔥 DUO PHILOSOPHY',
   },
   {
-    quote: 'Accountability is the glue that ties commitment to results.',
-    author: 'Bob Proctor',
-    tag: 'Accountability',
+    quote: 'When one of you slips, the entire Duo feels it. No more quietly skipping days or giving up.',
+    author: 'TwoGether Core · Shared Stakes',
+    tag: '🤝 1-ON-1 ACCOUNTABILITY',
+  },
+  {
+    quote: 'Different daily habits, shared team victory. TwoGether fuses your routines into Shared Focus Shells.',
+    author: 'TwoGether Engine · Shared Victory',
+    tag: '🧩 SMART SYNERGY SHELLS',
   },
   {
     quote: 'Two are better than one, because they have a good reward for their labor.',
-    author: 'Ecclesiastes 4:9',
-    tag: 'Mutual Stakes',
+    author: 'Ecclesiastes 4:9 · Unbreakable Bond',
+    tag: '🤝 MUTUAL STAKES',
   },
   {
-    quote: 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.',
-    author: 'Will Durant',
-    tag: 'Consistency',
-  },
-  {
-    quote: 'Alone we can do so little; together we can do so much.',
-    author: 'Helen Keller',
-    tag: 'Synergy',
-  },
-  {
-    quote: 'Discipline is choosing between what you want now and what you want most.',
-    author: 'Abraham Lincoln',
-    tag: 'Discipline',
+    quote: 'We don’t rise to the level of our goals, we fall to the level of our systems.',
+    author: 'James Clear · Powered by Duo Synergy',
+    tag: '⚡ UNBREAKABLE MOMENTUM',
   },
   {
     quote: 'When two people commit to the same standard, slacking is no longer an option.',
-    author: 'TwoGether Philosophy',
-    tag: 'Unbreakable',
+    author: 'TwoGether Philosophy · Shared Accountability',
+    tag: '🎯 UNCOMPROMISING STANDARDS',
+  },
+  {
+    quote: 'Alone we can do so little; together we can do so much.',
+    author: 'Helen Keller · TwoGether Synergy',
+    tag: '✨ EXPONENTIAL SYNERGY',
   },
 ];
 
