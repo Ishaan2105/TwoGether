@@ -8924,25 +8924,58 @@ html.app-zoomed-out.landing-dark-theme #root {
 .scroll-sequence-container {
   position: relative;
   width: 100%;
-  height: 680vh;
   background: transparent;
-  z-index: 10;
-  pointer-events: none;
+  z-index: 2;
+  pointer-events: auto;
 }
 
-.scroll-sequence-sticky {
-  position: sticky;
-  top: 0;
-  left: 0;
+.scroll-hero-section {
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1.5rem 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.scroll-hero-content {
+  max-width: 880px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.scroll-card-section {
+  min-height: 80vh;
+  min-height: 80dvh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  pointer-events: none;
+  padding: 2.5rem 1.5rem;
+  position: relative;
+  box-sizing: border-box;
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .scroll-hero-section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 1.5rem 1rem 1rem 1rem !important;
+  }
+  .scroll-card-section {
+    min-height: 85vh;
+    min-height: 85dvh;
+    padding: 1rem 0.75rem !important;
+  }
 }
 
 .scroll-sequence-canvas {
@@ -8998,39 +9031,6 @@ html.app-zoomed-out.landing-dark-theme #root {
   letter-spacing: 0.05em;
 }
 
-/* Scroll-Driven Dynamic Scenes */
-
-.scroll-scene {
-  position: absolute;
-  z-index: 10;
-  width: 100%;
-  max-width: 880px;
-  padding: 0 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-.scroll-scene--active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-
-.scroll-scene--hidden {
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  pointer-events: none;
-}
-
-.scroll-scene--hero {
-  padding-top: 1rem;
-}
-
 .scroll-indicator {
   margin-top: 2rem;
   display: inline-flex;
@@ -9038,7 +9038,10 @@ html.app-zoomed-out.landing-dark-theme #root {
   align-items: center;
   gap: 0.35rem;
   animation: bounceSlow 2.2s infinite ease-in-out;
-  cursor: default;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
 }
 
 .scroll-indicator__text {
