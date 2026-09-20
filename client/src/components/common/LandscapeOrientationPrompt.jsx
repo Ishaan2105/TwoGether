@@ -25,65 +25,58 @@ function getIsMobileDevice() {
 /**
  * LandscapeOrientationPrompt
  *
- * Automatically opens the app in horizontal (landscape) view on mobile devices:
- * - Directly activates horizontal view when held in portrait without displaying an intrusive dialog box.
- * - If physically rotated to landscape, smoothly transitions to native horizontal mode.
- * - Attempts native screen orientation lock to landscape if supported.
- * - Removes mobile rotation/zoom styles on laptop/desktop.
+ * Handles mobile orientation naturally:
+ * - In portrait: renders upright, clean, and responsive without any sideways rotation.
+ * - In landscape: enables widescreen landscape mode and zoom optimization.
+ * - In installed PWA mode: requests native landscape orientation if supported.
+ * - Laptop/desktop: normal responsive widescreen.
  */
 export default function LandscapeOrientationPrompt() {
   const [isPortrait, setIsPortrait] = useState(getIsPortrait);
   const [isMobileDevice, setIsMobileDevice] = useState(getIsMobileDevice);
-  const [manualExit, setManualExit] = useState(false);
 
-  const applyHorizontalView = useCallback(() => {
+  const syncOrientation = useCallback(() => {
     const portrait = getIsPortrait();
     const mobile = getIsMobileDevice();
 
     setIsPortrait(portrait);
     setIsMobileDevice(mobile);
 
-    // On laptop/desktop, ensure mobile rotation/zoom classes are never applied
+    // Clean up any stale forced landscape classes
+    document.documentElement.classList.remove('app-forced-landscape');
+    document.body.classList.remove('app-forced-landscape');
+
+    // On laptop/desktop, ensure mobile zoom classes are never applied
     if (!mobile) {
-      document.documentElement.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
-      document.body.classList.remove('app-zoomed-out', 'app-forced-landscape', 'landscape-mode');
+      document.documentElement.classList.remove('app-zoomed-out', 'landscape-mode');
+      document.body.classList.remove('app-zoomed-out', 'landscape-mode');
       return;
     }
 
-    // Try native screen orientation lock
-    if (window.screen?.orientation?.lock) {
+    // Try native screen orientation lock for installed PWA standalone mode
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone && window.screen?.orientation?.lock) {
       window.screen.orientation.lock('landscape').catch(() => {});
     }
 
     if (!portrait) {
-      // Device is physically in landscape mode
+      // Device is physically in landscape mode: enable widescreen optimizations
       document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
       document.body.classList.add('landscape-mode', 'app-zoomed-out');
-      document.documentElement.classList.remove('app-forced-landscape');
-      document.body.classList.remove('app-forced-landscape');
     } else {
-      // Device is in portrait mode on mobile: directly open in horizontal view
-      if (!manualExit) {
-        document.documentElement.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
-        document.body.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
-      } else {
-        document.documentElement.classList.remove('app-forced-landscape');
-        document.body.classList.remove('app-forced-landscape');
-      }
+      // Device is in portrait mode: render upright and normal
+      document.documentElement.classList.remove('landscape-mode', 'app-zoomed-out');
+      document.body.classList.remove('landscape-mode', 'app-zoomed-out');
     }
 
-    // Trigger resize events so spreadsheet and layout fit horizontal bounds
+    // Trigger resize so grid and spreadsheet recompute smoothly
     setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
-    setTimeout(() => window.dispatchEvent(new Event('resize')), 250);
-  }, [manualExit]);
+  }, []);
 
   useEffect(() => {
-    applyHorizontalView();
+    syncOrientation();
 
-    const update = () => {
-      setManualExit(false);
-      applyHorizontalView();
-    };
+    const update = () => syncOrientation();
 
     const portraitMql = window.matchMedia('(orientation: portrait)');
     if (portraitMql.addEventListener) {
@@ -118,34 +111,7 @@ export default function LandscapeOrientationPrompt() {
       window.removeEventListener('pageshow', update);
       window.removeEventListener('focus', update);
     };
-  }, [applyHorizontalView]);
+  }, [syncOrientation]);
 
-  const handleToggleForcedLandscape = () => {
-    if (manualExit) {
-      setManualExit(false);
-      document.documentElement.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
-      document.body.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
-    } else {
-      setManualExit(true);
-      document.documentElement.classList.remove('app-forced-landscape');
-      document.body.classList.remove('app-forced-landscape');
-    }
-    setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
-  };
-
-  // Only show the small toggle FAB when in portrait on mobile
-  if (!isMobileDevice || !isPortrait) return null;
-
-  return (
-    <button
-      type="button"
-      className="orientation-toggle-fab"
-      onClick={handleToggleForcedLandscape}
-      title={manualExit ? 'Switch to Horizontal View' : 'Switch to Portrait View'}
-      id="btn-toggle-orientation"
-    >
-      <span className="orientation-toggle-fab__icon">🔄</span>
-      <span>{manualExit ? 'Horizontal View' : 'Portrait View'}</span>
-    </button>
-  );
+  return null;
 }
