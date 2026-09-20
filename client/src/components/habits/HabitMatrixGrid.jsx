@@ -446,6 +446,7 @@ export default function HabitMatrixGrid({
           >
             + Add Rows
           </button>
+          {/* Undo button commented out
           <button
             type="button"
             className={`btn btn--ghost btn--xs spreadsheet-undo-btn ${canUndoAddRows ? '' : 'spreadsheet-undo-btn--disabled'}`}
@@ -459,6 +460,7 @@ export default function HabitMatrixGrid({
             </svg>
             <span>Undo</span>
           </button>
+          */}
           <button
             type="button"
             className={`btn btn--ghost btn--xs spreadsheet-export-btn ${isExporting ? 'spreadsheet-export-btn--loading' : ''}`}
@@ -801,7 +803,7 @@ export default function HabitMatrixGrid({
                         onChange={(e) => handleBlankChange(blankIdx, e.target.value)}
                         onKeyDown={(e) => handleBlankKeyDown(e, blankIdx)}
                         onBlur={() => commitBlankRow(blankIdx, false)}
-                        placeholder="Type new habit & press Enter..."
+                        placeholder="Type new habit..."
                       />
                     </div>
                   </td>
