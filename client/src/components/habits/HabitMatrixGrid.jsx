@@ -278,81 +278,131 @@ export default function HabitMatrixGrid({
   // Scroll Container Ref for auto-centering today
   const scrollContainerRef = useRef(null);
 
+  // Adjust column widths so exactly 15 days are visible in viewport on mobile/PWA
+  const updateMobileColWidths = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const containerWidth = container.clientWidth;
+    if (!containerWidth) return;
+
+    const isMobileScreen =
+      window.innerWidth <= 1024 ||
+      window.innerHeight <= 650 ||
+      document.documentElement.classList.contains('landscape-mode') ||
+      document.documentElement.classList.contains('app-forced-landscape') ||
+      /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+    if (isMobileScreen) {
+      // Habit column takes ~20-25% of visible width (clamped between 150px and 200px)
+      const habitWidth = Math.max(150, Math.min(200, Math.round(containerWidth * 0.23)));
+      const visibleDaysWidth = containerWidth - habitWidth;
+      // Exactly 15 days visible in remaining viewport area
+      const dayWidth = Math.max(34, +(visibleDaysWidth / 15).toFixed(2));
+      const statWidth = Math.max(100, Math.round(dayWidth * 2.5));
+
+      container.style.setProperty('--spreadsheet-habit-width', `${habitWidth}px`);
+      container.style.setProperty('--spreadsheet-day-width', `${dayWidth}px`);
+      container.style.setProperty('--spreadsheet-stat-width', `${statWidth}px`);
+    } else {
+      container.style.removeProperty('--spreadsheet-habit-width');
+      container.style.removeProperty('--spreadsheet-day-width');
+      container.style.removeProperty('--spreadsheet-stat-width');
+    }
+  };
+
   // Center today's date column in the visible spreadsheet viewport
   const centerToday = (behavior = 'smooth') => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    // Find the today column header
-    const todayHeader = container.querySelector('.spreadsheet-th-day.spreadsheet-col--today') ||
-      container.querySelector('.spreadsheet-col--today');
+    updateMobileColWidths();
 
-    if (!todayHeader) {
-      if (behavior === 'auto') {
-        container.scrollLeft = 0;
+    requestAnimationFrame(() => {
+      if (!container) return;
+
+      // Find the today column header
+      const todayHeader = container.querySelector('.spreadsheet-th-day.spreadsheet-col--today') ||
+        container.querySelector('.spreadsheet-col--today');
+
+      if (!todayHeader) {
+        if (behavior === 'auto') {
+          container.scrollLeft = 0;
+        }
+        return;
       }
-      return;
-    }
 
-    // Dynamic measurement of the sticky habit title column (left: 0)
-    const stickyHabitHeader = container.querySelector('.spreadsheet-th-habit');
-    const stickyLeftWidth = stickyHabitHeader ? stickyHabitHeader.offsetWidth : 280;
+      // Dynamic measurement of the sticky habit title column (left: 0)
+      const stickyHabitHeader = container.querySelector('.spreadsheet-th-habit');
+      const stickyLeftWidth = stickyHabitHeader ? stickyHabitHeader.offsetWidth : 180;
 
-    const containerWidth = container.clientWidth;
-    const todayLeft = todayHeader.offsetLeft;
-    const todayWidth = todayHeader.offsetWidth;
-    const todayCenter = todayLeft + todayWidth / 2;
+      const containerWidth = container.clientWidth;
+      const todayLeft = todayHeader.offsetLeft;
+      const todayWidth = todayHeader.offsetWidth;
+      const todayCenter = todayLeft + todayWidth / 2;
 
-    // Center of visible days area is at stickyLeftWidth + (containerWidth - stickyLeftWidth) / 2
-    // Target scrollLeft = todayCenter - (stickyLeftWidth / 2 + containerWidth / 2)
-    const targetScrollLeft = todayCenter - (stickyLeftWidth / 2 + containerWidth / 2);
-    const maxScrollLeft = container.scrollWidth - containerWidth;
-    const clampedScrollLeft = Math.max(0, Math.min(maxScrollLeft, targetScrollLeft));
+      // Center of visible days area is at stickyLeftWidth + (containerWidth - stickyLeftWidth) / 2
+      // Target scrollLeft = todayCenter - (stickyLeftWidth / 2 + containerWidth / 2)
+      const targetScrollLeft = todayCenter - (stickyLeftWidth / 2 + containerWidth / 2);
+      const maxScrollLeft = Math.max(0, container.scrollWidth - containerWidth);
+      const clampedScrollLeft = Math.max(0, Math.min(maxScrollLeft, targetScrollLeft));
 
-    if (behavior === 'auto') {
-      container.scrollLeft = clampedScrollLeft;
-    } else {
-      container.scrollTo({
-        left: clampedScrollLeft,
-        behavior,
-      });
-    }
+      if (behavior === 'auto') {
+        container.scrollLeft = clampedScrollLeft;
+      } else {
+        container.scrollTo({
+          left: clampedScrollLeft,
+          behavior,
+        });
+      }
+    });
   };
 
   // Automatically center today's date on initial mount, month switch, or habits load
   useEffect(() => {
     const runCentering = (mode = 'auto') => {
-      requestAnimationFrame(() => {
-        centerToday(mode);
-      });
+      centerToday(mode);
     };
 
     runCentering('auto');
     const timer1 = setTimeout(() => runCentering('auto'), 60);
     const timer2 = setTimeout(() => runCentering('auto'), 200);
+    const timer3 = setTimeout(() => runCentering('auto'), 500);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
+      clearTimeout(timer3);
     };
   }, [selectedYear, selectedMonth, todayStr, habits.length]);
 
-  // Keep centered on window or container resize
+  // Keep centered on window or container resize / orientation change / new-day tick
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
+    const handleResize = () => {
+      centerToday('auto');
+    };
+
+    let ro = null;
     if (typeof ResizeObserver !== 'undefined') {
-      const ro = new ResizeObserver(() => {
-        centerToday('auto');
+      ro = new ResizeObserver(() => {
+        handleResize();
       });
       ro.observe(container);
-      return () => ro.disconnect();
-    } else {
-      const handleResize = () => centerToday('auto');
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
     }
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    window.addEventListener('twogether:new-day', handleResize);
+
+    return () => {
+      if (ro) ro.disconnect();
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+      window.removeEventListener('twogether:new-day', handleResize);
+    };
   }, [selectedYear, selectedMonth, todayStr]);
 
   const hasTodayInMonth = useMemo(() => {

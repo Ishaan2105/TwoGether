@@ -149,6 +149,9 @@ export default function LandscapeOrientationPrompt() {
         sessionStorage.removeItem('twogether_forced_landscape');
       } catch (e) {}
     }
+    // Trigger resize events so spreadsheet recalculates 15-day view and centers today
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 250);
   };
 
   const handleExitForcedLandscape = () => {
@@ -158,6 +161,7 @@ export default function LandscapeOrientationPrompt() {
     try {
       sessionStorage.removeItem('twogether_forced_landscape');
     } catch (e) {}
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
   };
 
   // Strictly visible when in portrait on mobile and not yet dismissed / not forced
