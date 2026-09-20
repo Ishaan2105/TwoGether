@@ -459,6 +459,25 @@ export default function ImageNudgeModal() {
                 <span className="nudge-section-step">4</span>
                 <span className="nudge-section-label">Add a Message (optional)</span>
               </div>
+              {/* Quick Prompts for Photo Nudge */}
+              <div className="nudge-quick-prompts-row" role="group" aria-label="Quick prompt messages">
+                {[
+                  '📸 Proof of work attached!',
+                  '⚡ Crushed my habit for today!',
+                  '🔥 Keeping our streak unstoppable!',
+                  '👀 Your turn next, partner!',
+                  '🎯 Locked in & verified!',
+                ].map((promptText) => (
+                  <button
+                    key={promptText}
+                    type="button"
+                    className={`nudge-quick-prompt-pill ${message === promptText ? 'nudge-quick-prompt-pill--active' : ''}`}
+                    onClick={() => setMessage(promptText)}
+                  >
+                    {promptText}
+                  </button>
+                ))}
+              </div>
               <div className="nudge-message-field">
                 <span className="nudge-message-field__emoji" aria-hidden="true">{selectedEmoji}</span>
                 <textarea

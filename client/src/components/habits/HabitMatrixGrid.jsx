@@ -294,12 +294,12 @@ export default function HabitMatrixGrid({
       /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
     if (isMobileScreen) {
-      // Habit column takes ~20-25% of visible width (clamped between 150px and 200px)
-      const habitWidth = Math.max(150, Math.min(200, Math.round(containerWidth * 0.23)));
-      const visibleDaysWidth = containerWidth - habitWidth;
+      // Habit column has generous width matching expanded view on phone (340px - 440px)
+      const habitWidth = Math.max(340, Math.min(440, Math.round(containerWidth * 0.45)));
+      const visibleDaysWidth = Math.max(300, containerWidth - habitWidth);
       // Exactly 15 days visible in remaining viewport area
-      const dayWidth = Math.max(34, +(visibleDaysWidth / 15).toFixed(2));
-      const statWidth = Math.max(100, Math.round(dayWidth * 2.5));
+      const dayWidth = Math.max(36, +(visibleDaysWidth / 12).toFixed(2));
+      const statWidth = Math.max(105, Math.round(dayWidth * 2.5));
 
       container.style.setProperty('--spreadsheet-habit-width', `${habitWidth}px`);
       container.style.setProperty('--spreadsheet-day-width', `${dayWidth}px`);

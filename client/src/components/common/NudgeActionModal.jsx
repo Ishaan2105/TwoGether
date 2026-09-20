@@ -188,6 +188,7 @@ export default function NudgeActionModal() {
                         <strong>{preset.label}</strong>
                         <span>{preset.text}</span>
                       </div>
+                      {isSelected && <span className="nudge-preset-check">✓</span>}
                     </button>
                   );
                 })}
