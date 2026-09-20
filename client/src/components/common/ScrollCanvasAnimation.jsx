@@ -85,6 +85,15 @@ export default function ScrollCanvasAnimation() {
     setManualQuoteIdx(null);
   }, [scrollProgress]);
 
+  // Smoothly scroll to a specific section ratio in the hero scrubbing track
+  const scrollToRatio = useCallback((ratio) => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+    const totalDist = wrapper.offsetHeight - window.innerHeight;
+    const targetY = wrapper.offsetTop + Math.max(0, totalDist * ratio);
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  }, []);
+
   // Render a specific frame on the canvas - perfectly centered and proportioned
   const renderFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
@@ -94,10 +103,11 @@ export default function ScrollCanvasAnimation() {
 
     if (!img.complete || img.naturalWidth === 0) return;
 
-    // High-DPI canvas matching true viewport width & height
-    const dpr = window.devicePixelRatio || 1;
-    const displayWidth = window.innerWidth || canvas.clientWidth;
-    const displayHeight = window.innerHeight || canvas.clientHeight;
+    // True rendered pixel dimensions of the canvas element
+    const rect = canvas.getBoundingClientRect();
+    const displayWidth = Math.round(rect.width || window.innerWidth || 1280);
+    const displayHeight = Math.round(rect.height || window.innerHeight || 720);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
       canvas.width = displayWidth * dpr;
@@ -130,8 +140,8 @@ export default function ScrollCanvasAnimation() {
       drawWidth = displayHeight * srcRatio;
     }
 
-    const offsetX = (displayWidth - drawWidth) / 2;
-    const offsetY = (displayHeight - drawHeight) / 2;
+    const offsetX = Math.round((displayWidth - drawWidth) / 2);
+    const offsetY = Math.round((displayHeight - drawHeight) / 2);
 
     ctx.drawImage(
       img,
@@ -280,6 +290,44 @@ export default function ScrollCanvasAnimation() {
                 <Link to="/login" className="btn btn--ghost btn--lg">
                   I ALREADY HAVE A CODE
                 </Link>
+              </div>
+
+              <div className="hero-scene-jumps">
+                <span className="hero-scene-jumps__label">EXPLORE ARCHITECTURE &amp; PHILOSOPHY:</span>
+                <div className="hero-scene-jumps__pills">
+                  <button
+                    type="button"
+                    className="hero-jump-pill"
+                    onClick={() => scrollToRatio(0.28)}
+                    title="Jump to 1-on-1 Accountability"
+                  >
+                    🤝 1-ON-1 ACCOUNTABILITY
+                  </button>
+                  <button
+                    type="button"
+                    className="hero-jump-pill"
+                    onClick={() => scrollToRatio(0.43)}
+                    title="Jump to Smart Synergy Shells"
+                  >
+                    🧩 SMART SYNERGY SHELLS
+                  </button>
+                  <button
+                    type="button"
+                    className="hero-jump-pill"
+                    onClick={() => scrollToRatio(0.65)}
+                    title="Jump to Duo Philosophy &amp; Quotes"
+                  >
+                    🔥 DUO PHILOSOPHY (5 QUOTES)
+                  </button>
+                  <button
+                    type="button"
+                    className="hero-jump-pill"
+                    onClick={() => scrollToRatio(0.88)}
+                    title="Jump to Streak Shields &amp; XP"
+                  >
+                    🛡️ STREAK SHIELDS &amp; XP
+                  </button>
+                </div>
               </div>
             </div>
 
