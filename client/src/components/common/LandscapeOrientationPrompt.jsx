@@ -2,6 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 
 function getIsPortrait() {
   if (typeof window === 'undefined') return false;
+  if (window.screen?.orientation?.type) {
+    return window.screen.orientation.type.startsWith('portrait');
+  }
   const mql = window.matchMedia?.('(orientation: portrait)');
   if (mql && typeof mql.matches === 'boolean') {
     return mql.matches;
@@ -12,32 +15,31 @@ function getIsPortrait() {
 function getIsMobileDevice() {
   if (typeof window === 'undefined') return false;
   const isTouch = 'ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent || navigator.vendor || window.opera || ''
+  );
   const isSmallScreen = Math.min(window.innerWidth, window.innerHeight) <= 1024;
-  return isMobileUA || isTouch || isSmallScreen;
+  return isMobileUA || (isTouch && isSmallScreen);
 }
 
 /**
  * LandscapeOrientationPrompt
  *
  * Shows when viewing on mobile in portrait mode:
- * 1. "Rotate to view the site in landscape mode" -> Immediately opens back the site,
- *    switches to landscape mode (via fullscreen/orientation lock or simulated CSS rotation),
- *    and displays the entire site ZOOMED OUT.
+ * - Prompts user to rotate to landscape view.
+ * - If the browser was closed/reopened or restored with the same active tab,
+ *   and the device is in portrait mode, the dialog box will ALWAYS be shown.
+ * - Automatically dismisses when the device is physically rotated to landscape.
+ * - Provides "Rotate to view the site in landscape mode" with screen orientation lock
+ *   and simulated CSS fallback.
  */
 export default function LandscapeOrientationPrompt() {
   const [isPortrait, setIsPortrait] = useState(getIsPortrait);
   const [isMobileDevice, setIsMobileDevice] = useState(getIsMobileDevice);
-  const [dismissed, setDismissed] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem('twogether_landscape_dismissed') === 'true';
-  });
-  const [forcedLandscape, setForcedLandscape] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem('twogether_forced_landscape') === 'true';
-  });
+  const [dismissed, setDismissed] = useState(false);
+  const [forcedLandscape, setForcedLandscape] = useState(false);
 
-  const checkOrientation = useCallback(() => {
+  const checkOrientation = useCallback((isTabResume = false) => {
     const portrait = getIsPortrait();
     const mobile = getIsMobileDevice();
 
@@ -51,31 +53,57 @@ export default function LandscapeOrientationPrompt() {
       document.documentElement.classList.remove('app-forced-landscape');
       document.body.classList.remove('app-forced-landscape');
       setForcedLandscape(false);
+      setDismissed(false);
       try {
         sessionStorage.removeItem('twogether_forced_landscape');
+        sessionStorage.removeItem('twogether_landscape_dismissed');
       } catch (e) {}
     } else {
-      // If portrait, check if forced landscape was already requested
-      const isSavedForced = sessionStorage.getItem('twogether_forced_landscape') === 'true';
-      if (isSavedForced) {
-        document.documentElement.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
-        document.body.classList.add('app-forced-landscape', 'landscape-mode', 'app-zoomed-out');
-        setForcedLandscape(true);
+      // Device is in portrait mode
+      if (isTabResume) {
+        // When tab is reopened or browser is brought to foreground in portrait:
+        // Always reset dismissed and forced landscape so the rotate dialog box appears!
+        setDismissed(false);
+        setForcedLandscape(false);
+        document.documentElement.classList.remove('app-forced-landscape', 'landscape-mode');
+        document.body.classList.remove('app-forced-landscape', 'landscape-mode');
+        try {
+          sessionStorage.removeItem('twogether_forced_landscape');
+          sessionStorage.removeItem('twogether_landscape_dismissed');
+        } catch (e) {}
+      } else {
+        // If device was turned back to portrait, ensure dismissed is reset so prompt reappears
+        if (!forcedLandscape) {
+          setDismissed(false);
+        }
       }
     }
-  }, []);
+  }, [forcedLandscape]);
 
   useEffect(() => {
+    // On mount, if device is in portrait, ensure clean state so prompt shows
+    try {
+      sessionStorage.removeItem('twogether_landscape_dismissed');
+      if (getIsPortrait()) {
+        sessionStorage.removeItem('twogether_forced_landscape');
+        document.documentElement.classList.remove('app-forced-landscape', 'landscape-mode');
+        document.body.classList.remove('app-forced-landscape', 'landscape-mode');
+        setForcedLandscape(false);
+        setDismissed(false);
+      }
+    } catch (e) {}
+
     // Proactively lock orientation to landscape on load if supported
     if (window.screen?.orientation?.lock) {
       window.screen.orientation.lock('landscape').catch(() => {});
     }
 
-    checkOrientation();
+    checkOrientation(true);
+
+    const update = () => checkOrientation(false);
+    const updateResume = () => checkOrientation(true);
 
     const portraitMql = window.matchMedia('(orientation: portrait)');
-    const update = () => checkOrientation();
-
     if (portraitMql.addEventListener) {
       portraitMql.addEventListener('change', update);
     } else if (portraitMql.addListener) {
@@ -85,6 +113,16 @@ export default function LandscapeOrientationPrompt() {
     window.addEventListener('resize', update);
     window.addEventListener('orientationchange', update);
 
+    if (window.screen?.orientation?.addEventListener) {
+      window.screen.orientation.addEventListener('change', update);
+    }
+
+    // Tab resume / browser reopen events:
+    // When the browser is shut and reopened with active tab, visibilitychange/pageshow/focus fire!
+    document.addEventListener('visibilitychange', updateResume);
+    window.addEventListener('pageshow', updateResume);
+    window.addEventListener('focus', updateResume);
+
     return () => {
       if (portraitMql.removeEventListener) {
         portraitMql.removeEventListener('change', update);
@@ -93,16 +131,19 @@ export default function LandscapeOrientationPrompt() {
       }
       window.removeEventListener('resize', update);
       window.removeEventListener('orientationchange', update);
+      if (window.screen?.orientation?.removeEventListener) {
+        window.screen.orientation.removeEventListener('change', update);
+      }
+      document.removeEventListener('visibilitychange', updateResume);
+      window.removeEventListener('pageshow', updateResume);
+      window.removeEventListener('focus', updateResume);
     };
   }, [checkOrientation]);
 
   // Action: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
-    // 1. Immediately dismiss modal so site opens back up
+    // 1. Dismiss modal so site opens up
     setDismissed(true);
-    try {
-      sessionStorage.setItem('twogether_landscape_dismissed', 'true');
-    } catch (e) {}
 
     // 2. Request fullscreen so screen.orientation.lock has permission to execute on mobile browsers
     const docEl = document.documentElement;
@@ -158,8 +199,10 @@ export default function LandscapeOrientationPrompt() {
     document.documentElement.classList.remove('app-forced-landscape');
     document.body.classList.remove('app-forced-landscape');
     setForcedLandscape(false);
+    setDismissed(false);
     try {
       sessionStorage.removeItem('twogether_forced_landscape');
+      sessionStorage.removeItem('twogether_landscape_dismissed');
     } catch (e) {}
     setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
   };

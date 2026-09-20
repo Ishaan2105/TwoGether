@@ -24,8 +24,26 @@
           var saved = localStorage.getItem('twogether_theme') || localStorage.getItem('duohabit_theme') || 'dark';
           document.documentElement.setAttribute('data-theme', saved);
 
-          // Strictly enforce landscape mode across the project
-          document.documentElement.classList.add('landscape-mode');
+          // Clear any stale portrait dismissal so rotate dialog shows properly on browser reopen
+          try {
+            sessionStorage.removeItem('twogether_landscape_dismissed');
+          } catch (e) {}
+
+          var isPortrait = false;
+          if (window.screen && window.screen.orientation && window.screen.orientation.type) {
+            isPortrait = window.screen.orientation.type.indexOf('portrait') !== -1;
+          } else if (window.matchMedia) {
+            isPortrait = window.matchMedia('(orientation: portrait)').matches;
+          } else {
+            isPortrait = window.innerHeight >= window.innerWidth;
+          }
+
+          if (!isPortrait) {
+            document.documentElement.classList.add('landscape-mode');
+          } else {
+            document.documentElement.classList.remove('landscape-mode', 'app-forced-landscape');
+          }
+
           if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
             window.screen.orientation.lock('landscape').catch(function () {});
           }
