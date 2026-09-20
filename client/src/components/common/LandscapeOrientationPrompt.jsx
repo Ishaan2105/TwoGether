@@ -164,6 +164,13 @@ export default function LandscapeOrientationPrompt() {
     setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
   };
 
+  const handleClosePrompt = () => {
+    setDismissed(true);
+    try {
+      sessionStorage.setItem('twogether_landscape_dismissed', 'true');
+    } catch (e) {}
+  };
+
   // Strictly visible when in portrait on mobile and not yet dismissed / not forced
   const showModal = isPortrait && isMobileDevice && !dismissed && !forcedLandscape;
 
@@ -178,6 +185,18 @@ export default function LandscapeOrientationPrompt() {
           aria-labelledby="landscape-prompt-title"
         >
           <div className="landscape-prompt-card">
+            {/* Top-Left Cross Button to close dialog */}
+            <button
+              type="button"
+              className="landscape-prompt-close-btn"
+              onClick={handleClosePrompt}
+              aria-label="Close rotation prompt"
+              title="Close"
+              id="btn-close-landscape-prompt"
+            >
+              ✕
+            </button>
+
             <div className="landscape-prompt-animation">
               <div className="landscape-prompt-phone">
                 <div className="landscape-prompt-phone__screen">⚡</div>

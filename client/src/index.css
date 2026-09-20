@@ -14832,6 +14832,7 @@ html:has(.landing) .scroll-sequence-vignette {
 }
 
 .landscape-prompt-card {
+  position: relative !important;
   background: var(--bg-card, #121826) !important;
   border: 1.5px solid var(--border, rgba(var(--cyan-rgb, 6, 182, 212), 0.35)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), 0 0 24px rgba(var(--cyan-rgb, 6, 182, 212), 0.15) !important;
@@ -14843,6 +14844,40 @@ html:has(.landing) .scroll-sequence-vignette {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* Top-Left Close (Cross) Button */
+.landscape-prompt-close-btn {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted, #94a3b8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  line-height: 1;
+  z-index: 10;
+}
+
+.landscape-prompt-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: #ef4444;
+  transform: scale(1.08);
+}
+
+.landscape-prompt-close-btn:active {
+  transform: scale(0.92);
 }
 
 .landscape-prompt-animation {
