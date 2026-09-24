@@ -112,7 +112,20 @@ self.addEventListener('push', (event) => {
 
   if (!options.image) delete options.image;
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  // Broadcast push data to any open tabs so they can re-fetch Duo/state in real-time
+  const notifyClients = self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+    clientList.forEach((client) => {
+      client.postMessage({
+        type: 'PUSH_RECEIVED',
+        payload: data,
+      });
+    });
+  }).catch(() => {});
+
+  event.waitUntil(Promise.all([
+    self.registration.showNotification(title, options),
+    notifyClients,
+  ]));
 });
 
 // ── Notification click ────────────────────────

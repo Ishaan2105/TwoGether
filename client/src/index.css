@@ -6449,6 +6449,41 @@ html.app-zoomed-out.landing-dark-theme #root {
   font-variant-numeric: tabular-nums;
 }
 
+.duo-live-sync-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  color: var(--text-muted, #94a3b8);
+  margin: 0.2rem 0 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.duo-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+  animation: liveDotPulse 2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+    box-shadow: 0 0 14px rgba(34, 197, 94, 1);
+  }
+}
+
 .welcome-card {
   text-align: center;
 }

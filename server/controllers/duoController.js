@@ -156,6 +156,22 @@ async function pairDuo(req, res, next) {
       (u) => u._id.toString() !== req.user._id.toString()
     );
 
+    // Trigger real-time Web Push notification to partner (User A) so their device and dashboard update immediately
+    try {
+      await sendPushToUser(partner._id, {
+        title: '🎉 Duo Partner Connected!',
+        body: `@${req.user.username} paired up with you! Your shared streak begins now.`,
+        icon: '/pwa-192.png',
+        data: {
+          type: 'duo-paired',
+          url: '/dashboard',
+          fromUsername: req.user.username,
+        },
+      });
+    } catch (pushErr) {
+      console.warn('Pair push notification skipped:', pushErr?.message);
+    }
+
     res.status(201).json({
       success: true,
       data: {
@@ -431,6 +447,23 @@ async function unpairDuo(req, res, next) {
     if (updatedSelf) {
       req.user.duoId = null;
       req.user.duoInviteCode = updatedSelf.duoInviteCode;
+    }
+
+    // Notify the other partner that duo was unlinked
+    for (const u of duoUsers) {
+      if (u._id.toString() !== req.user._id.toString()) {
+        try {
+          sendPushToUser(u._id, {
+            title: 'Duo Unlinked',
+            body: `@${req.user.username} has unlinked from the Duo. You are now back in Solo Mode.`,
+            icon: '/pwa-192.png',
+            data: {
+              type: 'duo-unpaired',
+              url: '/dashboard',
+            },
+          }).catch(() => {});
+        } catch (pushErr) {}
+      }
     }
 
     res.json({

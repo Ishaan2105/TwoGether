@@ -74,8 +74,12 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`TwoGether API listening on http://localhost:${PORT}`);
+if (process.env.NODE_ENV !== 'test') {
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`TwoGether API listening on http://localhost:${PORT}`);
+    });
   });
-});
+}
+
+module.exports = app;

@@ -34,6 +34,7 @@ export function DuoProvider({ children }) {
     }
   }, [user]);
 
+  // Initial load
   useEffect(() => {
     if (user) {
       refreshDuo();
@@ -42,6 +43,77 @@ export function DuoProvider({ children }) {
       setPartner(null);
     }
   }, [user, refreshDuo]);
+
+  // Real-Time Sync: auto-poll while in Solo mode (waiting for partner to connect)
+  useEffect(() => {
+    if (!user || duo) return;
+
+    // While user is unpaired, check every 5 seconds for partner pairing
+    const pollInterval = setInterval(async () => {
+      if (document.hidden) return; // Save bandwidth when tab is backgrounded
+      try {
+        const data = await duoService.getMyDuo();
+        if (data?.duo) {
+          setDuo(data.duo);
+          setPartner(data.partner || null);
+          if (refreshUser) refreshUser();
+        }
+      } catch (e) {}
+    }, 5000);
+
+    return () => clearInterval(pollInterval);
+  }, [user, duo, refreshUser]);
+
+  // Window Focus, Visibility & Service Worker message listeners for real-time Duo events
+  useEffect(() => {
+    if (!user) return;
+
+    const handleSync = () => {
+      if (!document.hidden) {
+        refreshDuo();
+        if (refreshUser) refreshUser();
+      }
+    };
+
+    window.addEventListener('focus', handleSync);
+    document.addEventListener('visibilitychange', handleSync);
+
+    // Cross-tab sync via BroadcastChannel
+    let channel = null;
+    try {
+      if ('BroadcastChannel' in window) {
+        channel = new BroadcastChannel('twogether_duo_sync');
+        channel.onmessage = (event) => {
+          if (event.data === 'duo-changed') {
+            refreshDuo();
+            if (refreshUser) refreshUser();
+          }
+        };
+      }
+    } catch (e) {}
+
+    // Service Worker push notification listener
+    const handleSwMessage = (event) => {
+      const type = event.data?.payload?.data?.type || event.data?.type;
+      if (type === 'duo-paired' || type === 'duo-unpaired' || event.data?.type === 'PUSH_RECEIVED') {
+        refreshDuo();
+        if (refreshUser) refreshUser();
+      }
+    };
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', handleSwMessage);
+    }
+
+    return () => {
+      window.removeEventListener('focus', handleSync);
+      document.removeEventListener('visibilitychange', handleSync);
+      if (channel) channel.close();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.removeEventListener('message', handleSwMessage);
+      }
+    };
+  }, [user, refreshDuo, refreshUser]);
 
   const lookup = useCallback(async (code) => {
     setError(null);
@@ -57,6 +129,13 @@ export function DuoProvider({ children }) {
       if (refreshUser) {
         await refreshUser();
       }
+      try {
+        if ('BroadcastChannel' in window) {
+          const ch = new BroadcastChannel('twogether_duo_sync');
+          ch.postMessage('duo-changed');
+          ch.close();
+        }
+      } catch (e) {}
       return data;
     },
     [refreshUser]
@@ -77,6 +156,13 @@ export function DuoProvider({ children }) {
     if (refreshUser) {
       await refreshUser();
     }
+    try {
+      if ('BroadcastChannel' in window) {
+        const ch = new BroadcastChannel('twogether_duo_sync');
+        ch.postMessage('duo-changed');
+        ch.close();
+      }
+    } catch (e) {}
   }, [refreshUser]);
 
   return (

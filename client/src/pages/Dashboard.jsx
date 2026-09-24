@@ -557,6 +557,10 @@ export default function Dashboard() {
                 <span className="duo-code__label">YOUR CODE</span>
                 <span className="duo-code__value">{user.duoInviteCode}</span>
               </div>
+              <div className="duo-live-sync-indicator" title="Listening for your partner connection">
+                <span className="duo-live-dot" />
+                <span>Auto-sync active • Flips to Duo Mode the moment partner pairs</span>
+              </div>
               <button
                 type="button"
                 className="btn btn--secondary btn--block"
