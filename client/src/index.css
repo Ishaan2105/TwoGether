@@ -8837,6 +8837,75 @@ html.app-zoomed-out.landing-dark-theme #root {
   font-size: 1.15rem;
 }
 
+/* Ownership badge inside custom category buttons */
+.category-select-btn__badge {
+  font-size: 0.75rem;
+  line-height: 1;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+/* Shared/partner custom category button — subtle amber tint */
+.category-select-btn--custom {
+  border-color: rgba(221, 161, 94, 0.35);
+  background: rgba(221, 161, 94, 0.07);
+  color: var(--text-muted);
+}
+
+.category-select-btn--custom:hover,
+.category-select-btn--custom.category-select-btn--active {
+  border-color: #dda15e;
+  background: rgba(221, 161, 94, 0.18);
+  color: var(--text-main);
+  box-shadow: 0 0 12px rgba(221, 161, 94, 0.25);
+}
+
+/* "＋ New Custom" button — dashed outline */
+.category-select-btn--new-custom {
+  border-style: dashed;
+  border-color: rgba(var(--cyan-rgb), 0.3);
+  color: var(--text-muted);
+}
+
+.category-select-btn--new-custom:hover,
+.category-select-btn--new-custom.category-select-btn--active {
+  border-color: var(--cyan);
+  background: rgba(var(--cyan-rgb), 0.08);
+  color: var(--cyan);
+}
+
+/* Custom category name input that appears below the grid */
+.custom-cat-input-wrap {
+  margin-top: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.custom-cat-input {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(var(--cyan-rgb), 0.4);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.2s;
+}
+
+.custom-cat-input:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(var(--cyan-rgb), 0.12);
+}
+
+.custom-cat-input-hint {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  padding-left: 0.2rem;
+}
+
 /* Segmented Controls */
 
 .form-row--segmented {

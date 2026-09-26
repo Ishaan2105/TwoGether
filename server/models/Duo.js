@@ -76,6 +76,16 @@ const duoSchema = new mongoose.Schema(
       type: [nudgeSchema],
       default: [],
     },
+    customCategories: {
+      type: [
+        {
+          name: { type: String, required: true, trim: true, maxlength: 40 },
+          createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+          createdAt: { type: Date, default: Date.now },
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,

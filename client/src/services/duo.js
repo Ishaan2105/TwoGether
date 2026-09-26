@@ -46,3 +46,14 @@ export async function triggerMidnightCron(date) {
   return data.data;
 }
 
+/** Get all custom categories shared between duo partners */
+export async function getDuoCustomCategories() {
+  const { data } = await api.get('/duo/custom-categories');
+  return data.customCategories || []; // [{ name, isOwn, createdByUsername }]
+}
+
+/** Add a new custom category to the shared duo pool */
+export async function addDuoCustomCategory(name) {
+  const { data } = await api.post('/duo/custom-categories', { name });
+  return data.customCategories || []; // full updated list
+}

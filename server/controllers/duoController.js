@@ -749,6 +749,93 @@ async function triggerMidnightCron(req, res, next) {
   }
 }
 
+/**
+ * Get all custom categories shared in the duo
+ * GET /api/duo/custom-categories
+ */
+async function getDuoCustomCategories(req, res, next) {
+  try {
+    const user = req.user;
+    if (!user.duoId) {
+      return res.json({ success: true, customCategories: [] });
+    }
+    const duo = await Duo.findById(user.duoId)
+      .populate('customCategories.createdBy', 'username')
+      .lean();
+    if (!duo) return res.json({ success: true, customCategories: [] });
+
+    const categories = (duo.customCategories || []).map((c) => ({
+      name: c.name,
+      createdById: c.createdBy?._id?.toString() || c.createdBy?.toString(),
+      createdByUsername: c.createdBy?.username || '',
+      isOwn: c.createdBy?._id?.toString() === user._id.toString() ||
+             c.createdBy?.toString() === user._id.toString(),
+    }));
+
+    res.json({ success: true, customCategories: categories });
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * Add a new custom category to the duo (idempotent by name, case-insensitive)
+ * POST /api/duo/custom-categories
+ * Body: { name: string }
+ */
+async function addDuoCustomCategory(req, res, next) {
+  try {
+    const user = req.user;
+    if (!user.duoId) {
+      return res.status(400).json({ success: false, message: 'You are not in a duo.' });
+    }
+
+    const raw = (req.body.name || '').trim();
+    if (!raw) {
+      return res.status(400).json({ success: false, message: 'Category name is required.' });
+    }
+    if (raw.length > 40) {
+      return res.status(400).json({ success: false, message: 'Category name cannot exceed 40 characters.' });
+    }
+
+    // Built-in categories cannot be added as custom
+    const builtIn = ['health', 'fitness', 'focus', 'mindset', 'productivity'];
+    if (builtIn.includes(raw.toLowerCase())) {
+      return res.status(400).json({ success: false, message: `"${raw}" is a built-in category.` });
+    }
+
+    const duo = await Duo.findById(user.duoId);
+    if (!duo) return res.status(404).json({ success: false, message: 'Duo not found.' });
+
+    // Idempotent: skip if name already exists (case-insensitive)
+    const exists = (duo.customCategories || []).some(
+      (c) => c.name.toLowerCase() === raw.toLowerCase()
+    );
+    if (!exists) {
+      duo.customCategories.push({ name: raw, createdBy: user._id });
+      await duo.save();
+    }
+
+    // Return full updated list with ownership flags
+    const updated = await Duo.findById(user.duoId)
+      .populate('customCategories.createdBy', 'username')
+      .lean();
+
+    const categories = (updated.customCategories || []).map((c) => ({
+      name: c.name,
+      createdById: c.createdBy?._id?.toString() || c.createdBy?.toString(),
+      createdByUsername: c.createdBy?.username || '',
+      isOwn: c.createdBy?._id?.toString() === user._id.toString() ||
+             c.createdBy?.toString() === user._id.toString(),
+    }));
+
+    res.json({ success: true, customCategories: categories, added: !exists });
+  } catch (err) {
+    next(err);
+  }
+}
+
+
 module.exports = {
   lookupCode,
   pairDuo,
@@ -759,5 +846,7 @@ module.exports = {
   getLeaderboards,
   evaluateStreak,
   triggerMidnightCron,
+  getDuoCustomCategories,
+  addDuoCustomCategory,
 };
 

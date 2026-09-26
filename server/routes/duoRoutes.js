@@ -10,6 +10,8 @@ const {
   getLeaderboards,
   evaluateStreak,
   triggerMidnightCron,
+  getDuoCustomCategories,
+  addDuoCustomCategory,
 } = require('../controllers/duoController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -45,5 +47,13 @@ router.post('/unpair', unpairDuo);
 // Streak Engine endpoints
 router.post('/evaluate-streak', evaluateStreak);
 router.post('/midnight-cron', triggerMidnightCron);
+
+// Custom shared categories (duo)
+router.get('/custom-categories', getDuoCustomCategories);
+router.post(
+  '/custom-categories',
+  [body('name').trim().notEmpty().withMessage('Category name is required')],
+  addDuoCustomCategory
+);
 
 module.exports = router;

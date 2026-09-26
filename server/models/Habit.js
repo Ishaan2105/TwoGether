@@ -22,8 +22,9 @@ const habitSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['Health', 'Fitness', 'Focus', 'Mindset', 'Productivity', 'Custom'],
       default: 'Productivity',
+      trim: true,
+      maxlength: [40, 'Category name cannot exceed 40 characters'],
     },
     icon: {
       type: String,

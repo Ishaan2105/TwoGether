@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useInAppModal } from '../context/ModalContext.jsx';
 import HabitMatrixGrid from '../components/habits/HabitMatrixGrid.jsx';
 import CohortRetentionMatrix from '../components/habits/CohortRetentionMatrix.jsx';
 import * as habitService from '../services/habits.js';
+import { getDuoCustomCategories, addDuoCustomCategory } from '../services/duo.js';
 import { getLocalTodayStr, subscribeToMidnightTick } from '../utils/dateUtils.js';
 
 const MONTH_NAMES = [
@@ -149,6 +150,11 @@ export default function DailyTasks() {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  // Duo custom categories
+  const [duoCustomCats, setDuoCustomCats] = useState([]); // [{ name, isOwn, createdByUsername }]
+  const [customCatInput, setCustomCatInput] = useState('');   // free-text name when "Custom" selected
+  const customCatRef = useRef(null);
+
   // Conclude / Close Goal Modal State
   const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
   const [closingHabit, setClosingHabit] = useState(null);
@@ -170,9 +176,21 @@ export default function DailyTasks() {
     }
   }, []);
 
+  // Load duo custom categories (if user is in a duo)
+  const fetchDuoCategories = useCallback(async () => {
+    if (!user?.duoId) return;
+    try {
+      const cats = await getDuoCustomCategories();
+      setDuoCustomCats(cats);
+    } catch (_) {
+      // Non-critical — silently ignore
+    }
+  }, [user?.duoId]);
+
   useEffect(() => {
     fetchHabits();
-  }, [fetchHabits]);
+    fetchDuoCategories();
+  }, [fetchHabits, fetchDuoCategories]);
 
   // Subscribe to exact 12:00:00 AM midnight tick to flip the day and reload tasks automatically
   useEffect(() => {
@@ -239,16 +257,20 @@ export default function DailyTasks() {
       targetDays: isSprint ? 5 : 0,
       objectiveNote: '',
     });
+    setCustomCatInput('');
+    fetchDuoCategories();
     setIsModalOpen(true);
   };
 
   // Open modal for Edit
   const handleOpenEdit = (habit) => {
     setEditingHabit(habit);
+    const builtIn = ['Health', 'Fitness', 'Focus', 'Mindset', 'Productivity'];
+    const isCustomCat = habit.category && !builtIn.includes(habit.category);
     setFormData({
       title: habit.title || '',
       description: habit.description || '',
-      category: habit.category || 'Productivity',
+      category: isCustomCat ? '__custom__' : (habit.category || 'Productivity'),
       icon: habit.icon || '🎯',
       priority: habit.priority || 'medium',
       timeOfDay: habit.timeOfDay || 'anytime',
@@ -258,6 +280,8 @@ export default function DailyTasks() {
       targetDays: habit.targetDays || 5,
       objectiveNote: habit.objectiveNote || '',
     });
+    setCustomCatInput(isCustomCat ? habit.category : '');
+    fetchDuoCategories();
     setIsModalOpen(true);
   };
 
@@ -269,11 +293,24 @@ export default function DailyTasks() {
       return;
     }
 
+    // Resolve the actual category name
+    let resolvedCategory = formData.category;
+    if (formData.category === '__custom__') {
+      const name = customCatInput.trim();
+      if (!name) {
+        setError('Please enter a name for your custom category.');
+        customCatRef.current?.focus();
+        return;
+      }
+      resolvedCategory = name;
+    }
+
     setSubmitting(true);
     setError('');
     try {
       const payload = {
         ...formData,
+        category: resolvedCategory,
         targetDays:
           formData.habitType === 'sprint'
             ? countDaysBetween(formData.startDate, formData.endDate)
@@ -291,6 +328,15 @@ export default function DailyTasks() {
             : 'Daily task created successfully!'
         );
       }
+
+      // If a custom category name was used AND user is in a duo, register it so partner sees it
+      if (formData.category === '__custom__' && resolvedCategory && user?.duoId) {
+        try {
+          const updated = await addDuoCustomCategory(resolvedCategory);
+          setDuoCustomCats(updated);
+        } catch (_) { /* non-critical */ }
+      }
+
       setIsModalOpen(false);
       await fetchHabits();
       setTimeout(() => setSuccessMsg(''), 3000);
@@ -898,17 +944,77 @@ export default function DailyTasks() {
               <div className="form-group">
                 <label>Select Category</label>
                 <div className="category-select-grid">
-                  {CATEGORY_OPTIONS.map((cat) => (
+                  {/* Built-in categories */}
+                  {CATEGORY_OPTIONS.filter(c => c.id !== 'Custom').map((cat) => (
                     <button
                       key={cat.id}
                       type="button"
                       className={`category-select-btn ${formData.category === cat.id ? 'category-select-btn--active' : ''}`}
-                      onClick={() => setFormData({ ...formData, category: cat.id })}
+                      onClick={() => { setFormData({ ...formData, category: cat.id }); setCustomCatInput(''); }}
                     >
                       <span className="category-select-btn__label">{cat.label}</span>
                     </button>
                   ))}
+
+                  {/* Duo shared custom categories — each with ownership badge */}
+                  {duoCustomCats.map((cat) => (
+                    <button
+                      key={`duo-${cat.name}`}
+                      type="button"
+                      title={cat.isOwn ? 'Your custom category' : `Created by ${cat.createdByUsername}`}
+                      className={`category-select-btn category-select-btn--custom ${
+                        formData.category === '__custom__' && customCatInput.toLowerCase() === cat.name.toLowerCase()
+                          ? 'category-select-btn--active'
+                          : ''
+                      }`}
+                      onClick={() => {
+                        setFormData({ ...formData, category: '__custom__' });
+                        setCustomCatInput(cat.name);
+                      }}
+                    >
+                      <span className="category-select-btn__badge">
+                        {cat.isOwn ? '✦' : '👤'}
+                      </span>
+                      <span className="category-select-btn__label">{cat.name}</span>
+                    </button>
+                  ))}
+
+                  {/* "+ New Custom" button */}
+                  <button
+                    type="button"
+                    className={`category-select-btn category-select-btn--new-custom ${
+                      formData.category === '__custom__' && !duoCustomCats.some(c => c.name.toLowerCase() === customCatInput.toLowerCase())
+                        ? 'category-select-btn--active'
+                        : ''
+                    }`}
+                    onClick={() => {
+                      setFormData({ ...formData, category: '__custom__' });
+                      setCustomCatInput('');
+                      setTimeout(() => customCatRef.current?.focus(), 50);
+                    }}
+                  >
+                    <span className="category-select-btn__badge">＋</span>
+                    <span className="category-select-btn__label">New Custom</span>
+                  </button>
                 </div>
+
+                {/* Inline custom category name input */}
+                {formData.category === '__custom__' && (
+                  <div className="custom-cat-input-wrap">
+                    <input
+                      ref={customCatRef}
+                      type="text"
+                      className="form-input custom-cat-input"
+                      placeholder="Type your custom category name…"
+                      value={customCatInput}
+                      maxLength={40}
+                      onChange={(e) => setCustomCatInput(e.target.value)}
+                    />
+                    <span className="custom-cat-input-hint">
+                      {user?.duoId ? '🔗 Shared with your partner when saved' : '📝 Personal category'}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Time of Day & Priority Visual Segmented Controls */}
