@@ -11,8 +11,7 @@ import { getNudgeMessage } from '../../services/notifications.js';
  *  2. Keyboard shortcut blocker (PrintScreen, Win+Shift+S, Cmd+Shift+3/4/5, Ctrl+P)
  *  3. Clipboard clearing on PrintScreen
  *  4. Touch-callout & Context-menu blocker (disables long-press download on Samsung/Android/iOS)
- *  5. Dynamic diagonal security watermark on canvas
- *  6. Dynamic self-destruct timer configured by the sender
+ *  5. Dynamic self-destruct timer configured by the sender
  */
 export default function NudgeViewerModal() {
   const { isNudgeViewerOpen, closeNudgeViewer, activeNudgeId, activeNudgeDuration } = useSidebar();
@@ -137,25 +136,6 @@ export default function NudgeViewerModal() {
       canvas.width = w;
       canvas.height = h;
       ctx.drawImage(img, 0, 0, w, h);
-
-      // Security Watermark: sender + recipient identity stamps across canvas
-      ctx.save();
-      ctx.globalAlpha = 0.12;
-      ctx.fillStyle = '#ffffff';
-      const fontSize = Math.max(14, Math.round(Math.min(w, h) * 0.032));
-      ctx.font = `bold ${fontSize}px sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.rotate(-Math.PI / 5);
-
-      const stamp = `TwoGether • Private Nudge • From ${nudge.fromUsername || 'Partner'}`;
-      const stepY = Math.max(50, Math.round(h * 0.09));
-      const stepX = Math.max(240, Math.round(w * 0.28));
-      for (let row = -h * 1.5; row < h * 2.5; row += stepY) {
-        for (let col = -w * 1.5; col < w * 2.5; col += stepX) {
-          ctx.fillText(stamp, col, row);
-        }
-      }
-      ctx.restore();
     };
     img.src = nudge.imageDataUrl;
   }, [nudge, isShieldActive]);
