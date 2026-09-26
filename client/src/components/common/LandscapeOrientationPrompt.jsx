@@ -167,38 +167,41 @@ export default function LandscapeOrientationPrompt() {
 
   // Action: Rotate to view the site in landscape mode
   const handleRotateLandscape = async () => {
-    // 1. Dismiss modal so site opens up
+    // 1. Dismiss the prompt overlay
     setDismissed(true);
 
-    // 2. Request fullscreen so screen.orientation.lock has permission to execute on mobile browsers
-    const docEl = document.documentElement;
-    const requestFS = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
-    if (requestFS) {
-      try {
-        await requestFS.call(docEl).catch(() => {});
-      } catch (e) {}
-    }
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-    // 3. Request native screen orientation lock
-    try {
-      if (window.screen?.orientation?.lock) {
-        await window.screen.orientation.lock('landscape').catch(() => {});
-      } else if (window.screen?.lockOrientation) {
-        window.screen.lockOrientation('landscape');
-      } else if (window.screen?.webkitLockOrientation) {
-        window.screen.webkitLockOrientation('landscape');
-      } else if (window.screen?.mozLockOrientation) {
-        window.screen.mozLockOrientation('landscape');
+    // 2. Try native screen orientation lock ONLY on non-iOS platforms
+    //    (iOS Safari throws a NotSupportedError for screen.orientation.lock — never attempt it)
+    if (!isIOS) {
+      // Request fullscreen first so orientation.lock has permission (Android Chrome)
+      const docEl = document.documentElement;
+      const requestFS = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+      if (requestFS) {
+        try { await requestFS.call(docEl); } catch (e) {}
       }
-    } catch (err) {
-      console.warn('Orientation lock notice:', err);
+      try {
+        if (window.screen?.orientation?.lock) {
+          await window.screen.orientation.lock('landscape').catch(() => {});
+        } else if (window.screen?.lockOrientation) {
+          window.screen.lockOrientation('landscape');
+        } else if (window.screen?.webkitLockOrientation) {
+          window.screen.webkitLockOrientation('landscape');
+        } else if (window.screen?.mozLockOrientation) {
+          window.screen.mozLockOrientation('landscape');
+        }
+      } catch (err) {
+        console.warn('Orientation lock notice:', err);
+      }
     }
 
-    // 4. Always apply landscape-mode and app-zoomed-out
+    // 3. Always apply landscape-mode and app-zoomed-out classes
     document.documentElement.classList.add('landscape-mode', 'app-zoomed-out');
     document.body.classList.add('landscape-mode', 'app-zoomed-out');
 
-    // 5. If device is still physically held in portrait, activate CSS forced landscape rotation
+    // 4. If device is still physically in portrait after the lock attempt,
+    //    activate CSS forced landscape rotation (targets #root for iOS compatibility)
     const stillPortrait = getIsPortrait();
     if (stillPortrait) {
       document.documentElement.classList.add('app-forced-landscape');
@@ -215,9 +218,10 @@ export default function LandscapeOrientationPrompt() {
         sessionStorage.removeItem('twogether_forced_landscape');
       } catch (e) {}
     }
-    // Trigger resize events so spreadsheet recalculates 15-day view and centers today
-    setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
-    setTimeout(() => window.dispatchEvent(new Event('resize')), 250);
+
+    // 5. Trigger resize so spreadsheet and layout components recalculate dimensions
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 80);
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 300);
   };
 
   const handleExitForcedLandscape = () => {

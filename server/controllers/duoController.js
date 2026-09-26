@@ -686,6 +686,69 @@ async function getLeaderboards(req, res, next) {
   }
 }
 
+/**
+ * Evaluate streak for the logged-in user's active duo
+ * POST /api/duo/evaluate-streak
+ */
+async function evaluateStreak(req, res, next) {
+  try {
+    if (!req.user.duoId) {
+      return res.status(400).json({
+        success: false,
+        message: 'You are not currently in an active Duo.',
+      });
+    }
+
+    const { evaluateDuoStreak } = require('../services/streakEngine');
+    const targetDateStr =
+      req.body.date ||
+      req.headers['x-client-date'] ||
+      (() => {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      })();
+
+    const result = await evaluateDuoStreak(req.user.duoId, targetDateStr);
+    res.json({
+      success: true,
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * Trigger midnight evaluation for all active duos
+ * POST /api/duo/midnight-cron
+ */
+async function triggerMidnightCron(req, res, next) {
+  try {
+    const { evaluateAllDuosAtMidnight } = require('../services/streakEngine');
+    const targetDateStr =
+      req.body.date ||
+      req.headers['x-client-date'] ||
+      (() => {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      })();
+
+    const results = await evaluateAllDuosAtMidnight(targetDateStr);
+    res.json({
+      success: true,
+      data: results,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   lookupCode,
   pairDuo,
@@ -694,4 +757,7 @@ module.exports = {
   unpairDuo,
   getDuoShells,
   getLeaderboards,
+  evaluateStreak,
+  triggerMidnightCron,
 };
+

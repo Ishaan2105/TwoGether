@@ -8,6 +8,8 @@ const {
   unpairDuo,
   getDuoShells,
   getLeaderboards,
+  evaluateStreak,
+  triggerMidnightCron,
 } = require('../controllers/duoController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -39,5 +41,9 @@ router.post(
 );
 
 router.post('/unpair', unpairDuo);
+
+// Streak Engine endpoints
+router.post('/evaluate-streak', evaluateStreak);
+router.post('/midnight-cron', triggerMidnightCron);
 
 module.exports = router;

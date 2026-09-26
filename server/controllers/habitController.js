@@ -515,13 +515,42 @@ async function toggleHabit(req, res, next) {
       await user.save();
     }
 
-    // If user is in a Duo, also reward Duo XP on positive check in
+    // If user is in a Duo, also reward Duo XP and notify partner of progress
     if (user && user.duoId && xpChange > 0) {
       const duo = await Duo.findById(user.duoId);
       if (duo && duo.status === 'active') {
         duo.duoXP = (duo.duoXP || 0) + 10;
         duo.duoLevel = Math.max(1, Math.floor(duo.duoXP / 200) + 1);
         await duo.save();
+
+        const partnerId = duo.users.find((u) => u.toString() !== user._id.toString());
+        if (partnerId) {
+          const userActiveHabits = await Habit.find({ userId: user._id, status: 'active', isArchived: false });
+          const allDone =
+            userActiveHabits.length > 0 &&
+            userActiveHabits.every((h) => h.completedDates && h.completedDates.includes(todayStr));
+
+          try {
+            const { sendPushToUser } = require('../utils/pushNotify');
+            const pushTitle = allDone
+              ? `🔥 @${user.username} finished ALL habits today!`
+              : `⚡ @${user.username} checked off a habit!`;
+            const pushBody = allDone
+              ? `All daily tasks completed by @${user.username}! Lock in your tasks before midnight to extend your duo streak!`
+              : `@${user.username} completed "${habit.title}". Check your dashboard for mutual synergy!`;
+
+            sendPushToUser(partnerId, {
+              title: pushTitle,
+              body: pushBody,
+              icon: '/pwa-192.png',
+              data: {
+                type: allDone ? 'partner-all-completed' : 'partner-habit-completed',
+                partnerUsername: user.username,
+                url: '/dashboard',
+              },
+            }).catch(() => {});
+          } catch (e) {}
+        }
       }
     }
 

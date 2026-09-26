@@ -36,3 +36,13 @@ export async function getLeaderboards() {
   return data.data; // { soloLeaderboard, duoLeaderboard, currentUserId, currentDuoId }
 }
 
+export async function evaluateStreak(date) {
+  const { data } = await api.post('/duo/evaluate-streak', date ? { date } : {});
+  return data.data;
+}
+
+export async function triggerMidnightCron(date) {
+  const { data } = await api.post('/duo/midnight-cron', date ? { date } : {});
+  return data.data;
+}
+

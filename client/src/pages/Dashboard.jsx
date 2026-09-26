@@ -10,7 +10,7 @@ import { subscribeToMidnightTick } from '../utils/dateUtils.js';
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { duo, partner, loading, lookup, pair, nudge, unpair } = useDuo();
+  const { duo, partner, loading, lookup, pair, nudge, unpair, refreshDuo } = useDuo();
   const { openImageNudge, openNudgeAction } = useSidebar();
   const { showConfirm } = useInAppModal();
   const navigate = useNavigate();
@@ -51,18 +51,28 @@ export default function Dashboard() {
 
   // Midnight tick subscription to update shell streak & status at 12:00 AM sharp
   useEffect(() => {
-    const unsubscribe = subscribeToMidnightTick(() => {
+    const handleMidnight = async () => {
+      if (duo && partner) {
+        try {
+          await duoService.evaluateStreak();
+        } catch (e) {
+          console.error('Streak evaluation failed:', e);
+        }
+      }
       loadShells();
-    });
+      if (refreshDuo) refreshDuo();
+    };
+
+    const unsubscribe = subscribeToMidnightTick(handleMidnight);
     const handleNewDay = () => {
-      loadShells();
+      handleMidnight();
     };
     window.addEventListener('twogether:new-day', handleNewDay);
     return () => {
       unsubscribe();
       window.removeEventListener('twogether:new-day', handleNewDay);
     };
-  }, [loadShells]);
+  }, [duo, partner, loadShells, refreshDuo]);
 
   // Listen for image nudge attachment & delivery confirmation
   useEffect(() => {
